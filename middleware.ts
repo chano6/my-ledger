@@ -1,6 +1,5 @@
-import { type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
-import { NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const { supabaseResponse, user } = await updateSession(request);
@@ -8,8 +7,7 @@ export async function middleware(request: NextRequest) {
   // 로그인 안 한 사용자가 보호된 경로 접근 시 로그인 페이지로
   const pathname = request.nextUrl.pathname;
   const isProtectedRoute = pathname.startsWith("/dashboard");
-  const isAuthRoute =
-    pathname.startsWith("/login") || pathname.startsWith("/signup");
+  const isAuthRoute = pathname.startsWith("/login") || pathname.startsWith("/signup");
 
   if (isProtectedRoute && !user) {
     const url = request.nextUrl.clone();

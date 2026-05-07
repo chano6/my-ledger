@@ -1,6 +1,4 @@
 import TransactionList from "@/components/transactions/transaction-list";
-import { Button } from "@/components/ui/button";
-import { logout } from "@/lib/actions/auth";
 import { formatCurrency } from "@/lib/format";
 import { getTransactions } from "@/lib/queries/transactions";
 import { createClient } from "@/lib/supabase/server";

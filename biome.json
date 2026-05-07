@@ -14,7 +14,7 @@
       "!.claude",
       "!dist",
       "!build",
-      "!src/components/ui",
+      "!components/ui",
       "!app/globals.css",
       "!public"
     ]

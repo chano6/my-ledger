@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { signup } from "@/lib/actions/auth";
 
 function SignupPage() {
@@ -41,9 +41,9 @@ function SignupPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-3">
-            <Button type="submit" className="w-full">
+            <SubmitButton className="w-full" pendingLabel="가입 중...">
               회원가입
-            </Button>
+            </SubmitButton>
             <p className="text-sm text-muted-foreground">
               이미 계정이 있으신가요?{" "}
               <Link href="/login" className="underline">

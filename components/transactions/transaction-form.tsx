@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { SubmitButton } from "@/components/ui/submit-button";
 import type { Category, Transaction } from "@/lib/types";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -121,9 +122,9 @@ export function TransactionForm({
       </div>
 
       <div className="flex gap-2 pt-4">
-        <Button type="submit" className="flex-1">
+        <SubmitButton className="flex-1" pendingLabel={defaultValues ? "수정 중..." : "저장 중..."}>
           {submitLabel}
-        </Button>
+        </SubmitButton>
         <Button type="button" variant="outline" asChild>
           <Link href="/transactions">취소</Link>
         </Button>

@@ -4,15 +4,16 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { loginSchema, signupSchema } from "../schemas/auth";
 import { createClient } from "../supabase/server";
+import type { ActionState } from "../types";
 
-export async function signup(formData: FormData) {
+export async function signup(_prevState: ActionState, formData: FormData): Promise<ActionState> {
   const result = signupSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
   });
 
   if (!result.success) {
-    throw new Error(result.error.issues[0].message);
+    return { error: result.error.issues[0].message };
   }
 
   const { email, password } = result.data;
@@ -21,21 +22,21 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
-    throw new Error(error.message);
+    return { error: error.message };
   }
 
   revalidatePath("/", "layout");
   redirect("/dashboard");
 }
 
-export async function login(formData: FormData) {
+export async function login(_prevState: ActionState, formData: FormData): Promise<ActionState> {
   const result = loginSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
   });
 
   if (!result.success) {
-    throw new Error(result.error.issues[0].message);
+    return { error: result.error.issues[0].message };
   }
 
   const { email, password } = result.data;
@@ -44,7 +45,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    throw new Error("이메일 또는 비밀번호가 올바르지 않습니다.");
+    return { error: "이메일 또는 비밀번호가 올바르지 않습니다." };
   }
 
   revalidatePath("/", "layout");

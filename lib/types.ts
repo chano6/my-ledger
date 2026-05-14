@@ -22,3 +22,7 @@ export type Transaction = {
 export type TransactionWithCategory = Transaction & {
   category: Pick<Category, "name" | "color" | "type"> | null;
 };
+
+export type ActionState = {
+  error: string | null;
+} | null;

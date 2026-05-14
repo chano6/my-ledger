@@ -4,8 +4,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { transactionSchema, updateTransactionSchema } from "../schemas/transaction";
 import { createClient } from "../supabase/server";
+import type { ActionState } from "../types";
 
-export async function createTransaction(formData: FormData) {
+export async function createTransaction(
+  _prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   // 1. zod 스키마로 검증 + 반환
   const result = transactionSchema.safeParse({
     type: formData.get("type"),
@@ -17,7 +21,7 @@ export async function createTransaction(formData: FormData) {
 
   // 2. 유효성 검사
   if (!result.success) {
-    throw new Error(result.error.issues[0].message);
+    return { error: result.error.issues[0].message };
   }
 
   const { type, amount, category_id, date, description } = result.data;
@@ -29,7 +33,7 @@ export async function createTransaction(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("로그인이 필요합니다.");
+    return { error: "로그인이 필요합니다." };
   }
 
   // 4. DB에 INSERT
@@ -44,7 +48,7 @@ export async function createTransaction(formData: FormData) {
 
   if (error) {
     console.error("거래 추가 실패:", error);
-    throw new Error("거래 추가에 실패했습니다.");
+    return { error: "거래 추가에 실패했습니다." };
   }
 
   // 5. 캐싱 갱신 + 페이지 이동
@@ -82,7 +86,10 @@ export async function deleteTransaction(id: string) {
   revalidatePath("/dashboard");
 }
 
-export async function updateTransaction(formData: FormData) {
+export async function updateTransaction(
+  _prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   // 1. Zod 스키마로 검증 + 변환 (id 포함)
   const result = updateTransactionSchema.safeParse({
     id: formData.get("id"),
@@ -95,7 +102,7 @@ export async function updateTransaction(formData: FormData) {
 
   // 2. 유효성 검사
   if (!result.success) {
-    throw new Error(result.error.issues[0].message);
+    return { error: result.error.issues[0].message };
   }
 
   const { id, type, amount, category_id, date, description } = result.data;
@@ -107,7 +114,7 @@ export async function updateTransaction(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("로그인이 필요합니다.");
+    return { error: "로그인이 필요합니다." };
   }
 
   // 4. DB UPDATE
@@ -125,7 +132,7 @@ export async function updateTransaction(formData: FormData) {
 
   if (error) {
     console.error("거래 수정 실패:", error);
-    throw new Error("거래 수정에 실패했습니다.");
+    return { error: "거래 수정에 실패했습니다." };
   }
 
   // 5. 캐싱 갱신 + 페이지 이동

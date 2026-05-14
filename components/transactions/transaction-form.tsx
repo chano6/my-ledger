@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { SubmitButton } from "@/components/ui/submit-button";
-import type { Category, Transaction } from "@/lib/types";
+import type { ActionState, Category, Transaction } from "@/lib/types";
 import { Button } from "../ui/button";
+import { ErrorMessage } from "../ui/error-message";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -12,7 +13,7 @@ import { Textarea } from "../ui/textarea";
 
 type TransactionFormProps = {
   categories: Category[];
-  action: (formData: FormData) => Promise<void>;
+  action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
   defaultValues?: Transaction;
   submitLabel?: string;
 };
@@ -21,8 +22,10 @@ export function TransactionForm({
   categories,
   action,
   defaultValues,
-  submitLabel,
+  submitLabel = "저장",
 }: TransactionFormProps) {
+  const [state, formAction] = useActionState(action, null);
+
   // 현재 선택된 유형 (지출/수입) 상태 관리
   const [type, setType] = useState<"income" | "expense">(defaultValues?.type ?? "expense");
 
@@ -33,8 +36,10 @@ export function TransactionForm({
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <form action={action} className="max-w-md space-y-4">
+    <form action={formAction} className="max-w-md space-y-4" noValidate>
       {defaultValues && <input type="hidden" name="id" value={defaultValues.id} />}
+
+      <ErrorMessage message={state?.error} />
 
       {/* 수입/지출 선택 */}
       <div className="grid gap-2">

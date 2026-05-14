@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { createTransaction } from "@/lib/actions/transactions";
 import type { Category } from "@/lib/types";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -24,7 +25,7 @@ export function TransactionForm({ categories }: TransactionFormProps) {
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <form className="max-w-md space-y-4">
+    <form action={createTransaction} className="max-w-md space-y-4">
       {/* 수입/지출 선택 */}
       <div className="grid gap-2">
         <Label htmlFor="type">유형</Label>

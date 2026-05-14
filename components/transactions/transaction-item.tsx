@@ -1,11 +1,12 @@
 import { formatCurrency, formatShortDate } from "@/lib/format";
 import type { TransactionWithCategory } from "@/lib/types";
+import { DeleteButton } from "./delete-button";
 
 function TransactionItem({ transaction }: { transaction: TransactionWithCategory }) {
   const isIncome = transaction.type === "income";
 
   return (
-    <div className="flex items-center justify-between border-b py-3">
+    <div className="flex items-center justify-between border-b py-3 last:border-b-0">
       <div className="flex items-center gap-3">
         {/* 카테고리 색상 동그라미 */}
         <div
@@ -21,9 +22,12 @@ function TransactionItem({ transaction }: { transaction: TransactionWithCategory
           </div>
         </div>
       </div>
-      <div className={isIncome ? "text-green-600" : "text-red-600"}>
-        {isIncome ? "+" : "-"}
-        {formatCurrency(transaction.amount)}
+      <div className="flex items-center gap-2">
+        <div className={isIncome ? "text-green-600" : "text-red-600"}>
+          {isIncome ? "+" : "-"}
+          {formatCurrency(transaction.amount)}
+        </div>
+        <DeleteButton id={transaction.id} />
       </div>
     </div>
   );

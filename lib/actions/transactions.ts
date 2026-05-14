@@ -2,24 +2,25 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { transactionSchema, updateTransactionSchema } from "../schemas/transaction";
 import { createClient } from "../supabase/server";
 
 export async function createTransaction(formData: FormData) {
-  // 1. formData에서 값 추출
-  const type = formData.get("type") as "income" | "expense";
-  const amount = Number(formData.get("amount"));
-  const categoryId = formData.get("category_id") as string;
-  const date = formData.get("date") as string;
-  const description = formData.get("description") as string;
+  // 1. zod 스키마로 검증 + 반환
+  const result = transactionSchema.safeParse({
+    type: formData.get("type"),
+    amount: formData.get("amount"),
+    category_id: formData.get("category_id"),
+    date: formData.get("date"),
+    description: formData.get("description") || undefined,
+  });
 
   // 2. 유효성 검사
-  if (!type || !amount || !categoryId || !date) {
-    throw new Error("필수 입력값이 누락되었습니다.");
+  if (!result.success) {
+    throw new Error(result.error.issues[0].message);
   }
 
-  if (amount <= 0) {
-    throw new Error("금액은 0보다 커야 합니다.");
-  }
+  const { type, amount, category_id, date, description } = result.data;
 
   // 3. 현재 로그인된 사용자 확인
   const supabase = await createClient();
@@ -36,7 +37,7 @@ export async function createTransaction(formData: FormData) {
     user_id: user.id,
     type,
     amount,
-    category_id: categoryId,
+    category_id,
     date,
     description: description || null,
   });
@@ -66,7 +67,11 @@ export async function deleteTransaction(id: string) {
     throw new Error("로그인이 필요합니다.");
   }
 
-  const { error } = await supabase.from("transactions").delete().eq("id", id).eq("user_id", user.id);
+  const { error } = await supabase
+    .from("transactions")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
 
   if (error) {
     console.error("거래 삭제 실패:", error);
@@ -78,26 +83,22 @@ export async function deleteTransaction(id: string) {
 }
 
 export async function updateTransaction(formData: FormData) {
-  // 1. formData에서 값 추출
-  const id = formData.get("id") as string;
-  const type = formData.get("type") as "income" | "expense";
-  const amount = Number(formData.get("amount"));
-  const categoryId = formData.get("category_id") as string;
-  const date = formData.get("date") as string;
-  const description = formData.get("description") as string;
+  // 1. Zod 스키마로 검증 + 변환 (id 포함)
+  const result = updateTransactionSchema.safeParse({
+    id: formData.get("id"),
+    type: formData.get("type"),
+    amount: formData.get("amount"),
+    category_id: formData.get("category_id"),
+    date: formData.get("date"),
+    description: formData.get("description") || undefined,
+  });
 
   // 2. 유효성 검사
-  if (!id) {
-    throw new Error("거래 ID가 필요합니다.");
+  if (!result.success) {
+    throw new Error(result.error.issues[0].message);
   }
 
-  if (!type || !amount || !categoryId || !date) {
-    throw new Error("필수 입력값이 누락되었습니다.");
-  }
-
-  if (amount <= 0) {
-    throw new Error("금액은 0보다 커야 합니다.");
-  }
+  const { id, type, amount, category_id, date, description } = result.data;
 
   // 3. 사용자 확인
   const supabase = await createClient();
@@ -115,7 +116,7 @@ export async function updateTransaction(formData: FormData) {
     .update({
       type,
       amount,
-      category_id: categoryId,
+      category_id,
       date,
       description: description || null,
     })

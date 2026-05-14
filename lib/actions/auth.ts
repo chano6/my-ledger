@@ -2,19 +2,20 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { loginSchema, signupSchema } from "../schemas/auth";
 import { createClient } from "../supabase/server";
 
 export async function signup(formData: FormData) {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const result = signupSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
 
-  if (!email || !password) {
-    throw new Error("이메일과 비밀번호를 입력해주세요.");
+  if (!result.success) {
+    throw new Error(result.error.issues[0].message);
   }
 
-  if (password.length < 6) {
-    throw new Error("비밀번호는 6자 이상이어야 합니다.");
-  }
+  const { email, password } = result.data;
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({ email, password });
@@ -28,12 +29,16 @@ export async function signup(formData: FormData) {
 }
 
 export async function login(formData: FormData) {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const result = loginSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
 
-  if (!email || !password) {
-    throw new Error("이메일과 비밀번호를 입력해주세요.");
+  if (!result.success) {
+    throw new Error(result.error.issues[0].message);
   }
+
+  const { email, password } = result.data;
 
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });

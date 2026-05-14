@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { formatCurrency, formatShortDate } from "@/lib/format";
 import type { TransactionWithCategory } from "@/lib/types";
+import { Button } from "../ui/button";
 import { DeleteButton } from "./delete-button";
 
 export function TransactionItem({ transaction }: { transaction: TransactionWithCategory }) {
@@ -27,6 +29,11 @@ export function TransactionItem({ transaction }: { transaction: TransactionWithC
           {isIncome ? "+" : "-"}
           {formatCurrency(transaction.amount)}
         </div>
+
+        <Button variant="ghost" size="sm" asChild>
+          <Link href={`/transactions/${transaction.id}/edit`}>수정</Link>
+        </Button>
+
         <DeleteButton id={transaction.id} />
       </div>
     </div>

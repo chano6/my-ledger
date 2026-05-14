@@ -1,4 +1,5 @@
 import { TransactionForm } from "@/components/transactions/transaction-form";
+import { createTransaction } from "@/lib/actions/transactions";
 import { getCategories } from "@/lib/queries/categories";
 
 export default async function NewTransactionPage() {
@@ -13,7 +14,7 @@ export default async function NewTransactionPage() {
       </div>
 
       {/* 거래 입력 폼 */}
-      <TransactionForm categories={categories} />
+      <TransactionForm categories={categories} action={createTransaction} submitLabel="저장" />
     </>
   );
 }

@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { createTransaction } from "@/lib/actions/transactions";
-import type { Category } from "@/lib/types";
+import type { Category, Transaction } from "@/lib/types";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -12,11 +11,19 @@ import { Textarea } from "../ui/textarea";
 
 type TransactionFormProps = {
   categories: Category[];
+  action: (formData: FormData) => Promise<void>;
+  defaultValues?: Transaction;
+  submitLabel?: string;
 };
 
-export function TransactionForm({ categories }: TransactionFormProps) {
+export function TransactionForm({
+  categories,
+  action,
+  defaultValues,
+  submitLabel,
+}: TransactionFormProps) {
   // 현재 선택된 유형 (지출/수입) 상태 관리
-  const [type, setType] = useState<"income" | "expense">("expense");
+  const [type, setType] = useState<"income" | "expense">(defaultValues?.type ?? "expense");
 
   // 선택된 유형에 맞는 카테고리 필터링
   const filteredCategories = categories.filter((c) => c.type === type);
@@ -25,7 +32,9 @@ export function TransactionForm({ categories }: TransactionFormProps) {
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <form action={createTransaction} className="max-w-md space-y-4">
+    <form action={action} className="max-w-md space-y-4">
+      {defaultValues && <input type="hidden" name="id" value={defaultValues.id} />}
+
       {/* 수입/지출 선택 */}
       <div className="grid gap-2">
         <Label htmlFor="type">유형</Label>
@@ -47,13 +56,21 @@ export function TransactionForm({ categories }: TransactionFormProps) {
       {/* 금액 */}
       <div className="grid gap-2">
         <Label htmlFor="amount">금액</Label>
-        <Input id="amount" name="amount" type="number" placeholder="0" min="1" required />
+        <Input
+          id="amount"
+          name="amount"
+          type="number"
+          placeholder="0"
+          min="1"
+          required
+          defaultValue={defaultValues?.amount}
+        />
       </div>
 
       {/* 카테고리 (필터링된 카테고리만 표시) */}
       <div className="grid gap-2">
         <Label htmlFor="category">카테고리</Label>
-        <Select name="category_id" required>
+        <Select name="category_id" required defaultValue={defaultValues?.category_id ?? undefined}>
           <SelectTrigger id="category">
             <SelectValue placeholder="카테고리 선택" />
           </SelectTrigger>
@@ -82,7 +99,13 @@ export function TransactionForm({ categories }: TransactionFormProps) {
       {/* 날짜 */}
       <div className="grid gap-2">
         <Label htmlFor="date">날짜</Label>
-        <Input id="date" name="date" type="date" defaultValue={today} required />
+        <Input
+          id="date"
+          name="date"
+          type="date"
+          defaultValue={defaultValues?.date ?? today}
+          required
+        />
       </div>
 
       {/* 메모 */}
@@ -93,12 +116,13 @@ export function TransactionForm({ categories }: TransactionFormProps) {
           name="description"
           placeholder="거래 내용을 입력하세요"
           rows={3}
+          defaultValue={defaultValues?.description ?? ""}
         />
       </div>
 
       <div className="flex gap-2 pt-4">
         <Button type="submit" className="flex-1">
-          저장
+          {submitLabel}
         </Button>
         <Button type="button" variant="outline" asChild>
           <Link href="/transactions">취소</Link>

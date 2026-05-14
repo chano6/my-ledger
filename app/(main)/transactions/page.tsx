@@ -1,5 +1,5 @@
 import Link from "next/link";
-import TransactionList from "@/components/transactions/transaction-list";
+import { TransactionList } from "@/components/transactions/transaction-list";
 import { Button } from "@/components/ui/button";
 import { getTransactions } from "@/lib/queries/transactions";
 

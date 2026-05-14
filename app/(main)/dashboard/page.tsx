@@ -1,4 +1,4 @@
-import TransactionList from "@/components/transactions/transaction-list";
+import { TransactionList } from "@/components/transactions/transaction-list";
 import { formatCurrency } from "@/lib/format";
 import { getTransactions } from "@/lib/queries/transactions";
 import { createClient } from "@/lib/supabase/server";

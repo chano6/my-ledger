@@ -2,7 +2,7 @@ import { formatCurrency, formatShortDate } from "@/lib/format";
 import type { TransactionWithCategory } from "@/lib/types";
 import { DeleteButton } from "./delete-button";
 
-function TransactionItem({ transaction }: { transaction: TransactionWithCategory }) {
+export function TransactionItem({ transaction }: { transaction: TransactionWithCategory }) {
   const isIncome = transaction.type === "income";
 
   return (
@@ -32,5 +32,3 @@ function TransactionItem({ transaction }: { transaction: TransactionWithCategory
     </div>
   );
 }
-
-export default TransactionItem;

@@ -1,7 +1,7 @@
 import type { TransactionWithCategory } from "@/lib/types";
-import TransactionItem from "./transaction-item";
+import { TransactionItem } from "./transaction-item";
 
-function TransactionList({ transactions }: { transactions: TransactionWithCategory[] }) {
+export function TransactionList({ transactions }: { transactions: TransactionWithCategory[] }) {
   if (transactions.length === 0) {
     return (
       <div className="rounded-lg border p-12 text-center">
@@ -20,5 +20,3 @@ function TransactionList({ transactions }: { transactions: TransactionWithCatego
     </div>
   );
 }
-
-export default TransactionList;

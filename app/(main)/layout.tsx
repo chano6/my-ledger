@@ -25,6 +25,12 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               >
                 거래 내역
               </Link>
+              <Link
+                href="/categories"
+                className="text-sm text-muted-foreground hover:text-foreground"
+              >
+                카테고리
+              </Link>
             </nav>
           </div>
           <form action={logout}>

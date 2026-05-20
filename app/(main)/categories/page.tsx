@@ -56,8 +56,8 @@ function CategorySection({ categories }: { categories: Category[] }) {
               <span className="font-medium">{category.name}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" disabled>
-                수정
+              <Button variant="ghost" size="sm" asChild>
+                <Link href={`/categories/${category.id}/edit`}>수정</Link>
               </Button>
               <Button variant="ghost" size="sm" disabled>
                 삭제

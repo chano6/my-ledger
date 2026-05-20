@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { categorySchema } from "../schemas/category";
+import { categorySchema, updateCategorySchema } from "../schemas/category";
 import { createClient } from "../supabase/server";
 import type { ActionState } from "../types";
 
@@ -44,6 +44,53 @@ export async function createCategory(
   }
 
   revalidatePath("/categories");
+  revalidatePath("/transactions/new");
+  redirect("/categories");
+}
+
+export async function updateCategory(
+  _prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const result = updateCategorySchema.safeParse({
+    id: formData.get("id"),
+    type: formData.get("type"),
+    name: formData.get("name"),
+    color: formData.get("color"),
+  });
+
+  if (!result.success) {
+    return { error: result.error.issues[0].message };
+  }
+
+  const { id, type, name, color } = result.data;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "로그인이 필요합니다." };
+  }
+
+  const { error } = await supabase
+    .from("categories")
+    .update({
+      type,
+      name,
+      color,
+    })
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    console.error("카테고리 수정 실패:", error);
+    return { error: "카테고리 수정에 실패했습니다." };
+  }
+
+  revalidatePath("/categories");
+  revalidatePath("/transactions");
   revalidatePath("/transactions/new");
   redirect("/categories");
 }

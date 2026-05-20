@@ -6,7 +6,7 @@ import { getCategories } from "@/lib/queries/categories";
 import { getTransactions } from "@/lib/queries/transactions";
 
 type TransactionPageProps = {
-  searchParams: Promise<{ type?: string; category?: string }>;
+  searchParams: Promise<{ type?: string; category?: string; start?: string; end?: string }>;
 };
 
 async function TransactionsPage({ searchParams }: TransactionPageProps) {
@@ -14,9 +14,11 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
 
   const type = params.type === "income" || params.type === "expense" ? params.type : undefined;
   const categoryId = params.category;
+  const startDate = params.start;
+  const endDate = params.end;
 
   const [transactions, categories] = await Promise.all([
-    getTransactions({ type, categoryId }),
+    getTransactions({ type, categoryId, startDate, endDate }),
     getCategories(),
   ]);
 
@@ -37,6 +39,8 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
         <TransactionFilters
           currentType={type}
           currentCategoryId={categoryId}
+          currentStartDate={startDate}
+          currentEndDate={endDate}
           categories={categories}
         />
       </div>

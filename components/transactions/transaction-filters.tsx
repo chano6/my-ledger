@@ -3,51 +3,76 @@ import { Suspense } from "react";
 import type { Category, TransactionType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { CategoryFilter } from "./category-filter";
+import { DateFilter } from "./date-filter";
 
 type TransactionFiltersProps = {
   currentType?: TransactionType;
   currentCategoryId?: string;
+  currentStartDate?: string;
+  currentEndDate?: string;
   categories: Category[];
 };
 
 export function TransactionFilters({
   currentType,
   currentCategoryId,
+  currentStartDate,
+  currentEndDate,
   categories,
 }: TransactionFiltersProps) {
   return (
-    <div className="flex gap-2">
-      <FilterLink href={makeUrl("type", undefined, currentCategoryId)} active={!currentType}>
-        전체
-      </FilterLink>
-      <FilterLink
-        href={makeUrl("type", "income", currentCategoryId)}
-        active={currentType === "income"}
-      >
-        수입
-      </FilterLink>
-      <FilterLink
-        href={makeUrl("type", "expense", currentCategoryId)}
-        active={currentType === "expense"}
-      >
-        지출
-      </FilterLink>
+    <div className="space-y-3">
+      <div className="flex flex-wrap items-center gap-3">
+        <FilterLink
+          href={makeUrl(undefined, currentCategoryId, currentStartDate, currentEndDate)}
+          active={!currentType}
+        >
+          전체
+        </FilterLink>
+        <FilterLink
+          href={makeUrl("income", currentCategoryId, currentStartDate, currentEndDate)}
+          active={currentType === "income"}
+        >
+          수입
+        </FilterLink>
+        <FilterLink
+          href={makeUrl("expense", currentCategoryId, currentStartDate, currentEndDate)}
+          active={currentType === "expense"}
+        >
+          지출
+        </FilterLink>
+
+        <Suspense>
+          <CategoryFilter categories={categories} currentCategoryId={currentCategoryId} />
+        </Suspense>
+      </div>
 
       <Suspense>
-        <CategoryFilter categories={categories} currentCategoryId={currentCategoryId} />
+        <DateFilter currentStartDate={currentStartDate} currentEndDate={currentEndDate} />
       </Suspense>
     </div>
   );
 }
 
-function makeUrl(filterKey: "type", filterValue: string | undefined, categoryId?: string): string {
+function makeUrl(
+  type: TransactionType | undefined,
+  categoryId?: string,
+  startDate?: string,
+  endDate?: string,
+): string {
   const params = new URLSearchParams();
 
-  if (filterValue) {
-    params.set(filterKey, filterValue);
+  if (type) {
+    params.set("type", type);
   }
   if (categoryId) {
     params.set("category", categoryId);
+  }
+  if (startDate) {
+    params.set("start", startDate);
+  }
+  if (endDate) {
+    params.set("end", endDate);
   }
 
   const queryString = params.toString();

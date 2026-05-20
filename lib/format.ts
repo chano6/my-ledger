@@ -24,3 +24,39 @@ export function formatShortDate(date: string | Date): string {
     .replace(/\. /g, ".")
     .replace(/\.$/, "");
 }
+
+// 날짜를 "YYYY-MM-DD" 형식으로 변환 (예: 2026-05-07)
+export function toDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+// 이번 달의 시작/종료 날짜
+export function getCurrentMonthRange(): { start: string; end: string } {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+  return { start: toDateString(start), end: toDateString(end) };
+}
+
+// 지난 달의 시작/종료 날짜
+export function getLastMonthRange(): { start: string; end: string } {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const end = new Date(now.getFullYear(), now.getMonth(), 0);
+
+  return { start: toDateString(start), end: toDateString(end) };
+}
+
+// 올해의 시작/종료 날짜
+export function getCurrentYearRange(): { start: string; end: string } {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const end = new Date(now.getFullYear(), 11, 31);
+
+  return { start: toDateString(start), end: toDateString(end) };
+}

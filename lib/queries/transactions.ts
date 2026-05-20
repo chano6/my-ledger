@@ -19,6 +19,14 @@ export async function getTransactions(
     query = query.eq("category_id", filter.categoryId);
   }
 
+  if (filter?.startDate) {
+    query = query.gte("date", filter.startDate);
+  }
+
+  if (filter?.endDate) {
+    query = query.lte("date", filter.endDate);
+  }
+
   query = query.order("date", { ascending: false }).order("created_at", { ascending: false });
 
   const { data, error } = await query;

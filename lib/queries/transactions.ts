@@ -1,6 +1,29 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Transaction, TransactionFilter, TransactionWithCategory } from "@/lib/types";
 
+// biome-ignore lint/suspicious/noExplicitAny: Supabase 쿼리 빌더 타입이 복잡해 any로 단순화
+function applyTransactionFilters(query: any, filter?: TransactionFilter) {
+  let result = query;
+
+  if (filter?.type) {
+    result = result.eq("type", filter.type);
+  }
+  if (filter?.categoryId) {
+    result = result.eq("category_id", filter.categoryId);
+  }
+  if (filter?.startDate) {
+    result = result.gte("date", filter.startDate);
+  }
+  if (filter?.endDate) {
+    result = result.lte("date", filter.endDate);
+  }
+  if (filter?.search) {
+    result = result.ilike("description", `%${filter.search}%`);
+  }
+
+  return result;
+}
+
 export async function getTransactions(
   filter?: TransactionFilter,
 ): Promise<TransactionWithCategory[]> {
@@ -11,25 +34,7 @@ export async function getTransactions(
     category:categories(name, color, type)
   `);
 
-  if (filter?.type) {
-    query = query.eq("type", filter.type);
-  }
-
-  if (filter?.categoryId) {
-    query = query.eq("category_id", filter.categoryId);
-  }
-
-  if (filter?.startDate) {
-    query = query.gte("date", filter.startDate);
-  }
-
-  if (filter?.endDate) {
-    query = query.lte("date", filter.endDate);
-  }
-
-  if (filter?.search) {
-    query = query.ilike("description", `%${filter.search}%`);
-  }
+  query = applyTransactionFilters(query, filter);
 
   query = query.order("date", { ascending: false }).order("created_at", { ascending: false });
 
@@ -65,25 +70,7 @@ export async function getTransactionCount(filter?: TransactionFilter): Promise<n
 
   let query = supabase.from("transactions").select("*", { count: "exact", head: true });
 
-  if (filter?.type) {
-    query = query.eq("type", filter.type);
-  }
-
-  if (filter?.categoryId) {
-    query = query.eq("category_id", filter.categoryId);
-  }
-
-  if (filter?.startDate) {
-    query = query.gte("date", filter.startDate);
-  }
-
-  if (filter?.endDate) {
-    query = query.lte("date", filter.endDate);
-  }
-
-  if (filter?.search) {
-    query = query.ilike("description", `%${filter.search}%`);
-  }
+  query = applyTransactionFilters(query, filter);
 
   const { count, error } = await query;
 

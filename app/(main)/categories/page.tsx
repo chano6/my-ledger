@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { DeleteCategoryButton } from "@/components/categories/delete-category-button";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageHeader } from "@/components/ui/page-header";
 import { getCategories } from "@/lib/queries/categories";
 import type { Category } from "@/lib/types";
 
@@ -12,15 +14,15 @@ export default async function CategoriesPage() {
 
   return (
     <>
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">카테고리</h1>
-          <p className="mt-1 text-muted-foreground">전체 {categories.length}개의 카테고리</p>
-        </div>
-        <Button asChild>
-          <Link href="/categories/new">+ 새 카테고리</Link>
-        </Button>
-      </div>
+      <PageHeader
+        title="카테고리"
+        description={`전체 ${categories.length}개의 카테고리`}
+        action={
+          <Button asChild>
+            <Link href="/categories/new">+ 새 카테고리</Link>
+          </Button>
+        }
+      />
 
       <section className="mb-8">
         <h2 className="mb-4 text-xl font-semibold">지출 카테고리</h2>
@@ -37,11 +39,7 @@ export default async function CategoriesPage() {
 
 function CategorySection({ categories }: { categories: Category[] }) {
   if (categories.length === 0) {
-    return (
-      <div className="rounded-lg border p-8 text-center">
-        <p className="text-muted-foreground">아직 카테고리가 없습니다.</p>
-      </div>
-    );
+    return <EmptyState message="아직 카테고리가 없습니다." />;
   }
 
   return (

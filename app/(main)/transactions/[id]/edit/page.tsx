@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { TransactionForm } from "@/components/transactions/transaction-form";
+import { PageHeader } from "@/components/ui/page-header";
 import { updateTransaction } from "@/lib/actions/transactions";
 import { getCategories } from "@/lib/queries/categories";
 import { getTransactionById } from "@/lib/queries/transactions";
@@ -19,11 +20,7 @@ export default async function EditTransactionPage({ params }: EditTransactionPag
 
   return (
     <>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">거래 수정</h1>
-        <p className="mt-1 text-muted-foreground">거래 내용을 수정하세요.</p>
-      </div>
-
+      <PageHeader title="거래 수정" description="거래 내용을 수정하세요." />
       <TransactionForm
         categories={categories}
         action={updateTransaction}

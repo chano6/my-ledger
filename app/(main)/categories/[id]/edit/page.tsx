@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { CategoryForm } from "@/components/categories/category-form";
+import { PageHeader } from "@/components/ui/page-header";
 import { updateCategory } from "@/lib/actions/categories";
 import { getCategoryById } from "@/lib/queries/categories";
 
@@ -18,11 +19,7 @@ export default async function EditCategoryPage({ params }: EditCategoryPageProps
 
   return (
     <>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">카테고리 수정</h1>
-        <p className="mt-1 text-muted-foreground">카테고리 정보를 수정하세요.</p>
-      </div>
-
+      <PageHeader title="카테고리 수정" description="카테고리 정보를 수정하세요." />
       <CategoryForm action={updateCategory} defaultValues={category} submitLabel="수정" />
     </>
   );

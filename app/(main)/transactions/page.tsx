@@ -4,6 +4,7 @@ import { LoadMoreButton } from "@/components/transactions/load-more-button";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/ui/page-header";
 import { getCategories } from "@/lib/queries/categories";
 import { getTransactionCount, getTransactions } from "@/lib/queries/transactions";
 import type { TransactionType } from "@/lib/types";
@@ -46,18 +47,15 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
 
   return (
     <>
-      {/* 헤더 + 추가 버튼 */}
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">거래 내역</h1>
-          <p className="mt-1 text-muted-foreground">
-            {transactions.length} / {totalCount}건 표시
-          </p>
-        </div>
-        <Button asChild>
-          <Link href="/transactions/new">+ 새 거래</Link>
-        </Button>
-      </div>
+      <PageHeader
+        title="거래 내역"
+        description={`${transactions.length} / ${totalCount}건 표시`}
+        action={
+          <Button asChild>
+            <Link href="/transactions/new">+ 새 거래</Link>
+          </Button>
+        }
+      />
 
       <div className="mb-6 space-y-3">
         <TransactionFilters

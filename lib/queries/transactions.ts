@@ -27,6 +27,10 @@ export async function getTransactions(
     query = query.lte("date", filter.endDate);
   }
 
+  if (filter?.search) {
+    query = query.ilike("description", `%${filter.search}%`);
+  }
+
   query = query.order("date", { ascending: false }).order("created_at", { ascending: false });
 
   if (filter?.limit) {
@@ -75,6 +79,10 @@ export async function getTransactionCount(filter?: TransactionFilter): Promise<n
 
   if (filter?.endDate) {
     query = query.lte("date", filter.endDate);
+  }
+
+  if (filter?.search) {
+    query = query.ilike("description", `%${filter.search}%`);
   }
 
   const { count, error } = await query;

@@ -17,6 +17,7 @@ type TransactionPageProps = {
     start?: string;
     end?: string;
     limit?: string;
+    search?: string;
   }>;
 };
 
@@ -28,11 +29,12 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
   const categoryId = params.category;
   const startDate = params.start;
   const endDate = params.end;
+  const search = params.search?.trim() || undefined;
 
   const limit = params.limit ? Number(params.limit) : PAGE_SIZE;
   const safeLimit = !Number.isNaN(limit) && limit > 0 ? limit : PAGE_SIZE;
 
-  const filter = { type, categoryId, startDate, endDate };
+  const filter = { type, categoryId, startDate, endDate, search };
 
   const [transactions, categories, totalCount] = await Promise.all([
     getTransactions({ ...filter, limit: safeLimit }),
@@ -63,6 +65,7 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
           currentCategoryId={categoryId}
           currentStartDate={startDate}
           currentEndDate={endDate}
+          currentSearch={search}
           categories={categories}
         />
       </div>

@@ -4,12 +4,14 @@ import type { Category, TransactionType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { CategoryFilter } from "./category-filter";
 import { DateFilter } from "./date-filter";
+import { SearchInput } from "./search-input";
 
 type TransactionFiltersProps = {
   currentType?: TransactionType;
   currentCategoryId?: string;
   currentStartDate?: string;
   currentEndDate?: string;
+  currentSearch?: string;
   categories: Category[];
 };
 
@@ -18,25 +20,44 @@ export function TransactionFilters({
   currentCategoryId,
   currentStartDate,
   currentEndDate,
+  currentSearch,
   categories,
 }: TransactionFiltersProps) {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-3">
         <FilterLink
-          href={makeUrl(undefined, currentCategoryId, currentStartDate, currentEndDate)}
+          href={makeUrl(
+            undefined,
+            currentCategoryId,
+            currentStartDate,
+            currentEndDate,
+            currentSearch,
+          )}
           active={!currentType}
         >
           전체
         </FilterLink>
         <FilterLink
-          href={makeUrl("income", currentCategoryId, currentStartDate, currentEndDate)}
+          href={makeUrl(
+            "income",
+            currentCategoryId,
+            currentStartDate,
+            currentEndDate,
+            currentSearch,
+          )}
           active={currentType === "income"}
         >
           수입
         </FilterLink>
         <FilterLink
-          href={makeUrl("expense", currentCategoryId, currentStartDate, currentEndDate)}
+          href={makeUrl(
+            "expense",
+            currentCategoryId,
+            currentStartDate,
+            currentEndDate,
+            currentSearch,
+          )}
           active={currentType === "expense"}
         >
           지출
@@ -44,6 +65,10 @@ export function TransactionFilters({
 
         <Suspense>
           <CategoryFilter categories={categories} currentCategoryId={currentCategoryId} />
+        </Suspense>
+
+        <Suspense>
+          <SearchInput currentSearch={currentSearch} />
         </Suspense>
       </div>
 
@@ -59,6 +84,7 @@ function makeUrl(
   categoryId?: string,
   startDate?: string,
   endDate?: string,
+  search?: string,
 ): string {
   const params = new URLSearchParams();
 
@@ -73,6 +99,9 @@ function makeUrl(
   }
   if (endDate) {
     params.set("end", endDate);
+  }
+  if (search) {
+    params.set("search", search);
   }
 
   const queryString = params.toString();

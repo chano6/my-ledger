@@ -5,6 +5,7 @@ export type TransactionFilter = {
   categoryId?: string;
   startDate?: string;
   endDate?: string;
+  limit?: number;
 };
 
 export type Category = {

@@ -1,26 +1,46 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { LoadMoreButton } from "@/components/transactions/load-more-button";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { Button } from "@/components/ui/button";
 import { getCategories } from "@/lib/queries/categories";
-import { getTransactions } from "@/lib/queries/transactions";
+import { getTransactionCount, getTransactions } from "@/lib/queries/transactions";
+import type { TransactionType } from "@/lib/types";
+
+const PAGE_SIZE = 20;
 
 type TransactionPageProps = {
-  searchParams: Promise<{ type?: string; category?: string; start?: string; end?: string }>;
+  searchParams: Promise<{
+    type?: string;
+    category?: string;
+    start?: string;
+    end?: string;
+    limit?: string;
+  }>;
 };
 
 async function TransactionsPage({ searchParams }: TransactionPageProps) {
   const params = await searchParams;
 
-  const type = params.type === "income" || params.type === "expense" ? params.type : undefined;
+  const type: TransactionType | undefined =
+    params.type === "income" || params.type === "expense" ? params.type : undefined;
   const categoryId = params.category;
   const startDate = params.start;
   const endDate = params.end;
 
-  const [transactions, categories] = await Promise.all([
-    getTransactions({ type, categoryId, startDate, endDate }),
+  const limit = params.limit ? Number(params.limit) : PAGE_SIZE;
+  const safeLimit = !Number.isNaN(limit) && limit > 0 ? limit : PAGE_SIZE;
+
+  const filter = { type, categoryId, startDate, endDate };
+
+  const [transactions, categories, totalCount] = await Promise.all([
+    getTransactions({ ...filter, limit: safeLimit }),
     getCategories(),
+    getTransactionCount(filter),
   ]);
+
+  const hasMore = totalCount > transactions.length;
 
   return (
     <>
@@ -28,7 +48,9 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">거래 내역</h1>
-          <p className="mt-1 text-muted-foreground">전체 {transactions.length}건의 거래</p>
+          <p className="mt-1 text-muted-foreground">
+            {transactions.length} / {totalCount}건 표시
+          </p>
         </div>
         <Button asChild>
           <Link href="/transactions/new">+ 새 거래</Link>
@@ -47,6 +69,14 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
 
       {/* 거래 목록 */}
       <TransactionList transactions={transactions} />
+
+      {hasMore && (
+        <div className="mt-6 flex justify-center">
+          <Suspense>
+            <LoadMoreButton currentLimit={safeLimit} pageSize={PAGE_SIZE} />
+          </Suspense>
+        </div>
+      )}
     </>
   );
 }

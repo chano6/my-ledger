@@ -29,6 +29,10 @@ export async function getTransactions(
 
   query = query.order("date", { ascending: false }).order("created_at", { ascending: false });
 
+  if (filter?.limit) {
+    query = query.limit(filter.limit);
+  }
+
   const { data, error } = await query;
 
   if (error) {
@@ -50,4 +54,35 @@ export async function getTransactionById(id: string): Promise<Transaction | null
   }
 
   return data as Transaction;
+}
+
+export async function getTransactionCount(filter?: TransactionFilter): Promise<number> {
+  const supabase = await createClient();
+
+  let query = supabase.from("transactions").select("*", { count: "exact", head: true });
+
+  if (filter?.type) {
+    query = query.eq("type", filter.type);
+  }
+
+  if (filter?.categoryId) {
+    query = query.eq("category_id", filter.categoryId);
+  }
+
+  if (filter?.startDate) {
+    query = query.gte("date", filter.startDate);
+  }
+
+  if (filter?.endDate) {
+    query = query.lte("date", filter.endDate);
+  }
+
+  const { count, error } = await query;
+
+  if (error) {
+    console.error("거래 개수 조회 실패: ", error);
+    return 0;
+  }
+
+  return count ?? 0;
 }

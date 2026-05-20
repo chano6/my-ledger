@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import { SubmitButton } from "@/components/ui/submit-button";
-import type { ActionState, Category, Transaction } from "@/lib/types";
+import type { ActionState, Category, Transaction, TransactionType } from "@/lib/types";
 import { Button } from "../ui/button";
 import { ErrorMessage } from "../ui/error-message";
 import { Input } from "../ui/input";
@@ -27,7 +27,7 @@ export function TransactionForm({
   const [state, formAction] = useActionState(action, null);
 
   // 현재 선택된 유형 (지출/수입) 상태 관리
-  const [type, setType] = useState<"income" | "expense">(defaultValues?.type ?? "expense");
+  const [type, setType] = useState<TransactionType>(defaultValues?.type ?? "expense");
 
   // 선택된 유형에 맞는 카테고리 필터링
   const filteredCategories = categories.filter((c) => c.type === type);
@@ -47,7 +47,7 @@ export function TransactionForm({
         <Select
           name="type"
           value={type}
-          onValueChange={(value) => setType(value as "income" | "expense")}
+          onValueChange={(value) => setType(value as TransactionType)}
         >
           <SelectTrigger id="type">
             <SelectValue />

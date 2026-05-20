@@ -1,17 +1,23 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Transaction, TransactionWithCategory } from "@/lib/types";
+import type { Transaction, TransactionFilter, TransactionWithCategory } from "@/lib/types";
 
-export async function getTransactions(): Promise<TransactionWithCategory[]> {
+export async function getTransactions(
+  filter?: TransactionFilter,
+): Promise<TransactionWithCategory[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from("transactions")
-    .select(`
+  let query = supabase.from("transactions").select(`
     *,
     category:categories(name, color, type)
-  `)
-    .order("date", { ascending: false })
-    .order("created_at", { ascending: false });
+  `);
+
+  if (filter?.type) {
+    query = query.eq("type", filter.type);
+  }
+
+  query = query.order("date", { ascending: false }).order("created_at", { ascending: false });
+
+  const { data, error } = await query;
 
   if (error) {
     console.error("거래 조회 실패: ", error);

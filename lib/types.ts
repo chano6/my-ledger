@@ -1,8 +1,14 @@
+export type TransactionType = "income" | "expense";
+
+export type TransactionFilter = {
+  type?: TransactionType;
+};
+
 export type Category = {
   id: string;
   user_id: string;
   name: string;
-  type: "income" | "expense";
+  type: TransactionType;
   color: string;
   created_at: string;
 };
@@ -12,7 +18,7 @@ export type Transaction = {
   user_id: string;
   category_id: string | null;
   amount: number;
-  type: "income" | "expense";
+  type: TransactionType;
   description: string | null;
   date: string;
   created_at: string;

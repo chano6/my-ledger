@@ -1,10 +1,19 @@
 import Link from "next/link";
+import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { Button } from "@/components/ui/button";
 import { getTransactions } from "@/lib/queries/transactions";
 
-async function TransactionsPage() {
-  const transactions = await getTransactions();
+type TransactionPageProps = {
+  searchParams: Promise<{ type?: string }>;
+};
+
+async function TransactionsPage({ searchParams }: TransactionPageProps) {
+  const params = await searchParams;
+
+  const type = params.type === "income" || params.type === "expense" ? params.type : undefined;
+
+  const transactions = await getTransactions({ type });
 
   return (
     <>
@@ -17,6 +26,10 @@ async function TransactionsPage() {
         <Button asChild>
           <Link href="/transactions/new">+ 새 거래</Link>
         </Button>
+      </div>
+
+      <div className="mb-6">
+        <TransactionFilters currentType={type} />
       </div>
 
       {/* 거래 목록 */}

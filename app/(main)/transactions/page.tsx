@@ -2,18 +2,23 @@ import Link from "next/link";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { Button } from "@/components/ui/button";
+import { getCategories } from "@/lib/queries/categories";
 import { getTransactions } from "@/lib/queries/transactions";
 
 type TransactionPageProps = {
-  searchParams: Promise<{ type?: string }>;
+  searchParams: Promise<{ type?: string; category?: string }>;
 };
 
 async function TransactionsPage({ searchParams }: TransactionPageProps) {
   const params = await searchParams;
 
   const type = params.type === "income" || params.type === "expense" ? params.type : undefined;
+  const categoryId = params.category;
 
-  const transactions = await getTransactions({ type });
+  const [transactions, categories] = await Promise.all([
+    getTransactions({ type, categoryId }),
+    getCategories(),
+  ]);
 
   return (
     <>
@@ -28,8 +33,12 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
         </Button>
       </div>
 
-      <div className="mb-6">
-        <TransactionFilters currentType={type} />
+      <div className="mb-6 space-y-3">
+        <TransactionFilters
+          currentType={type}
+          currentCategoryId={categoryId}
+          categories={categories}
+        />
       </div>
 
       {/* 거래 목록 */}

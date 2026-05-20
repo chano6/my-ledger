@@ -15,6 +15,10 @@ export async function getTransactions(
     query = query.eq("type", filter.type);
   }
 
+  if (filter?.categoryId) {
+    query = query.eq("category_id", filter.categoryId);
+  }
+
   query = query.order("date", { ascending: false }).order("created_at", { ascending: false });
 
   const { data, error } = await query;

@@ -2,6 +2,7 @@ export type TransactionType = "income" | "expense";
 
 export type TransactionFilter = {
   type?: TransactionType;
+  categoryId?: string;
 };
 
 export type Category = {

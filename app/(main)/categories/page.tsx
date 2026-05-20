@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DeleteCategoryButton } from "@/components/categories/delete-category-button";
 import { Button } from "@/components/ui/button";
 import { getCategories } from "@/lib/queries/categories";
 import type { Category } from "@/lib/types";
@@ -59,9 +60,7 @@ function CategorySection({ categories }: { categories: Category[] }) {
               <Button variant="ghost" size="sm" asChild>
                 <Link href={`/categories/${category.id}/edit`}>수정</Link>
               </Button>
-              <Button variant="ghost" size="sm" disabled>
-                삭제
-              </Button>
+              <DeleteCategoryButton id={category.id} name={category.name} />
             </div>
           </div>
         ))}

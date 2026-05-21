@@ -1,5 +1,6 @@
 import { CategoryPieChart } from "@/components/stats/category-pie-chart";
 import { MonthlyBarChart } from "@/components/stats/monthly-bar-chart";
+import { TopCategories } from "@/components/stats/top-categories";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { PageHeader } from "@/components/ui/page-header";
 import { formatCurrency } from "@/lib/format";
@@ -51,8 +52,9 @@ async function DashboardPage() {
         <MonthlyBarChart data={monthlyStats} />
       </div>
 
-      <div className="mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <CategoryPieChart stats={categoryStats} />
+        <TopCategories stats={categoryStats} limit={5} />
       </div>
 
       {/* 거래 목록 */}

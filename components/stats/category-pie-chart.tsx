@@ -25,8 +25,8 @@ export function CategoryPieChart({ stats }: CategoryPieChartProps) {
       <h3 className="mb-4 text-lg font-semibold">이번 달 카테고리별 지출</h3>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="h-70 w-full">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="w-full">
+          <ResponsiveContainer width="100%" aspect={1}>
             <PieChart>
               <Pie
                 data={stats}

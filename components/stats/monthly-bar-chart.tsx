@@ -31,8 +31,8 @@ export function MonthlyBarChart({ data }: MonthlyBarChartProps) {
     <div className="rounded-lg border p-6">
       <h3 className="mb-4 text-lg font-semibold">최근 6개월 추이</h3>
 
-      <div className="h-75 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full">
+        <ResponsiveContainer width="100%" aspect={2}>
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
 

@@ -1,48 +1,22 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { logout } from "@/lib/actions/auth";
+import type { ReactNode } from "react";
+import { Sidebar } from "@/components/layout/sidebar";
+import { Topbar } from "@/components/layout/topbar";
+import { createClient } from "@/lib/supabase/server";
 
-export default function MainLayout({ children }: { children: React.ReactNode }) {
+export default async function MainLayout({ children }: { children: ReactNode }) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
-    <div className="min-h-screen">
-      {/* 헤더 */}
-      <header className="border-b">
-        <div className="container mx-auto flex max-w-4xl items-center justify-between p-4">
-          <div className="flex items-center gap-6">
-            <Link href="/dashboard" className="text-xl font-bold">
-              My Ledger
-            </Link>
-            <nav className="flex gap-4">
-              <Link
-                href="/dashboard"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                대시보드
-              </Link>
-              <Link
-                href="/transactions"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                거래 내역
-              </Link>
-              <Link
-                href="/categories"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                카테고리
-              </Link>
-            </nav>
-          </div>
-          <form action={logout}>
-            <Button type="submit" variant="outline" size="sm">
-              로그아웃
-            </Button>
-          </form>
-        </div>
-      </header>
+    <div className="flex h-screen bg-background">
+      <Sidebar userEmail={user?.email ?? ""} />
 
-      {/* 메인 콘텐츠 영역 */}
-      <main className="container mx-auto max-w-4xl p-8">{children}</main>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Topbar />
+        <main className="flex-1 overflow-y-auto px-4 py-6 lg:px-8 lg:py-8">{children}</main>
+      </div>
     </div>
   );
 }

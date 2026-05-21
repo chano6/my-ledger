@@ -1,3 +1,12 @@
+import type { ComponentType } from "react";
+
+export type NavItem = {
+  href: string;
+  label: string;
+  icon: ComponentType<{ className?: string }>;
+  badge?: number;
+};
+
 export type TransactionType = "income" | "expense";
 
 export type TransactionFilter = {

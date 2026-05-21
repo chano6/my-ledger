@@ -1,6 +1,8 @@
+import { CategoryPieChart } from "@/components/stats/category-pie-chart";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { PageHeader } from "@/components/ui/page-header";
 import { formatCurrency } from "@/lib/format";
+import { getCurrentMonthSummary, getMonthlyCategoryStats } from "@/lib/queries/stats";
 import { getTransactions } from "@/lib/queries/transactions";
 import { createClient } from "@/lib/supabase/server";
 
@@ -11,24 +13,13 @@ async function DashboardPage() {
   } = await supabase.auth.getUser();
 
   // 거래 목록 가져오기
-  const transactions = await getTransactions();
+  const [transactions, categoryStats, monthlySummary] = await Promise.all([
+    getTransactions({ limit: 5 }), // 표시용
+    getMonthlyCategoryStats(), // 파이 차트용
+    getCurrentMonthSummary(), // 통계 카드용
+  ]);
 
-  // 이번 달 통계 계산
-  const now = new Date();
-  const thisMonth = transactions.filter((t) => {
-    const date = new Date(t.date);
-    return date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth();
-  });
-
-  const totalIncome = thisMonth
-    .filter((t) => t.type === "income")
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const totalExpense = thisMonth
-    .filter((t) => t.type === "expense")
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const balance = totalIncome - totalExpense;
+  const { income, expense, balance } = monthlySummary;
 
   return (
     <>
@@ -38,16 +29,20 @@ async function DashboardPage() {
       <div className="mb-8 grid grid-cols-3 gap-4">
         <div className="rounded-lg border p-4">
           <p className="text-sm text-muted-foreground">이번 달 수입</p>
-          <p className="mt-1 text-2xl font-bold text-green-600">{formatCurrency(totalIncome)}</p>
+          <p className="mt-1 text-2xl font-bold text-green-600">{formatCurrency(income)}</p>
         </div>
         <div className="rounded-lg border p-4">
           <p className="text-sm text-muted-foreground">이번 달 지출</p>
-          <p className="mt-1 text-2xl font-bold text-red-600">{formatCurrency(totalExpense)}</p>
+          <p className="mt-1 text-2xl font-bold text-red-600">{formatCurrency(expense)}</p>
         </div>
         <div className="rounded-lg border p-4">
           <p className="text-sm text-muted-foreground">잔액</p>
           <p className="mt-1 text-2xl font-bold">{formatCurrency(balance)}</p>
         </div>
+      </div>
+
+      <div className="mb-8">
+        <CategoryPieChart stats={categoryStats} />
       </div>
 
       {/* 거래 목록 */}

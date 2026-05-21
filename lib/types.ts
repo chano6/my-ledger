@@ -37,3 +37,16 @@ export type TransactionWithCategory = Transaction & {
 export type ActionState = {
   error: string | null;
 } | null;
+
+export type CategoryStats = {
+  category_id: string;
+  category_name: string;
+  category_color: string;
+  total: number;
+};
+
+export type MonthlySummary = {
+  income: number;
+  expense: number;
+  balance: number;
+};

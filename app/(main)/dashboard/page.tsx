@@ -1,8 +1,13 @@
 import { CategoryPieChart } from "@/components/stats/category-pie-chart";
+import { MonthlyBarChart } from "@/components/stats/monthly-bar-chart";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { PageHeader } from "@/components/ui/page-header";
 import { formatCurrency } from "@/lib/format";
-import { getCurrentMonthSummary, getMonthlyCategoryStats } from "@/lib/queries/stats";
+import {
+  getCurrentMonthSummary,
+  getMonthlyCategoryStats,
+  getRecentMonthsStats,
+} from "@/lib/queries/stats";
 import { getTransactions } from "@/lib/queries/transactions";
 import { createClient } from "@/lib/supabase/server";
 
@@ -13,10 +18,11 @@ async function DashboardPage() {
   } = await supabase.auth.getUser();
 
   // 거래 목록 가져오기
-  const [transactions, categoryStats, monthlySummary] = await Promise.all([
+  const [transactions, categoryStats, monthlySummary, monthlyStats] = await Promise.all([
     getTransactions({ limit: 5 }), // 표시용
     getMonthlyCategoryStats(), // 파이 차트용
     getCurrentMonthSummary(), // 통계 카드용
+    getRecentMonthsStats(6), // 월별 차트용
   ]);
 
   const { income, expense, balance } = monthlySummary;
@@ -39,6 +45,10 @@ async function DashboardPage() {
           <p className="text-sm text-muted-foreground">잔액</p>
           <p className="mt-1 text-2xl font-bold">{formatCurrency(balance)}</p>
         </div>
+      </div>
+
+      <div className="mb-8">
+        <MonthlyBarChart data={monthlyStats} />
       </div>
 
       <div className="mb-8">

@@ -1,6 +1,6 @@
-import { getCurrentMonthRange } from "../format";
+import { getCurrentMonthRange, toDateString } from "../format";
 import { createClient } from "../supabase/server";
-import type { CategoryStats, MonthlySummary } from "../types";
+import type { CategoryStats, MonthlyStats, MonthlySummary } from "../types";
 
 // 이번 달 카테고리별 지출 조회
 export async function getMonthlyCategoryStats(): Promise<CategoryStats[]> {
@@ -80,4 +80,55 @@ export async function getCurrentMonthSummary(): Promise<MonthlySummary> {
     expense,
     balance: income - expense,
   };
+}
+
+export async function getRecentMonthsStats(months: number = 6): Promise<MonthlyStats[]> {
+  const supabase = await createClient();
+
+  const now = new Date();
+  const startDate = new Date(now.getFullYear(), now.getMonth() - (months - 1), 1);
+  const startDateString = toDateString(startDate);
+
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("amount, type, date")
+    .gte("date", startDateString);
+
+  if (error) {
+    console.error("월별 통계 조회 실패: ", error);
+    return [];
+  }
+
+  // 월별 빈 데이터 초기화 (거래 없는 달도 표시)
+  const monthsMap = new Map<string, MonthlyStats>();
+  for (let i = 0; i < months; i++) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    const monthLabel = `${date.getMonth() + 1}월`;
+
+    monthsMap.set(monthKey, {
+      month: monthKey,
+      monthLabel,
+      income: 0,
+      expense: 0,
+    });
+  }
+
+  // 거래 데이터를 월별로 합산
+  for (const transaction of data) {
+    const date = new Date(transaction.date);
+    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+
+    const monthStats = monthsMap.get(monthKey);
+    if (!monthStats) continue;
+
+    const amount = Number(transaction.amount);
+    if (transaction.type === "income") {
+      monthsMap.set(monthKey, { ...monthStats, income: monthStats.income + amount });
+    } else {
+      monthsMap.set(monthKey, { ...monthStats, expense: monthStats.expense + amount });
+    }
+  }
+
+  return Array.from(monthsMap.values()).sort((a, b) => a.month.localeCompare(b.month));
 }

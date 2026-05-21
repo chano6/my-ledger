@@ -50,3 +50,10 @@ export type MonthlySummary = {
   expense: number;
   balance: number;
 };
+
+export type MonthlyStats = {
+  month: string; // '2026-05' 형식
+  monthLabel: string; // '5월' (표시용)
+  income: number;
+  expense: number;
+};

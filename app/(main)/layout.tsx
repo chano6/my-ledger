@@ -9,13 +9,15 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
     data: { user },
   } = await supabase.auth.getUser();
 
+  const userEmail = user?.email ?? "";
+
   return (
     <div className="flex h-screen bg-background">
-      <Sidebar userEmail={user?.email ?? ""} />
+      <Sidebar userEmail={userEmail} />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar />
-        <main className="flex-1 overflow-y-auto px-4 py-6 lg:px-8 lg:py-8">{children}</main>
+        <Topbar userEmail={userEmail} />
+        <main className="flex-1 overflow-y-auto px-4 py-6 md:px-8 md:py-8">{children}</main>
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ export function ChartSkeleton({ height = "h-[350px]" }: { height?: string }) {
 
 export function CategorySectionSkeleton() {
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <ChartSkeleton height="h-[330px]" />
       <ChartSkeleton height="h-[330px]" />
     </div>

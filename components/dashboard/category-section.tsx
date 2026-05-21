@@ -6,7 +6,7 @@ export async function CategorySection() {
   const stats = await getMonthlyCategoryStats();
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <CategoryPieChart stats={stats} />
       <TopCategories stats={stats} limit={5} />
     </div>

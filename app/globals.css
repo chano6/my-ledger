@@ -141,6 +141,12 @@
 }
 
 @theme inline {
+  /* 폰트 */
+  --font-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
   /* shadcn 표준 토큰 (자동 생성용) */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -206,5 +212,27 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "ss01", "cv11", "tnum";
+    letter-spacing: -0.005em;
+  }
+
+  h1 {
+    @apply text-[22px] font-bold;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    @apply text-lg font-bold;
+    letter-spacing: -0.015em;
+  }
+
+  h3 {
+    @apply text-[15px] font-bold;
+    letter-spacing: -0.01em;
+  }
+
+  /* 숫자 강조 클래스 */
+  .num {
+    font-feature-settings: "tnum";
+    letter-spacing: -0.01em;
   }
 }

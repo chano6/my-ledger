@@ -8,7 +8,7 @@ type SummaryCardsProps = {
   expense: number;
 };
 
-export async function SummaryCards({ income, expense }: SummaryCardsProps) {
+export function SummaryCards({ income, expense }: SummaryCardsProps) {
   const balance = income - expense;
 
   return (

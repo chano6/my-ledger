@@ -1,5 +1,5 @@
+import { PageHeader } from "@/components/common/page-header";
 import { TransactionForm } from "@/components/transactions/transaction-form";
-import { PageHeader } from "@/components/ui/page-header";
 import { createTransaction } from "@/lib/actions/transactions";
 import { getCategories } from "@/lib/queries/categories";
 

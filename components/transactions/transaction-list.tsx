@@ -1,5 +1,5 @@
 import type { TransactionWithCategory } from "@/lib/types";
-import { EmptyState } from "../ui/empty-state";
+import { EmptyState } from "../common/empty-state";
 import { TransactionItem } from "./transaction-item";
 
 export function TransactionList({ transactions }: { transactions: TransactionWithCategory[] }) {

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { DeleteCategoryButton } from "@/components/categories/delete-category-button";
+import { EmptyState } from "@/components/common/empty-state";
+import { PageHeader } from "@/components/common/page-header";
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/ui/empty-state";
-import { PageHeader } from "@/components/ui/page-header";
 import { getCategories } from "@/lib/queries/categories";
 import type { Category } from "@/lib/types";
 

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { PageHeader } from "@/components/common/page-header";
 import { LoadMoreButton } from "@/components/transactions/load-more-button";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { Button } from "@/components/ui/button";
-import { PageHeader } from "@/components/ui/page-header";
 import { getCategories } from "@/lib/queries/categories";
 import { getTransactionCount, getTransactions } from "@/lib/queries/transactions";
 import type { TransactionType } from "@/lib/types";

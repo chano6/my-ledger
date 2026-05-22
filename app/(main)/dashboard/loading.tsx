@@ -1,5 +1,5 @@
+import { PageHeader } from "@/components/common/page-header";
 import { ChartSkeleton, SummaryCardsSkeleton } from "@/components/dashboard/skeletons";
-import { PageHeader } from "@/components/ui/page-header";
 
 export default function DashboardLoading() {
   return (

@@ -1,7 +1,7 @@
-import { Plus } from "lucide-react";
-import Link from "next/link";
 import { Suspense } from "react";
+import { PageHeader } from "@/components/common/page-header";
 import { CategorySection } from "@/components/dashboard/category-section";
+import { DashboardActions } from "@/components/dashboard/dashboard-actions";
 import { MonthlyChartSection } from "@/components/dashboard/monthly-chart-section";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
 import {
@@ -11,8 +11,6 @@ import {
   SummaryCardsSkeleton,
 } from "@/components/dashboard/skeletons";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
-import { Button } from "@/components/ui/button";
-import { PageHeader } from "@/components/ui/page-header";
 import { getCurrentProfile } from "@/lib/queries/profile";
 import { getCurrentMonthSummary } from "@/lib/queries/stats";
 import { createClient } from "@/lib/supabase/server";
@@ -29,7 +27,8 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser();
 
   const profile = user ? await getCurrentProfile(user.id) : null;
-  const userName = profile?.name ?? user?.email?.split("@")[0] ?? "사용자";
+  const userEmail = user?.email ?? "";
+  const userName = profile?.name ?? userEmail.split("@")[0] ?? "사용자";
 
   const now = new Date();
   const year = now.getFullYear();
@@ -40,17 +39,10 @@ export default async function DashboardPage() {
       <PageHeader
         title="대시보드"
         description={`${year}년 ${month}월 · ${userName}님의 가계부 한눈에 보기`}
-        action={
-          <Button asChild>
-            <Link href="/transactions/new">
-              <Plus className="h-4 w-4" />
-              거래 추가
-            </Link>
-          </Button>
-        }
+        action={<DashboardActions />}
       />
 
-      <div className="space-y-6">
+      <div className="space-y-6 px-4 py-6 md:px-8 md:py-8">
         {/* 요약 카드 */}
         <Suspense fallback={<SummaryCardsSkeleton />}>
           <SummaryCardsData />

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { CategoryForm } from "@/components/categories/category-form";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/common/page-header";
 import { updateCategory } from "@/lib/actions/categories";
 import { getCategoryById } from "@/lib/queries/categories";
 

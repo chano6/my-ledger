@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { ErrorMessage } from "@/components/ui/error-message";
+import { ErrorMessage } from "@/components/common/error-message";
+import { SubmitButton } from "@/components/common/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SubmitButton } from "@/components/ui/submit-button";
 import { login } from "@/lib/actions/auth";
 import { GoogleIcon, KakaoIcon } from "./social-icons";
 

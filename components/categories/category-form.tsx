@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { useActionState, useState } from "react";
 import type { ActionState, Category } from "@/lib/types";
+import { ErrorMessage } from "../common/error-message";
+import { SubmitButton } from "../common/submit-button";
 import { Button } from "../ui/button";
-import { ErrorMessage } from "../ui/error-message";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { SubmitButton } from "../ui/submit-button";
 
 const COLOR_OPTIONS = [
   "#ef4444", // 빨강

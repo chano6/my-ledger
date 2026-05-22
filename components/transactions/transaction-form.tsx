@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useActionState, useState } from "react";
-import { SubmitButton } from "@/components/ui/submit-button";
+import { SubmitButton } from "@/components/common/submit-button";
 import type { ActionState, Category, Transaction, TransactionType } from "@/lib/types";
+import { ErrorMessage } from "../common/error-message";
 import { Button } from "../ui/button";
-import { ErrorMessage } from "../ui/error-message";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";

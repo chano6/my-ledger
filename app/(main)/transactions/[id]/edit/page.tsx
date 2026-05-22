@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
+import { PageHeader } from "@/components/common/page-header";
 import { TransactionForm } from "@/components/transactions/transaction-form";
-import { PageHeader } from "@/components/ui/page-header";
 import { updateTransaction } from "@/lib/actions/transactions";
 import { getCategories } from "@/lib/queries/categories";
 import { getTransactionById } from "@/lib/queries/transactions";

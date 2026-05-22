@@ -1,5 +1,5 @@
 import { CategoryForm } from "@/components/categories/category-form";
-import { PageHeader } from "@/components/ui/page-header";
+import { PageHeader } from "@/components/common/page-header";
 import { createCategory } from "@/lib/actions/categories";
 
 export default function NewCategoryPage() {

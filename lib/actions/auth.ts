@@ -8,18 +8,28 @@ import type { ActionState } from "../types";
 
 export async function signup(_prevState: ActionState, formData: FormData): Promise<ActionState> {
   const result = signupSchema.safeParse({
+    name: formData.get("name"),
     email: formData.get("email"),
     password: formData.get("password"),
+    passwordConfirm: formData.get("passwordConfirm"),
   });
 
   if (!result.success) {
     return { error: result.error.issues[0].message };
   }
 
-  const { email, password } = result.data;
+  const { name, email, password } = result.data;
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({ email, password });
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        name,
+      },
+    },
+  });
 
   if (error) {
     return { error: error.message };

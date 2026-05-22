@@ -10,6 +10,7 @@ import {
 } from "@/components/dashboard/skeletons";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
 import { PageHeader } from "@/components/ui/page-header";
+import { getCurrentProfile } from "@/lib/queries/profile";
 import { createClient } from "@/lib/supabase/server";
 
 async function DashboardPage() {
@@ -18,9 +19,12 @@ async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const profile = user ? await getCurrentProfile(user.id) : null;
+  const userName = profile?.name ?? user?.email?.split("@")[0] ?? "사용자";
+
   return (
     <>
-      <PageHeader title="대시보드" description={`안녕하세요, ${user?.email}님 👋`} />
+      <PageHeader title="대시보드" description={`안녕하세요, ${userName}님 👋`} />
 
       {/* 요약 카드 */}
       <div className="mb-8">

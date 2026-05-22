@@ -14,10 +14,11 @@ import {
 import { SidebarContent } from "./sidebar-content";
 
 type MobileSidebarProps = {
+  userName: string;
   userEmail: string;
 };
 
-export function MobileSidebar({ userEmail }: MobileSidebarProps) {
+export function MobileSidebar({ userName, userEmail }: MobileSidebarProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -32,7 +33,11 @@ export function MobileSidebar({ userEmail }: MobileSidebarProps) {
           <SheetTitle>메뉴</SheetTitle>
           <SheetDescription>가계부 페이지로 이동하는 메뉴입니다.</SheetDescription>
         </SheetHeader>
-        <SidebarContent userEmail={userEmail} onNavigate={() => setOpen(false)} />
+        <SidebarContent
+          userName={userName}
+          userEmail={userEmail}
+          onNavigate={() => setOpen(false)}
+        />
       </SheetContent>
     </Sheet>
   );

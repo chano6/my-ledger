@@ -176,6 +176,10 @@
   --color-chart-5: var(--chart-5);
 
   /* 가계부 전용 컬러 토큰 */
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-soft: var(--fg-soft);
+  --color-bg: var(--bg);
   --color-bg-sunken: var(--bg-sunken);
   --color-peach: var(--peach);
   --color-peach-soft: var(--peach-soft);

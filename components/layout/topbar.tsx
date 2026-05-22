@@ -3,13 +3,14 @@ import { logout } from "@/lib/actions/auth";
 import { MobileSidebar } from "./mobile-sidebar";
 
 type TopbarProps = {
+  userName: string;
   userEmail: string;
 };
 
-export function Topbar({ userEmail }: TopbarProps) {
+export function Topbar({ userName, userEmail }: TopbarProps) {
   return (
     <header className="flex items-center gap-4 border-b border-border bg-background px-4 py-4 md:px-8">
-      <MobileSidebar userEmail={userEmail} />
+      <MobileSidebar userName={userName} userEmail={userEmail} />
 
       <div className="flex-1" />
 

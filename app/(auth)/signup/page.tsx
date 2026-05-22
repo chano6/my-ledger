@@ -1,10 +1,14 @@
+import { AuthSidePanel } from "@/components/auth/auth-side-panel";
 import { SignupForm } from "@/components/auth/signup-form";
 
 function SignupPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <SignupForm />
-    </div>
+    <>
+      <div className="flex items-center justify-center p-6 md:p-12">
+        <SignupForm />
+      </div>
+      <AuthSidePanel side="right" />
+    </>
   );
 }
 

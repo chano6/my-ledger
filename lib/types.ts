@@ -1,5 +1,11 @@
 import type { ComponentType } from "react";
 
+export type Profile = {
+  id: string;
+  name: string;
+  created_at: string;
+};
+
 export type NavItem = {
   href: string;
   label: string;

@@ -13,11 +13,12 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 type SidebarContentProps = {
+  userName: string;
   userEmail: string;
   onNavigate?: () => void;
 };
 
-export function SidebarContent({ userEmail, onNavigate }: SidebarContentProps) {
+export function SidebarContent({ userName, userEmail, onNavigate }: SidebarContentProps) {
   const pathname = usePathname();
   const now = new Date();
 
@@ -82,7 +83,7 @@ export function SidebarContent({ userEmail, onNavigate }: SidebarContentProps) {
             {userEmail[0]?.toUpperCase() ?? "U"}
           </div>
           <div className="min-w-0 flex-1">
-            <div className="truncate text-[13px] font-semibold">{userEmail.split("@")[0]}</div>
+            <div className="truncate text-[13px] font-semibold">{userName}</div>
             <div className="truncate text-[11px] text-fg-soft">{userEmail}</div>
           </div>
         </div>

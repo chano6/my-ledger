@@ -26,7 +26,7 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const profile = user ? await getCurrentProfile(user.id) : null;
+  const profile = await getCurrentProfile();
   const userEmail = user?.email ?? "";
   const userName = profile?.name ?? userEmail.split("@")[0] ?? "사용자";
 
@@ -40,6 +40,8 @@ export default async function DashboardPage() {
         title="대시보드"
         description={`${year}년 ${month}월 · ${userName}님의 가계부 한눈에 보기`}
         action={<DashboardActions />}
+        userName={userName}
+        userEmail={userEmail}
       />
 
       <div className="space-y-6 px-4 py-6 md:px-8 md:py-8">

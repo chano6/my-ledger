@@ -1,22 +1,73 @@
+import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
+import type { ComponentType } from "react";
 import { formatCurrency } from "@/lib/format";
-import { getCurrentMonthSummary } from "@/lib/queries/stats";
+import { cn } from "@/lib/utils";
 
-export async function SummaryCards() {
-  const { income, expense, balance } = await getCurrentMonthSummary();
+type SummaryCardsProps = {
+  income: number;
+  expense: number;
+};
+
+export async function SummaryCards({ income, expense }: SummaryCardsProps) {
+  const balance = income - expense;
 
   return (
-    <div className="mb-8 grid grid-cols-3 gap-4">
-      <div className="rounded-lg border p-4">
-        <p className="text-sm text-muted-foreground">이번 달 수입</p>
-        <p className="mt-1 text-2xl font-bold text-green-600">{formatCurrency(income)}</p>
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
+      <SummaryCard
+        label="이번 달 수입"
+        amount={income}
+        icon={TrendingUp}
+        iconBg="bg-sage-soft"
+        iconColor="text-sage-deep"
+        valueColor="text-sage-deep"
+      />
+      <SummaryCard
+        label="이번 달 지출"
+        amount={expense}
+        icon={TrendingDown}
+        iconBg="bg-coral-soft"
+        iconColor="text-coral"
+        valueColor="text-coral"
+      />
+      <SummaryCard
+        label="잔액"
+        amount={balance}
+        icon={Wallet}
+        iconBg="bg-peach-soft"
+        iconColor="text-peach-deep"
+        valueColor="text-fg"
+      />
+    </div>
+  );
+}
+
+type SummaryCardProps = {
+  label: string;
+  amount: number;
+  icon: ComponentType<{ className?: string }>;
+  iconBg: string;
+  iconColor: string;
+  valueColor: string;
+};
+
+function SummaryCard({
+  label,
+  amount,
+  icon: Icon,
+  iconBg,
+  iconColor,
+  valueColor,
+}: SummaryCardProps) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <div className="mb-3 flex items-center gap-2">
+        <div className={cn("flex h-7 w-7 items-center justify-center rounded-md", iconBg)}>
+          <Icon className={cn("h-4 w-4", iconColor)} />
+        </div>
+        <span className="text-[13px] text-fg-soft">{label}</span>
       </div>
-      <div className="rounded-lg border p-4">
-        <p className="text-sm text-muted-foreground">이번 달 지출</p>
-        <p className="mt-1 text-2xl font-bold text-red-600">{formatCurrency(expense)}</p>
-      </div>
-      <div className="rounded-lg border p-4">
-        <p className="text-sm text-muted-foreground">잔액</p>
-        <p className="mt-1 text-2xl font-bold">{formatCurrency(balance)}</p>
+      <div className={cn("num text-[26px] font-bold tracking-tight", valueColor)}>
+        {formatCurrency(amount)}
       </div>
     </div>
   );

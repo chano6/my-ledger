@@ -12,12 +12,12 @@ import {
 } from "@/components/dashboard/skeletons";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
 import { getCurrentProfile } from "@/lib/queries/profile";
-import { getCurrentMonthSummary } from "@/lib/queries/stats";
+import { getMonthlyComparison } from "@/lib/queries/stats";
 import { createClient } from "@/lib/supabase/server";
 
 async function SummaryCardsData() {
-  const { income, expense } = await getCurrentMonthSummary();
-  return <SummaryCards income={income} expense={expense} />;
+  const { current, previous } = await getMonthlyComparison();
+  return <SummaryCards current={current} previous={previous} />;
 }
 
 export default async function DashboardPage() {

@@ -5,12 +5,13 @@ export function SummaryCardsSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="rounded-xl border border-border bg-card p-5 shadow-sm">
+        <div key={i} className="rounded-xl border border-border bg-card p-5">
           <div className="mb-3 flex items-center gap-2">
             <Skeleton className="h-7 w-7 rounded-md" />
             <Skeleton className="h-4 w-20" />
           </div>
-          <Skeleton className="h-9 w-32" />
+          <Skeleton className="mb-3 h-9 w-32" />
+          <Skeleton className="h-5 w-28 rounded-full" />
         </div>
       ))}
     </div>
@@ -20,7 +21,7 @@ export function SummaryCardsSkeleton() {
 // 월별 막대 차트 스켈레톤
 export function MonthlyChartSkeleton() {
   return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+    <div className="rounded-xl border border-border bg-card p-5">
       <div className="mb-4 space-y-1">
         <Skeleton className="h-5 w-32" />
         <Skeleton className="h-3 w-24" />
@@ -42,7 +43,7 @@ export function ChartSkeleton({ height = "h-[350px]" }: { height?: string }) {
 // 카테고리 도넛 차트 + TOP5 스켈레톤
 export function CategorySectionSkeleton() {
   return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+    <div className="rounded-xl border border-border bg-card p-5">
       <div className="mb-4 space-y-1">
         <Skeleton className="h-5 w-32" />
         <Skeleton className="h-3 w-24" />
@@ -73,7 +74,7 @@ export function CategorySectionSkeleton() {
 // 최근 거래 스켈레톤
 export function RecentTransactionsSkeleton() {
   return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+    <div className="rounded-xl border border-border bg-card p-5">
       <div className="mb-4 flex items-center justify-between">
         <div className="space-y-1">
           <Skeleton className="h-5 w-24" />

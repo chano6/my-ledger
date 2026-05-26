@@ -1,6 +1,7 @@
 "use client";
 
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { CHART_COLORS } from "@/lib/chart-colors";
 import { formatCompactCurrency, formatCurrency } from "@/lib/format";
 import type { MonthlyStats } from "@/lib/types";
 import { CardHeader } from "../common/card-header";
@@ -9,15 +10,10 @@ type MonthlyBarChartProps = {
   data: MonthlyStats[];
 };
 
-const COLORS = {
-  income: "oklch(0.78 0.06 155)", // sage
-  expense: "oklch(0.82 0.090 85)", // butter/peach
-};
-
 export function MonthlyBarChart({ data }: MonthlyBarChartProps) {
   if (data.length === 0) {
     return (
-      <div className="rounded-xl border border-border bg-card p-5 md:p-6">
+      <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
         <CardHeader title="월별 수입 vs 지출" description="최근 6개월 흐름" />
         <div className="py-16 text-center text-sm text-fg-soft">거래 내역이 없습니다.</div>
       </div>
@@ -25,7 +21,7 @@ export function MonthlyBarChart({ data }: MonthlyBarChartProps) {
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5 md:p-6">
+    <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
       <CardHeader
         title="월별 수입 vs 지출"
         description="최근 6개월 흐름"
@@ -69,14 +65,14 @@ export function MonthlyBarChart({ data }: MonthlyBarChartProps) {
             <Bar
               dataKey="income"
               name="수입"
-              fill={COLORS.income}
+              fill={CHART_COLORS.income}
               radius={[4, 4, 0, 0]}
               maxBarSize={28}
             />
             <Bar
               dataKey="expense"
               name="지출"
-              fill={COLORS.expense}
+              fill={CHART_COLORS.expense}
               radius={[4, 4, 0, 0]}
               maxBarSize={28}
             />
@@ -91,11 +87,11 @@ function ChartLegend() {
   return (
     <div className="flex items-center gap-3 text-[12px] text-fg-soft">
       <div className="flex items-center gap-1.5">
-        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: COLORS.income }} />
+        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: CHART_COLORS.income }} />
         수입
       </div>
       <div className="flex items-center gap-1.5">
-        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: COLORS.expense }} />
+        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: CHART_COLORS.expense }} />
         지출
       </div>
     </div>

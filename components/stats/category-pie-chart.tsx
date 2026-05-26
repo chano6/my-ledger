@@ -3,69 +3,84 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { formatCurrency } from "@/lib/format";
 import type { CategoryStats } from "@/lib/types";
+import { CardHeader } from "../common/card-header";
 
 type CategoryPieChartProps = {
-  stats: CategoryStats[];
+  data: CategoryStats[];
+  dateRange: string;
 };
 
-export function CategoryPieChart({ stats }: CategoryPieChartProps) {
-  const total = stats.reduce((sum, item) => sum + item.total, 0);
-
-  if (stats.length === 0) {
+export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
+  if (data.length === 0) {
     return (
-      <div className="rounded-lg border p-6">
-        <h3 className="mb-4 text-lg font-semibold">이번 달 카테고리별 지출</h3>
-        <div className="py-12 text-center text-muted-foreground">이번 달 지출 내역이 없습니다.</div>
+      <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
+        <CardHeader title="카테고리별 지출" description={dateRange} />
+        <div className="py-16 text-center text-sm text-fg-soft">이번 달 지출이 없습니다.</div>
       </div>
     );
   }
 
-  return (
-    <div className="rounded-lg border p-6">
-      <h3 className="mb-4 text-lg font-semibold">이번 달 카테고리별 지출</h3>
+  const total = data.reduce((sum, item) => sum + item.total, 0);
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="w-full">
-          <ResponsiveContainer width="100%" aspect={1}>
+  return (
+    <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
+      <CardHeader title="카테고리별 지출" description={dateRange} />
+
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 md:flex-row md:gap-5">
+        <div className="relative h-45 w-45 shrink-0">
+          <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={stats}
+                data={data}
                 dataKey="total"
                 nameKey="category_name"
-                innerRadius={60}
-                outerRadius={100}
+                cx="50%"
+                cy="50%"
+                innerRadius={55}
+                outerRadius={85}
                 paddingAngle={2}
+                strokeWidth={0}
+                isAnimationActive={false}
               >
-                {stats.map((entry) => (
+                {data.map((entry) => (
                   <Cell key={entry.category_id} fill={entry.category_color} />
                 ))}
               </Pie>
               <Tooltip
+                wrapperStyle={{ zIndex: 10 }}
+                contentStyle={{
+                  border: "1px solid oklch(0.91 0.015 80)",
+                  borderRadius: "8px",
+                  backgroundColor: "#ffffff",
+                  fontSize: "12px",
+                  padding: "8px 12px",
+                }}
                 formatter={(value) => (typeof value === "number" ? formatCurrency(value) : value)}
               />
             </PieChart>
           </ResponsiveContainer>
+
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+            <p className="text-[11px] text-fg-soft">이번 달 지출</p>
+            <p className="num text-[16px] font-bold tracking-tight">{formatCurrency(total)}</p>
+          </div>
         </div>
 
-        <div className="flex flex-col justify-center gap-2">
-          {stats.map((item) => {
-            const percentage = total > 0 ? (item.total / total) * 100 : 0;
-            return (
-              <div key={item.category_id} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span
-                    className="h-3 w-3 rounded-full"
-                    style={{ backgroundColor: item.category_color }}
-                  />
-                  <span className="text-sm font-medium">{item.category_name}</span>
-                </div>
-                <div className="text-sm">
-                  <span className="font-semibold">{formatCurrency(item.total)}</span>
-                  <span className="ml-2 text-muted-foreground">{percentage.toFixed(1)}%</span>
-                </div>
+        <div className="flex w-full flex-col gap-2.5">
+          {data.map((item) => (
+            <div key={item.category_id} className="flex items-center justify-between gap-2">
+              <div className="flex min-w-0 items-center gap-2">
+                <span
+                  className="h-2 w-2 shrink-0 rounded-full"
+                  style={{ backgroundColor: item.category_color }}
+                />
+                <span className="truncate text-[13px] text-fg">{item.category_name}</span>
               </div>
-            );
-          })}
+              <span className="num shrink-0 text-[13px] font-semibold">
+                {formatCurrency(item.total)}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

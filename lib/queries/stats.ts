@@ -156,3 +156,30 @@ export async function getMonthlyComparison() {
 
   return { current, previous };
 }
+
+// 최근 N개월의 월별 통계
+export async function getMonthlySummaries(
+  monthCount: number,
+): Promise<Array<{ year: number; month: number; income: number; expense: number }>> {
+  const now = new Date();
+
+  const months = [];
+  for (let i = monthCount - 1; i >= 0; i--) {
+    const targetDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const year = targetDate.getFullYear();
+    const month = targetDate.getMonth() + 1;
+
+    months.push({ year, month });
+  }
+
+  const summaries = await Promise.all(
+    months.map(({ year, month }) => getMonthSummary(year, month)),
+  );
+
+  return months.map((m, index) => ({
+    year: m.year,
+    month: m.month,
+    income: summaries[index].income,
+    expense: summaries[index].expense,
+  }));
+}

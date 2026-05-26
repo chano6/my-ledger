@@ -10,7 +10,10 @@ export function SummaryCardsSkeleton() {
             <Skeleton className="h-7 w-7 rounded-md" />
             <Skeleton className="h-4 w-20" />
           </div>
-          <Skeleton className="mb-3 h-9 w-32" />
+          <div className="mb-3 flex items-end justify-between gap-2">
+            <Skeleton className="h-9 w-32" />
+            <Skeleton className="h-10 w-20" />
+          </div>
           <Skeleton className="h-5 w-28 rounded-full" />
         </div>
       ))}

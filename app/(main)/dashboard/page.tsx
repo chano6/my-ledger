@@ -12,12 +12,13 @@ import {
 } from "@/components/dashboard/skeletons";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
 import { getCurrentProfile } from "@/lib/queries/profile";
-import { getMonthlyComparison } from "@/lib/queries/stats";
+import { getMonthlyComparison, getMonthlySummaries } from "@/lib/queries/stats";
 import { createClient } from "@/lib/supabase/server";
 
 async function SummaryCardsData() {
-  const { current, previous } = await getMonthlyComparison();
-  return <SummaryCards current={current} previous={previous} />;
+  const [comparison, trend] = await Promise.all([getMonthlyComparison(), getMonthlySummaries(6)]);
+
+  return <SummaryCards current={comparison.current} previous={comparison.previous} trend={trend} />;
 }
 
 export default async function DashboardPage() {

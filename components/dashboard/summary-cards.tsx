@@ -1,13 +1,20 @@
 import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { calcChangeRate, cn } from "@/lib/utils";
+import { MiniLineChart } from "./mini-line-chart";
 
-type SummaryCardsProps = {
-  current: { income: number; expense: number };
-  previous: { income: number; expense: number };
+type MonthlyData = {
+  income: number;
+  expense: number;
 };
 
-export function SummaryCards({ current, previous }: SummaryCardsProps) {
+type SummaryCardsProps = {
+  current: MonthlyData;
+  previous: MonthlyData;
+  trend: MonthlyData[];
+};
+
+export function SummaryCards({ current, previous, trend }: SummaryCardsProps) {
   const currentBalance = current.income - current.expense;
   const previousBalance = previous.income - previous.expense;
 
@@ -15,6 +22,11 @@ export function SummaryCards({ current, previous }: SummaryCardsProps) {
   const incomeChange = calcChangeRate(current.income, previous.income);
   const expenseChange = calcChangeRate(current.expense, previous.expense);
   const balanceChange = calcChangeRate(currentBalance, previousBalance);
+
+  // 추이 데이터
+  const incomeTrend = trend.map((m) => m.income);
+  const expenseTrend = trend.map((m) => m.expense);
+  const balanceTrend = trend.map((m) => m.income - m.expense);
 
   return (
     <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
@@ -26,6 +38,9 @@ export function SummaryCards({ current, previous }: SummaryCardsProps) {
         iconColor="text-sage-deep"
         change={incomeChange}
         changeType="income"
+        trendData={incomeTrend}
+        trendColor="oklch(0.55 0.08 155)"
+        chartId="income"
       />
       <SummaryCard
         label="이번 달 지출"
@@ -35,6 +50,9 @@ export function SummaryCards({ current, previous }: SummaryCardsProps) {
         iconColor="text-coral"
         change={expenseChange}
         changeType="expense"
+        trendData={expenseTrend}
+        trendColor="oklch(0.7 0.13 25)"
+        chartId="expense"
       />
       <SummaryCard
         label="잔액"
@@ -44,6 +62,9 @@ export function SummaryCards({ current, previous }: SummaryCardsProps) {
         iconColor="text-peach-deep"
         change={balanceChange}
         changeType="balance"
+        trendData={balanceTrend}
+        trendColor="oklch(0.55 0.11 75)"
+        chartId="balance"
       />
     </div>
   );
@@ -57,6 +78,9 @@ type SummaryCardProps = {
   iconColor: string;
   change: number | null;
   changeType: "income" | "expense" | "balance";
+  trendData: number[];
+  trendColor: string;
+  chartId: string;
 };
 
 function SummaryCard({
@@ -67,6 +91,9 @@ function SummaryCard({
   iconColor,
   change,
   changeType,
+  trendData,
+  trendColor,
+  chartId,
 }: SummaryCardProps) {
   return (
     <div className="rounded-xl border border-border bg-card p-5">
@@ -76,7 +103,12 @@ function SummaryCard({
         </div>
         <span className="text-[13px] text-fg-soft">{label}</span>
       </div>
-      <div className="num mb-3 text-[26px] font-bold tracking-tight">{formatCurrency(amount)}</div>
+      <div className="mb-3 flex items-end justify-between gap-2">
+        <div className="num text-[26px] font-bold tracking-tight">{formatCurrency(amount)}</div>
+        <div className="shrink-0">
+          <MiniLineChart data={trendData} color={trendColor} chartId={chartId} />
+        </div>
+      </div>
       <ChangeBadge change={change} changeType={changeType} />
     </div>
   );

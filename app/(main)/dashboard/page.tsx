@@ -51,7 +51,7 @@ export default async function DashboardPage() {
           <SummaryCardsData />
         </Suspense>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
           <div className="md:col-span-2">
             {/* 월별 막대 차트 */}
             <Suspense fallback={<MonthlyChartSkeleton />}>

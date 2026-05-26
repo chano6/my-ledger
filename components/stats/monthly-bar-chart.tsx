@@ -1,63 +1,102 @@
 "use client";
 
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { formatCurrency } from "@/lib/format";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { formatCompactCurrency, formatCurrency } from "@/lib/format";
 import type { MonthlyStats } from "@/lib/types";
+import { CardHeader } from "../common/card-header";
 
 type MonthlyBarChartProps = {
   data: MonthlyStats[];
 };
 
+const COLORS = {
+  income: "oklch(0.78 0.06 155)", // sage
+  expense: "oklch(0.82 0.090 85)", // butter/peach
+};
+
 export function MonthlyBarChart({ data }: MonthlyBarChartProps) {
   if (data.length === 0) {
     return (
-      <div className="rounded-lg border p-6">
-        <h3 className="mb-4 text-lg font-semibold">최근 6개월 추이</h3>
-        <div className="py-12 text-center text-muted-foreground">거래 내역이 없습니다.</div>
+      <div className="rounded-xl border border-border bg-card p-5 md:p-6">
+        <CardHeader title="월별 수입 vs 지출" description="최근 6개월 흐름" />
+        <div className="py-16 text-center text-sm text-fg-soft">거래 내역이 없습니다.</div>
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border p-6">
-      <h3 className="mb-4 text-lg font-semibold">최근 6개월 추이</h3>
+    <div className="rounded-xl border border-border bg-card p-5 md:p-6">
+      <CardHeader
+        title="월별 수입 vs 지출"
+        description="최근 6개월 흐름"
+        action={<ChartLegend />}
+      />
 
-      <div className="w-full">
-        <ResponsiveContainer width="100%" aspect={2}>
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-
-            <XAxis dataKey="monthLabel" tick={{ fontSize: 12 }} />
-
+      <div className="h-70 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.91 0.015 80)" vertical={false} />
+            <XAxis
+              dataKey="monthLabel"
+              tick={{ fontSize: 12, fill: "oklch(0.68 0.014 75)" }}
+              axisLine={false}
+              tickLine={false}
+              dy={6}
+            />
             <YAxis
-              tick={{ fontSize: 12 }}
-              tickFormatter={(value) => {
-                if (value >= 1000000) return `${value / 1000000}백만`;
-                if (value >= 10000) return `${value / 10000}만`;
-                return String(value);
+              tick={{ fontSize: 12, fill: "oklch(0.68 0.014 75)" }}
+              tickFormatter={formatCompactCurrency}
+              axisLine={false}
+              tickLine={false}
+              width={45}
+            />
+            <Tooltip
+              cursor={{ fill: "oklch(0.96 0.018 88)", opacity: 0.5 }}
+              contentStyle={{
+                border: "1px solid oklch(0.91 0.015 80)",
+                borderRadius: "8px",
+                backgroundColor: "#ffffff",
+                fontSize: "12px",
+                padding: "8px 12px",
+              }}
+              formatter={(value) => (typeof value === "number" ? formatCurrency(value) : value)}
+              labelStyle={{
+                fontWeight: 600,
+                marginBottom: 4,
+                color: "oklch(0.27 0.02 75)",
               }}
             />
-
-            <Tooltip
-              formatter={(value) => (typeof value === "number" ? formatCurrency(value) : value)}
-              labelStyle={{ fontWeight: 600 }}
+            <Bar
+              dataKey="income"
+              name="수입"
+              fill={COLORS.income}
+              radius={[4, 4, 0, 0]}
+              maxBarSize={28}
             />
-
-            <Legend />
-
-            <Bar dataKey="income" name="수입" fill="#22c55e" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="expense" name="지출" fill="#ef4444" radius={[4, 4, 0, 0]} />
+            <Bar
+              dataKey="expense"
+              name="지출"
+              fill={COLORS.expense}
+              radius={[4, 4, 0, 0]}
+              maxBarSize={28}
+            />
           </BarChart>
         </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+function ChartLegend() {
+  return (
+    <div className="flex items-center gap-3 text-[12px] text-fg-soft">
+      <div className="flex items-center gap-1.5">
+        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: COLORS.income }} />
+        수입
+      </div>
+      <div className="flex items-center gap-1.5">
+        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: COLORS.expense }} />
+        지출
       </div>
     </div>
   );

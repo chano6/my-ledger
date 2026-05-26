@@ -60,3 +60,12 @@ export function getCurrentYearRange(): { start: string; end: string } {
 
   return { start: toDateString(start), end: toDateString(end) };
 }
+
+// 큰 금액을 짧게 표시
+export function formatCompactCurrency(value: number): string {
+  if (value === 0) return "0";
+  if (value >= 10000000) return `${(value / 10000000).toFixed(1)}천만`;
+  if (value >= 1000000) return `${(value / 1000000).toFixed(1)}백만`;
+  if (value >= 10000) return `${(value / 10000).toFixed(0)}만`;
+  return String(value);
+}

@@ -3,6 +3,7 @@ import { createClient } from "../supabase/server";
 import type { CategoryStats, MonthlyStats } from "../types";
 
 // 이번 달 카테고리별 지출 조회
+// TODO: CategorySection, TopCategoriesSection에서 중복 호출됨 — React cache()로 dedup 필요
 export async function getMonthlyCategoryStats(): Promise<CategoryStats[]> {
   const supabase = await createClient();
   const { start, end } = getCurrentMonthRange();
@@ -33,6 +34,7 @@ export async function getMonthlyCategoryStats(): Promise<CategoryStats[]> {
       statsMap.set(category.id, {
         ...existing,
         total: existing.total + Number(transaction.amount),
+        count: existing.count + 1,
       });
     } else {
       statsMap.set(category.id, {
@@ -40,6 +42,7 @@ export async function getMonthlyCategoryStats(): Promise<CategoryStats[]> {
         category_color: category.color,
         category_name: category.name,
         total: Number(transaction.amount),
+        count: 1,
       });
     }
   }

@@ -1,58 +1,78 @@
 import { formatCurrency } from "@/lib/format";
 import type { CategoryStats } from "@/lib/types";
+import { CardHeader } from "../common/card-header";
+import { CategoryIcon } from "../common/category-icon";
 
 type TopCategoriesProps = {
   stats: CategoryStats[];
   limit?: number;
+  dateRange: string;
 };
 
-export function TopCategories({ stats, limit = 5 }: TopCategoriesProps) {
+export function TopCategories({ stats, limit = 5, dateRange }: TopCategoriesProps) {
   const top = stats.slice(0, limit);
-
-  const total = stats.reduce((sum, item) => sum + item.total, 0);
 
   if (top.length === 0) {
     return (
-      <div className="rounded-lg border p-6">
-        <h3 className="mb-4 text-lg font-semibold">가장 많이 쓴 카테고리</h3>
-        <div className="py-8 text-center text-muted-foreground">이번 달 지출 내역이 없습니다.</div>
+      <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
+        <CardHeader
+          title="가장 많이 쓴 카테고리"
+          description={`${dateRange} · 지출 기준 상위 ${limit}`}
+        />
+        <div className="flex flex-1 items-center justify-center text-sm text-fg-soft">
+          이번 달 지출 내역이 없습니다.
+        </div>
       </div>
     );
   }
 
-  return (
-    <div className="rounded-lg border p-6">
-      <h3 className="mb-4 text-lg font-semibold">가장 많이 쓴 카테고리</h3>
+  const total = stats.reduce((sum, item) => sum + item.total, 0);
 
-      <div className="space-y-4">
+  return (
+    <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
+      <CardHeader
+        title="가장 많이 쓴 카테고리"
+        description={`${dateRange} · 지출 기준 상위 ${limit}`}
+      />
+
+      <div className="flex flex-1 flex-col gap-4">
         {top.map((item, index) => {
           const percentage = total > 0 ? (item.total / total) * 100 : 0;
 
           return (
-            <div key={item.category_id}>
-              <div className="mb-2 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-muted-foreground">{index + 1}.</span>
-                  <span
-                    className="h-3 w-3 rounded-full"
-                    style={{ backgroundColor: item.category_color }}
-                  />
-                  <span className="font-medium">{item.category_name}</span>
-                </div>
-                <div className="text-sm">
-                  <span className="font-semibold">{formatCurrency(item.total)}</span>
-                  <span className="ml-2 text-muted-foreground">{percentage.toFixed(1)}%</span>
-                </div>
-              </div>
+            <div key={item.category_id} className="flex items-center gap-3">
+              {/* 순위 번호 */}
+              <span className="num w-4 text-center text-[13px] font-semibold text-fg-soft">
+                {index + 1}
+              </span>
 
-              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full rounded-full transition-all"
-                  style={{
-                    width: `${percentage}%`,
-                    backgroundColor: item.category_color,
-                  }}
-                />
+              {/* 카테고리 아이콘 */}
+              <CategoryIcon name={item.category_name} color={item.category_color} size="md" />
+
+              {/* 정보 + 진행바 */}
+              <div className="min-w-0 flex-1 space-y-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-[14px] font-semibold text-fg">
+                      {item.category_name}
+                    </div>
+                    <div className="text-[11px] text-fg-soft">{item.count}건</div>
+                  </div>
+                  <div className="num shrink-0 text-[14px] font-semibold">
+                    {formatCurrency(item.total)}
+                  </div>
+                </div>
+
+                {/* 진행바 */}
+                <div className="h-1 w-full overflow-hidden rounded-full bg-bg-sunken">
+                  <div
+                    className="h-full rounded-full transition-all"
+                    style={{
+                      width: `${percentage}%`,
+                      backgroundColor: item.category_color,
+                    }}
+                  />
+                </div>
               </div>
             </div>
           );

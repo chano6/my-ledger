@@ -58,6 +58,7 @@ export type CategoryStats = {
   category_name: string;
   category_color: string;
   total: number;
+  count: number;
 };
 
 export type MonthlySummary = {

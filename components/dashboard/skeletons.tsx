@@ -46,7 +46,7 @@ export function ChartSkeleton({ height = "h-[350px]" }: { height?: string }) {
   );
 }
 
-// 카테고리 도넛 차트 + TOP5 스켈레톤
+// 카테고리 도넛 차트
 export function CategorySectionSkeleton() {
   return (
     <div className="rounded-xl border border-border bg-card p-5">
@@ -97,6 +97,36 @@ export function RecentTransactionsSkeleton() {
               <Skeleton className="h-3 w-24" />
             </div>
             <Skeleton className="h-4 w-20" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// TOP N 카테고리 스켈레톤
+export function TopCategoriesSkeleton() {
+  return (
+    <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
+      <div className="mb-5 space-y-1.5">
+        <Skeleton className="h-5 w-44" />
+        <Skeleton className="h-3 w-48" />
+      </div>
+      <div className="flex flex-1 flex-col gap-4">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="flex items-center gap-3">
+            <Skeleton className="h-4 w-4" />
+            <Skeleton className="h-9 w-9 rounded-lg" />
+            <div className="flex-1 space-y-1.5">
+              <div className="flex items-center justify-between gap-2">
+                <div className="space-y-1">
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-3 w-12" />
+                </div>
+                <Skeleton className="h-4 w-20" />
+              </div>
+              <Skeleton className="h-1 w-full rounded-full" />
+            </div>
           </div>
         ))}
       </div>

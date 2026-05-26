@@ -9,8 +9,10 @@ import {
   MonthlyChartSkeleton,
   RecentTransactionsSkeleton,
   SummaryCardsSkeleton,
+  TopCategoriesSkeleton,
 } from "@/components/dashboard/skeletons";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
+import { TopCategoriesSection } from "@/components/dashboard/top-categories-section";
 import { getCurrentProfile } from "@/lib/queries/profile";
 import { getMonthlyComparison, getMonthlySummaries } from "@/lib/queries/stats";
 import { createClient } from "@/lib/supabase/server";
@@ -67,9 +69,18 @@ export default async function DashboardPage() {
         </div>
 
         {/* 최근 거래 */}
-        <Suspense fallback={<RecentTransactionsSkeleton />}>
-          <RecentTransactions />
-        </Suspense>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          <div className="md:col-span-2">
+            <Suspense fallback={<RecentTransactionsSkeleton />}>
+              <RecentTransactions />
+            </Suspense>
+          </div>
+          <div>
+            <Suspense fallback={<TopCategoriesSkeleton />}>
+              <TopCategoriesSection />
+            </Suspense>
+          </div>
+        </div>
       </div>
     </>
   );

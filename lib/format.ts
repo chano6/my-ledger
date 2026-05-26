@@ -87,3 +87,12 @@ export function formatRelativeDate(date: string | Date): string {
 
   return `${target.getMonth() + 1}월 ${target.getDate()}일`;
 }
+
+// 현재 월 1일 ~ 오늘
+export function getCurrentMonthDateRange(): string {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+
+  return `${month}월 1일 ~ ${month}월 ${day}일`;
+}

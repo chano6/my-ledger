@@ -27,7 +27,7 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
       <CardHeader title="카테고리별 지출" description={dateRange} />
 
       <div className="flex flex-1 flex-col items-center justify-center gap-4 md:flex-row md:gap-5">
-        <div className="relative h-45 w-45 shrink-0">
+        <div className="relative aspect-square w-full max-w-45">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -36,8 +36,8 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
                 nameKey="category_name"
                 cx="50%"
                 cy="50%"
-                innerRadius={55}
-                outerRadius={85}
+                innerRadius="60%"
+                outerRadius="90%"
                 paddingAngle={2}
                 strokeWidth={0}
                 isAnimationActive={false}
@@ -61,12 +61,14 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
           </ResponsiveContainer>
 
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <p className="text-[11px] text-fg-soft">이번 달 지출</p>
-            <p className="num text-[16px] font-bold tracking-tight">{formatCurrency(total)}</p>
+            <p className="text-[10px] text-fg-soft md:text-[11px]">이번 달 지출</p>
+            <p className="num text-[14px] font-bold tracking-tight md:text-[16px]">
+              {formatCurrency(total)}
+            </p>
           </div>
         </div>
 
-        <div className="flex w-full flex-col gap-2.5">
+        <div className="flex min-w-0 w-full flex-col gap-2.5 overflow-hidden">
           {data.map((item) => (
             <div key={item.category_id} className="flex items-center justify-between gap-2">
               <div className="flex min-w-0 items-center gap-2">

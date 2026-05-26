@@ -69,3 +69,21 @@ export function formatCompactCurrency(value: number): string {
   if (value >= 10000) return `${(value / 10000).toFixed(0)}만`;
   return String(value);
 }
+
+// 상대 날짜 표시 (예: formatRelativeDate('2026-05-22') => '오늘')
+export function formatRelativeDate(date: string | Date): string {
+  const target = typeof date === "string" ? new Date(date) : date;
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+
+  const diffMs = today.getTime() - target.getTime();
+  const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "오늘";
+  if (diffDays === 1) return "어제";
+  if (diffDays === -1) return "내일";
+
+  return `${target.getMonth() + 1}월 ${target.getDate()}일`;
+}

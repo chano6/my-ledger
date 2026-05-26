@@ -80,16 +80,16 @@ export function CategorySectionSkeleton() {
 // 최근 거래 스켈레톤
 export function RecentTransactionsSkeleton() {
   return (
-    <div className="rounded-xl border border-border bg-card p-5">
-      <div className="mb-4 flex items-center justify-between">
-        <div className="space-y-1">
+    <div className="rounded-xl border border-border bg-card p-5 md:p-6">
+      <div className="mb-5 flex items-start justify-between">
+        <div className="space-y-1.5">
           <Skeleton className="h-5 w-24" />
           <Skeleton className="h-3 w-32" />
         </div>
         <Skeleton className="h-4 w-16" />
       </div>
       <div className="divide-y divide-border">
-        {[1, 2, 3, 4, 5].map((i) => (
+        {[1, 2, 3, 4, 5, 6].map((i) => (
           <div key={i} className="flex items-center gap-3 py-3">
             <Skeleton className="h-9 w-9 rounded-lg" />
             <div className="flex-1 space-y-1.5">

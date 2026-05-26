@@ -1,13 +1,37 @@
-import { TransactionList } from "@/components/transactions/transaction-list";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { getTransactions } from "@/lib/queries/transactions";
+import { CardHeader } from "../common/card-header";
+import { DashboardTransactionItem } from "./dashboard-transaction-item";
 
 export async function RecentTransactions() {
-  const transactions = await getTransactions({ limit: 5 });
+  const transactions = await getTransactions({ limit: 7 });
 
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">최근 거래</h2>
-      <TransactionList transactions={transactions} />
+    <div className="rounded-xl border border-border bg-card p-5 md:p-6">
+      <CardHeader
+        title="최근 거래"
+        description="최근 7일 내 거래 내역"
+        action={
+          <Link
+            href="/transactions"
+            className="flex items-center gap-1 text-[12px] font-medium text-fg-soft transition-colors hover:text-fg"
+          >
+            전체 보기
+            <ChevronRight className="h-3.5 w-3.5" />
+          </Link>
+        }
+      />
+
+      {transactions.length === 0 ? (
+        <div className="py-12 text-center text-sm text-fg-soft">아직 거래 내역이 없습니다.</div>
+      ) : (
+        <div className="divide-y divide-border">
+          {transactions.map((transaction) => (
+            <DashboardTransactionItem key={transaction.id} transaction={transaction} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

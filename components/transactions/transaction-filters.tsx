@@ -4,7 +4,6 @@ import type { Category, TransactionType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { CategoryFilter } from "./category-filter";
 import { DateFilter } from "./date-filter";
-import { SearchInput } from "./search-input";
 
 type TransactionFiltersProps = {
   currentType?: TransactionType;

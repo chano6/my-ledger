@@ -16,7 +16,7 @@ export function CategoryIcon({ name, color, size = "md" }: CategoryIconProps) {
   return (
     <div
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-lg font-semibold",
+        "flex shrink-0 items-center justify-center rounded-sm font-semibold",
         SIZE_CLASSES[size],
       )}
       style={{

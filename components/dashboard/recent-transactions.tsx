@@ -8,7 +8,7 @@ export async function RecentTransactions() {
   const transactions = await getTransactions({ limit: 7 });
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5 md:p-6">
+    <div className="rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
       <CardHeader
         title="최근 거래"
         description="최근 7일 내 거래 내역"

@@ -13,7 +13,7 @@ type CategoryPieChartProps = {
 export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
   if (data.length === 0) {
     return (
-      <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
+      <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
         <CardHeader title="카테고리별 지출" description={dateRange} />
         <div className="py-16 text-center text-sm text-fg-soft">이번 달 지출이 없습니다.</div>
       </div>
@@ -23,7 +23,7 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
   const total = data.reduce((sum, item) => sum + item.total, 0);
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
+    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
       <CardHeader title="카테고리별 지출" description={dateRange} />
 
       <div className="flex flex-1 flex-col items-center justify-center gap-4 md:flex-row md:gap-5">

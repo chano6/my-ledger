@@ -96,15 +96,15 @@ function SummaryCard({
   chartId,
 }: SummaryCardProps) {
   return (
-    <div className="rounded-xl border border-border bg-card p-5">
+    <div className="rounded-lg border border-border bg-card px-4.5 pt-4.5 pb-4">
       <div className="mb-3 flex items-center gap-2">
-        <div className={cn("flex h-7 w-7 items-center justify-center rounded-md", iconBg)}>
-          <Icon className={cn("h-4 w-4", iconColor)} />
+        <div className={cn("flex h-6.5 w-6.5 items-center justify-center rounded-sm", iconBg)}>
+          <Icon className={cn("h-3.5 w-3.5", iconColor)} />
         </div>
-        <span className="text-[13px] text-fg-soft">{label}</span>
+        <span className="text-[12.5px] font-medium text-fg-muted">{label}</span>
       </div>
       <div className="mb-3 flex items-end justify-between gap-2">
-        <div className="num text-[26px] font-bold tracking-tight">{formatCurrency(amount)}</div>
+        <div className="num text-[28px] font-bold tracking-tight">{formatCurrency(amount)}</div>
         <div className="shrink-0">
           <MiniLineChart data={trendData} color={trendColor} chartId={chartId} />
         </div>
@@ -122,7 +122,7 @@ type ChangeBadgeProps = {
 function ChangeBadge({ change, changeType }: ChangeBadgeProps) {
   if (change === null) {
     return (
-      <div className="inline-flex items-center rounded-full bg-bg-sunken px-2.5 py-0.5 text-[11px] font-semibold text-fg-soft">
+      <div className="inline-flex items-center rounded-full bg-bg-sunken px-2 py-0.5 text-[12px] font-semibold text-fg-muted">
         전월 데이터 없음
       </div>
     );
@@ -142,7 +142,7 @@ function ChangeBadge({ change, changeType }: ChangeBadgeProps) {
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold",
+        "inline-flex items-center rounded-full px-2 py-0.5 text-[12px] font-semibold",
         isGoodChange ? "bg-sage-soft text-sage-deep" : "bg-coral-soft text-coral",
       )}
     >

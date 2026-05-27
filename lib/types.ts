@@ -73,3 +73,11 @@ export type MonthlyStats = {
   income: number;
   expense: number;
 };
+
+export type FilterParams = {
+  type?: TransactionType;
+  categoryId?: string;
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+};

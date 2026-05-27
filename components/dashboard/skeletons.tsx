@@ -1,19 +1,25 @@
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// 통계 카드 스켈레톤
+// 통계 카드 - 시안 정확히
 export function SummaryCardsSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="rounded-xl border border-border bg-card p-5">
+        <div
+          key={i}
+          className="rounded-lg border border-border bg-card px-4.5 pt-4.5 pb-4 shadow-sm"
+        >
+          {/* 라벨 영역 */}
           <div className="mb-3 flex items-center gap-2">
-            <Skeleton className="h-7 w-7 rounded-md" />
-            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-6.5 w-6.5 rounded-sm" />
+            <Skeleton className="h-3.5 w-20" />
           </div>
+          {/* 금액 + 차트 */}
           <div className="mb-3 flex items-end justify-between gap-2">
             <Skeleton className="h-9 w-32" />
-            <Skeleton className="h-10 w-20" />
+            <Skeleton className="h-12 w-24" />
           </div>
+          {/* 뱃지 */}
           <Skeleton className="h-5 w-28 rounded-full" />
         </div>
       ))}
@@ -21,10 +27,10 @@ export function SummaryCardsSkeleton() {
   );
 }
 
-// 월별 막대 차트 스켈레톤
+// 월별 차트
 export function MonthlyChartSkeleton() {
   return (
-    <div className="rounded-xl border border-border bg-card p-5 md:p-6">
+    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
       <div className="mb-5 flex items-start justify-between">
         <div className="space-y-1.5">
           <Skeleton className="h-5 w-32" />
@@ -32,55 +38,41 @@ export function MonthlyChartSkeleton() {
         </div>
         <Skeleton className="h-4 w-20" />
       </div>
-      <Skeleton className="h-70 w-full" />
+      <Skeleton className="min-h-70 flex-1 w-full" />
     </div>
   );
 }
 
-export function ChartSkeleton({ height = "h-[350px]" }: { height?: string }) {
-  return (
-    <div className={`rounded-lg border p-6 ${height}`}>
-      <div className="h-6 w-40 animate-pulse rounded bg-muted" />
-      <div className="mt-4 h-[calc(100%-2rem)] animate-pulse rounded bg-muted/50" />
-    </div>
-  );
-}
-
-// 카테고리 도넛 차트
+// 카테고리 도넛
 export function CategorySectionSkeleton() {
   return (
-    <div className="rounded-xl border border-border bg-card p-5">
-      <div className="mb-4 space-y-1">
+    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
+      <div className="mb-5 space-y-1.5">
         <Skeleton className="h-5 w-32" />
-        <Skeleton className="h-3 w-24" />
+        <Skeleton className="h-3 w-28" />
       </div>
-      {/* 도넛 차트 영역 */}
-      <div className="mb-6 flex justify-center">
-        <Skeleton className="h-45 w-45 rounded-full" />
-      </div>
-      {/* TOP5 리스트 */}
-      <div className="space-y-3">
-        {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="space-y-1.5">
-            <div className="flex items-center justify-between">
+      <div className="flex flex-1 flex-col items-center justify-center gap-5 md:flex-row md:gap-5">
+        <Skeleton className="aspect-square w-full max-w-45 rounded-full" />
+        <div className="flex w-full flex-col gap-2.5">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-2 w-2 rounded-full" />
                 <Skeleton className="h-3 w-16" />
               </div>
               <Skeleton className="h-3 w-20" />
             </div>
-            <Skeleton className="h-1.5 w-full" />
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-// 최근 거래 스켈레톤
+// 최근 거래
 export function RecentTransactionsSkeleton() {
   return (
-    <div className="rounded-xl border border-border bg-card p-5 md:p-6">
+    <div className="rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
       <div className="mb-5 flex items-start justify-between">
         <div className="space-y-1.5">
           <Skeleton className="h-5 w-24" />
@@ -91,7 +83,7 @@ export function RecentTransactionsSkeleton() {
       <div className="divide-y divide-border">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <div key={i} className="flex items-center gap-3 py-3">
-            <Skeleton className="h-9 w-9 rounded-lg" />
+            <Skeleton className="h-9 w-9 rounded-sm" />
             <div className="flex-1 space-y-1.5">
               <Skeleton className="h-4 w-32" />
               <Skeleton className="h-3 w-24" />
@@ -104,10 +96,10 @@ export function RecentTransactionsSkeleton() {
   );
 }
 
-// TOP N 카테고리 스켈레톤
+// TOP N
 export function TopCategoriesSkeleton() {
   return (
-    <div className="flex h-full flex-col rounded-xl border border-border bg-card p-5 md:p-6">
+    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
       <div className="mb-5 space-y-1.5">
         <Skeleton className="h-5 w-44" />
         <Skeleton className="h-3 w-48" />
@@ -116,7 +108,7 @@ export function TopCategoriesSkeleton() {
         {[1, 2, 3, 4, 5].map((i) => (
           <div key={i} className="flex items-center gap-3">
             <Skeleton className="h-4 w-4" />
-            <Skeleton className="h-9 w-9 rounded-lg" />
+            <Skeleton className="h-9 w-9 rounded-sm" />
             <div className="flex-1 space-y-1.5">
               <div className="flex items-center justify-between gap-2">
                 <div className="space-y-1">

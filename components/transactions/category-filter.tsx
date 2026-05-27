@@ -1,47 +1,81 @@
-"use client";
-
-import { useRouter, useSearchParams } from "next/navigation";
-import type { Category } from "@/lib/types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import Link from "next/link";
+import type { Category, TransactionType } from "@/lib/types";
+import { cn, makeTransactionsUrl } from "@/lib/utils";
 
 type CategoryFilterProps = {
   categories: Category[];
-  currentCategoryId?: string;
+  categoryId?: string;
+  type?: TransactionType;
+  startDate?: string;
+  endDate?: string;
+  search?: string;
 };
 
-export function CategoryFilter({ categories, currentCategoryId }: CategoryFilterProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+const VISIBLE_COUNT = 5;
 
-  const handleChange = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (value === "all") {
-      params.delete("category");
-    } else {
-      params.set("category", value);
-    }
-
-    const queryString = params.toString();
-    router.push(`/transactions${queryString ? `?${queryString}` : ""}`);
-  };
+export function CategoryFilter({
+  categories,
+  categoryId,
+  type,
+  startDate,
+  endDate,
+  search,
+}: CategoryFilterProps) {
+  const visible = categories.slice(0, VISIBLE_COUNT);
+  const hiddenCount = categories.length - VISIBLE_COUNT;
 
   return (
-    <Select value={currentCategoryId ?? "all"} onValueChange={handleChange}>
-      <SelectTrigger className="w-45">
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="all">전체 카테고리</SelectItem>
-        {categories.map((category) => (
-          <SelectItem key={category.id} value={category.id}>
-            <span className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full" style={{ backgroundColor: category.color }} />
-              {category.name}
-            </span>
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="flex flex-wrap items-center gap-1.5">
+      {/* 전체 카테고리 */}
+      <CategoryChip
+        href={makeTransactionsUrl({ type, categoryId: undefined, startDate, endDate, search })}
+        active={!categoryId}
+      >
+        전체 카테고리
+      </CategoryChip>
+
+      {/* 개별 카테고리 */}
+      {visible.map((category) => (
+        <CategoryChip
+          key={category.id}
+          href={makeTransactionsUrl({ type, categoryId: category.id, startDate, endDate, search })}
+          active={categoryId === category.id}
+        >
+          <span className="h-2 w-2 rounded-[3px]" style={{ backgroundColor: category.color }} />
+          {category.name}
+        </CategoryChip>
+      ))}
+
+      {/* 더 있으면 +N */}
+      {hiddenCount > 0 && (
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-2.75 py-1.25 text-[12.5px] font-medium text-fg-muted">
+          + {hiddenCount}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function CategoryChip({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full px-2.75 py-1.25 text-[12.5px] transition-colors",
+        active
+          ? "border border-transparent bg-peach-soft font-semibold text-peach-deep"
+          : "border border-border bg-card font-medium text-fg-muted hover:border-border-strong hover:text-fg",
+      )}
+    >
+      {children}
+    </Link>
   );
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Suspense } from "react";
+import { type ReactNode, Suspense } from "react";
 import type { Category, TransactionType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { CategoryFilter } from "./category-filter";
@@ -23,53 +23,74 @@ export function TransactionFilters({
   categories,
 }: TransactionFiltersProps) {
   return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-3">
-        <FilterLink
-          href={makeUrl(
-            undefined,
-            currentCategoryId,
-            currentStartDate,
-            currentEndDate,
-            currentSearch,
-          )}
-          active={!currentType}
-        >
-          전체
-        </FilterLink>
-        <FilterLink
-          href={makeUrl(
-            "income",
-            currentCategoryId,
-            currentStartDate,
-            currentEndDate,
-            currentSearch,
-          )}
-          active={currentType === "income"}
-        >
-          수입
-        </FilterLink>
-        <FilterLink
-          href={makeUrl(
-            "expense",
-            currentCategoryId,
-            currentStartDate,
-            currentEndDate,
-            currentSearch,
-          )}
-          active={currentType === "expense"}
-        >
-          지출
-        </FilterLink>
-
-        <Suspense>
-          <CategoryFilter categories={categories} currentCategoryId={currentCategoryId} />
-        </Suspense>
-      </div>
-
+    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card p-4">
+      {/* 날짜 필터 */}
       <Suspense>
         <DateFilter currentStartDate={currentStartDate} currentEndDate={currentEndDate} />
       </Suspense>
+
+      {/* 유형 세그먼티드 */}
+      <TypeSegmented
+        currentType={currentType}
+        currentCategoryId={currentCategoryId}
+        currentStartDate={currentStartDate}
+        currentEndDate={currentEndDate}
+        currentSearch={currentSearch}
+      />
+
+      {/* 카테고리 필터 */}
+      <Suspense>
+        <CategoryFilter categories={categories} currentCategoryId={currentCategoryId} />
+      </Suspense>
+    </div>
+  );
+}
+
+function TypeSegmented({
+  currentType,
+  currentCategoryId,
+  currentStartDate,
+  currentEndDate,
+  currentSearch,
+}: {
+  currentType?: TransactionType;
+  currentCategoryId?: string;
+  currentStartDate?: string;
+  currentEndDate?: string;
+  currentSearch?: string;
+}) {
+  return (
+    <div className="flex items-center gap-0.5 rounded-md border border-border bg-bg-sunken p-0.5">
+      <SegmentLink
+        href={makeUrl(
+          undefined,
+          currentCategoryId,
+          currentStartDate,
+          currentEndDate,
+          currentSearch,
+        )}
+        active={!currentType}
+      >
+        전체
+      </SegmentLink>
+      <SegmentLink
+        href={makeUrl("income", currentCategoryId, currentStartDate, currentEndDate, currentSearch)}
+        active={currentType === "income"}
+      >
+        수입
+      </SegmentLink>
+      <SegmentLink
+        href={makeUrl(
+          "expense",
+          currentCategoryId,
+          currentStartDate,
+          currentEndDate,
+          currentSearch,
+        )}
+        active={currentType === "expense"}
+      >
+        지출
+      </SegmentLink>
     </div>
   );
 }
@@ -103,23 +124,21 @@ function makeUrl(
   return `/transactions${queryString ? `?${queryString}` : ""}`;
 }
 
-function FilterLink({
+function SegmentLink({
   href,
   active,
   children,
 }: {
   href: string;
   active: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <Link
       href={href}
       className={cn(
-        "rounded-full border px-4 py-1.5 text-sm transition-colors",
-        active
-          ? "border-foreground bg-foreground text-background"
-          : "border-border text-muted-foreground hover:border-foreground hover:text-foreground",
+        "rounded-[6px] px-3 py-1 text-[13px] font-medium transition-colors",
+        active ? "bg-card text-fg shadow-sm" : "text-fg-soft hover:text-fg",
       )}
     >
       {children}

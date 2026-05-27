@@ -4,8 +4,7 @@ import { Calendar, ChevronRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { DATE_PRESETS } from "@/lib/constants";
-import { formatShortDate } from "@/lib/format";
+import { formatDateRangeShort } from "@/lib/format";
 import { DateFilterCustom } from "./custom";
 import { DateFilterPresets } from "./presets";
 
@@ -21,7 +20,7 @@ export function DateFilter({ currentStartDate, currentEndDate }: DateFilterProps
   const [open, setOpen] = useState(false);
   const [showCustom, setShowCustom] = useState(false);
 
-  const label = formatDateRangeLabel(currentStartDate, currentEndDate);
+  const label = formatDateRangeShort(currentStartDate, currentEndDate);
 
   const applyDateRange = (start: string | undefined, end: string | undefined) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -78,27 +77,4 @@ export function DateFilter({ currentStartDate, currentEndDate }: DateFilterProps
       </PopoverContent>
     </Popover>
   );
-}
-
-// 버튼에 표시할 라벨
-function formatDateRangeLabel(start: string | undefined, end: string | undefined): string {
-  if (!start && !end) return "기간 전체";
-
-  // 프리셋 매칭 확인
-  const matched = DATE_PRESETS.find((p) => {
-    const range = p.getRange();
-    return range.start === start && range.end === end;
-  });
-
-  if (matched) return matched.label;
-
-  // 사용자 지정 형식: "5월 1일 – 5월 25일"
-  if (start && end) {
-    return `${formatShortDate(start)} - ${formatShortDate(end)}`;
-  }
-
-  if (start) return `${formatShortDate(start)} 이후`;
-  if (end) return `${formatShortDate(end)} 이전`;
-
-  return "기간 전체";
 }

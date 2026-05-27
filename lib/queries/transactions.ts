@@ -81,3 +81,39 @@ export async function getTransactionCount(filter?: TransactionFilter): Promise<n
 
   return count ?? 0;
 }
+
+// 필터된 거래의 통계 (합계 + 건수)
+export async function getTransactionsStats(filter?: TransactionFilter): Promise<{
+  income: { total: number; count: number };
+  expense: { total: number; count: number };
+}> {
+  const supabase = await createClient();
+
+  let query = supabase.from("transactions").select("type, amount");
+
+  query = applyTransactionFilters(query, filter);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("거래 통계 조회 실패:", error);
+    return {
+      income: { total: 0, count: 0 },
+      expense: { total: 0, count: 0 },
+    };
+  }
+
+  const income = data.filter((t) => t.type === "income");
+  const expense = data.filter((t) => t.type === "expense");
+
+  return {
+    income: {
+      total: income.reduce((sum, t) => sum + Number(t.amount), 0),
+      count: income.length,
+    },
+    expense: {
+      total: expense.reduce((sum, t) => sum + Number(t.amount), 0),
+      count: expense.length,
+    },
+  };
+}

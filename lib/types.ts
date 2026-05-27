@@ -15,6 +15,8 @@ export type NavItem = {
 
 export type TransactionType = "income" | "expense";
 
+export type Variant = TransactionType | "balance";
+
 export type TransactionFilter = {
   type?: TransactionType;
   categoryId?: string;

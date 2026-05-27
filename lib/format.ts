@@ -1,3 +1,5 @@
+import { DATE_PRESETS } from "./constants";
+
 // 금액을 한국어 형식으로 표시: 12345 → "12,345원"
 export function formatCurrency(amount: number): string {
   return `${new Intl.NumberFormat("ko-KR").format(amount)}원`;
@@ -104,4 +106,53 @@ export function getRecentDaysRange(days: number): { start: string; end: string }
   start.setDate(now.getDate() - (days - 1));
 
   return { start: toDateString(start), end: toDateString(now) };
+}
+
+// 프리셋 우선 + 짧은 날짜
+export function formatDateRangeShort(start: string | undefined, end: string | undefined): string {
+  if (!start && !end) return "기간 전체";
+
+  // 프리셋 매칭 확인
+  const matched = DATE_PRESETS.find((p) => {
+    const range = p.getRange();
+    return range.start === start && range.end === end;
+  });
+
+  if (matched) return matched.label;
+
+  // 사용자 지정 형식: "5월 1일 – 5월 25일"
+  if (start && end) {
+    return `${formatShortDate(start)} - ${formatShortDate(end)}`;
+  }
+
+  if (start) return `${formatShortDate(start)} 이후`;
+  if (end) return `${formatShortDate(end)} 이전`;
+
+  return "기간 전체";
+}
+
+// 날짜 범위를 자연어로 표시
+// @example formatDateRangeLabel() => '전체 기간'
+// @example formatDateRangeLabel('2026-05-01', '2026-05-25') => '5월 1일부터 누적'
+// @example formatDateRangeLabel('2026-05-01') => '5월 1일부터'
+// @example formatDateRangeLabel(undefined, '2026-05-25') => '5월 25일까지'
+export function formatDateRangeLabel(start?: string, end?: string): string {
+  if (!start && !end) return "전체 기간";
+
+  if (start && end) {
+    const d = new Date(start);
+    return `${d.getMonth() + 1}월 ${d.getDate()}일부터 누적`;
+  }
+
+  if (start) {
+    const d = new Date(start);
+    return `${d.getMonth() + 1}월 ${d.getDate()}일부터`;
+  }
+
+  if (end) {
+    const d = new Date(end);
+    return `${d.getMonth() + 1}월 ${d.getDate()}일까지`;
+  }
+
+  return "전체 기간";
 }

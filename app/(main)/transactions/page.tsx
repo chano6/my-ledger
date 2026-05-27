@@ -1,12 +1,18 @@
 import { Suspense } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import { LoadMoreButton } from "@/components/transactions/load-more-button";
+import { TransactionsStats } from "@/components/transactions/stats/transactions-stats";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { TransactionsActions } from "@/components/transactions/transactions-actions";
+import { formatDateRangeLabel } from "@/lib/format";
 import { getCategories } from "@/lib/queries/categories";
 import { getCurrentProfile } from "@/lib/queries/profile";
-import { getTransactionCount, getTransactions } from "@/lib/queries/transactions";
+import {
+  getTransactionCount,
+  getTransactions,
+  getTransactionsStats,
+} from "@/lib/queries/transactions";
 import { createClient } from "@/lib/supabase/server";
 import type { TransactionType } from "@/lib/types";
 
@@ -46,16 +52,19 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
 
   const filter = { type, categoryId, startDate, endDate, search };
 
-  const [transactions, categories, totalCount] = await Promise.all([
+  const [transactions, categories, totalCount, stats] = await Promise.all([
     getTransactions({ ...filter, limit: safeLimit }),
     getCategories(),
     getTransactionCount(filter),
+    getTransactionsStats(filter),
   ]);
 
   // 이번 달 지출
   const description = `총 ${totalCount}건`;
 
   const hasMore = totalCount > transactions.length;
+
+  const filterRangeLabel = formatDateRangeLabel(startDate, endDate);
 
   return (
     <>
@@ -78,6 +87,13 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
             categories={categories}
           />
         </div>
+
+        {/* 통계 카드 */}
+        <TransactionsStats
+          income={stats.income}
+          expense={stats.expense}
+          filterRangeLabel={filterRangeLabel}
+        />
 
         {/* 거래 목록 */}
         <TransactionList transactions={transactions} />

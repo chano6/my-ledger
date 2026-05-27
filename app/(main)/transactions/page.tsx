@@ -1,12 +1,13 @@
-import Link from "next/link";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import { LoadMoreButton } from "@/components/transactions/load-more-button";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
-import { Button } from "@/components/ui/button";
+import { TransactionsActions } from "@/components/transactions/transactions-actions";
 import { getCategories } from "@/lib/queries/categories";
+import { getCurrentProfile } from "@/lib/queries/profile";
 import { getTransactionCount, getTransactions } from "@/lib/queries/transactions";
+import { createClient } from "@/lib/supabase/server";
 import type { TransactionType } from "@/lib/types";
 
 const PAGE_SIZE = 20;
@@ -23,6 +24,14 @@ type TransactionPageProps = {
 };
 
 async function TransactionsPage({ searchParams }: TransactionPageProps) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const profile = await getCurrentProfile();
+  const userEmail = user?.email ?? "";
+  const userName = profile?.name ?? userEmail.split("@")[0];
+
   const params = await searchParams;
 
   const type: TransactionType | undefined =
@@ -43,41 +52,44 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
     getTransactionCount(filter),
   ]);
 
+  // 이번 달 지출
+  const description = `총 ${totalCount}건`;
+
   const hasMore = totalCount > transactions.length;
 
   return (
     <>
       <PageHeader
         title="거래 내역"
-        description={`${transactions.length} / ${totalCount}건 표시`}
-        action={
-          <Button asChild>
-            <Link href="/transactions/new">+ 새 거래</Link>
-          </Button>
-        }
+        description={description}
+        action={<TransactionsActions currentSearch={search} />}
+        userName={userName}
+        userEmail={userEmail}
       />
 
-      <div className="mb-6 space-y-3">
-        <TransactionFilters
-          currentType={type}
-          currentCategoryId={categoryId}
-          currentStartDate={startDate}
-          currentEndDate={endDate}
-          currentSearch={search}
-          categories={categories}
-        />
-      </div>
-
-      {/* 거래 목록 */}
-      <TransactionList transactions={transactions} />
-
-      {hasMore && (
-        <div className="mt-6 flex justify-center">
-          <Suspense>
-            <LoadMoreButton currentLimit={safeLimit} pageSize={PAGE_SIZE} />
-          </Suspense>
+      <div className="space-y-5 px-4 py-6 md:space-y-6 md:px-8 md:py-8">
+        <div className="space-y-3">
+          <TransactionFilters
+            currentType={type}
+            currentCategoryId={categoryId}
+            currentStartDate={startDate}
+            currentEndDate={endDate}
+            currentSearch={search}
+            categories={categories}
+          />
         </div>
-      )}
+
+        {/* 거래 목록 */}
+        <TransactionList transactions={transactions} />
+
+        {hasMore && (
+          <div className="mt-6 flex justify-center">
+            <Suspense>
+              <LoadMoreButton currentLimit={safeLimit} pageSize={PAGE_SIZE} />
+            </Suspense>
+          </div>
+        )}
+      </div>
     </>
   );
 }

@@ -1,8 +1,8 @@
 "use client";
 
+import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Input } from "../ui/input";
 
 type SearchInputProps = {
   currentSearch?: string;
@@ -40,12 +40,15 @@ export function SearchInput({ currentSearch }: SearchInputProps) {
   }, [value, router, searchParams]);
 
   return (
-    <Input
-      type="text"
-      placeholder="메모 검색..."
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      className="w-60"
-    />
+    <div className="relative">
+      <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-fg-soft" />
+      <input
+        type="search"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="거래 검색..."
+        className="h-10 w-full rounded-md border border-border bg-card pl-9 pr-3 text-sm placeholder:text-fg-soft focus:border-peach-deep focus:outline-none focus:ring-2 focus:ring-peach-deep/15 md:w-65"
+      />
+    </div>
   );
 }

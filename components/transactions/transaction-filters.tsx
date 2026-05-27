@@ -66,10 +66,6 @@ export function TransactionFilters({
         <Suspense>
           <CategoryFilter categories={categories} currentCategoryId={currentCategoryId} />
         </Suspense>
-
-        <Suspense>
-          <SearchInput currentSearch={currentSearch} />
-        </Suspense>
       </div>
 
       <Suspense>

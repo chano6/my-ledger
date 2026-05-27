@@ -96,3 +96,12 @@ export function getCurrentMonthDateRange(): string {
 
   return `${month}월 1일 ~ ${month}월 ${day}일`;
 }
+
+// 최근 N일 범위 (오늘 포함)
+export function getRecentDaysRange(days: number): { start: string; end: string } {
+  const now = new Date();
+  const start = new Date();
+  start.setDate(now.getDate() - (days - 1));
+
+  return { start: toDateString(start), end: toDateString(now) };
+}

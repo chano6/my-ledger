@@ -156,3 +156,48 @@ export function formatDateRangeLabel(start?: string, end?: string): string {
 
   return "전체 기간";
 }
+
+// 거래를 날짜별로 그룹핑
+// @returns [{ date: 'YYYY-MM-DD', label: '오늘' | '5월 23일 (토)', transactions: [...] }, ...]
+export function groupTransactionsByDate<T extends { date: string }>(
+  transactions: T[],
+): Array<{ date: string; label: string; transactions: T[] }> {
+  const groups = new Map<string, T[]>();
+
+  for (const transaction of transactions) {
+    const existing = groups.get(transaction.date);
+    if (existing) {
+      existing.push(transaction);
+    } else {
+      groups.set(transaction.date, [transaction]);
+    }
+  }
+
+  // 날짜 정렬 (내림차순)
+  const sortedDates = Array.from(groups.keys()).sort((a, b) => b.localeCompare(a));
+
+  return sortedDates.map((date) => ({
+    date,
+    label: formatGroupDateLabel(date),
+    transactions: groups.get(date) ?? [],
+  }));
+}
+
+// 그룹 헤더 라벨 (오늘, 어제, 5월 23일 (토))
+function formatGroupDateLabel(dateStr: string): string {
+  const target = new Date(dateStr);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.round((today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "오늘";
+  if (diffDays === 1) return "어제";
+
+  // 5월 23일 (토) 형식
+  const month = target.getMonth() + 1;
+  const day = target.getDate();
+  const weekday = ["일", "월", "화", "수", "목", "금", "토"][target.getDay()];
+  return `${month}월 ${day}일 (${weekday})`;
+}

@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import { LoadMoreButton } from "@/components/transactions/load-more-button";
-import { TransactionsStats } from "@/components/transactions/stats/transactions-stats";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { TransactionsActions } from "@/components/transactions/transactions-actions";
+import { TransactionsStats } from "@/components/transactions/transactions-stats";
 import { formatDateRangeLabel } from "@/lib/format";
 import { getCategories } from "@/lib/queries/categories";
 import { getCurrentProfile } from "@/lib/queries/profile";

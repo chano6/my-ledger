@@ -1,4 +1,4 @@
-import { TransactionsStatsCard } from "./transactions-stats-card";
+import { TransactionsStatsCard } from "./card";
 
 type TransactionsStatsProps = {
   income: { total: number; count: number };

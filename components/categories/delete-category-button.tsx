@@ -1,8 +1,8 @@
 "use client";
 
+import { Trash2 } from "lucide-react";
 import { useTransition } from "react";
 import { deleteCategory } from "@/lib/actions/categories";
-import { Button } from "../ui/button";
 
 type DeleteCategoryButtonProps = {
   id: string;
@@ -24,8 +24,14 @@ export function DeleteCategoryButton({ id, name }: DeleteCategoryButtonProps) {
   };
 
   return (
-    <Button variant="ghost" size="sm" onClick={handleDelete} disabled={isPending}>
-      {isPending ? "삭제 중..." : "삭제"}
-    </Button>
+    <button
+      type="button"
+      onClick={handleDelete}
+      disabled={isPending}
+      className="flex h-8 w-8 items-center justify-center rounded-md text-fg-soft transition-colors hover:bg-coral-soft hover:text-coral disabled:opacity-50"
+      aria-label="삭제"
+    >
+      <Trash2 className="h-3.5 w-3.5" />
+    </button>
   );
 }

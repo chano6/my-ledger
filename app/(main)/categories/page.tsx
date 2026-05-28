@@ -1,68 +1,85 @@
-import Link from "next/link";
-import { DeleteCategoryButton } from "@/components/categories/delete-category-button";
-import { EmptyState } from "@/components/common/empty-state";
+import { CategoriesActions } from "@/components/categories/category-actions";
+import { CategoryGroup } from "@/components/categories/category-group";
+import { CategoryTypeFilter } from "@/components/categories/category-type-filter";
 import { PageHeader } from "@/components/common/page-header";
-import { Button } from "@/components/ui/button";
 import { getCategories } from "@/lib/queries/categories";
-import type { Category } from "@/lib/types";
+import { getCurrentProfile } from "@/lib/queries/profile";
+import { createClient } from "@/lib/supabase/server";
+import type { TransactionType } from "@/lib/types";
 
-export default async function CategoriesPage() {
+type CategoriesPageProps = {
+  searchParams: Promise<{
+    type?: string;
+  }>;
+};
+
+export default async function CategoriesPage({ searchParams }: CategoriesPageProps) {
+  const params = await searchParams;
+  const typeFilter: TransactionType | undefined =
+    params.type === "income" || params.type === "expense" ? params.type : undefined;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const profile = await getCurrentProfile();
+  const userEmail = user?.email ?? "";
+  const userName = profile?.name ?? userEmail.split("@")[0];
+
   const categories = await getCategories();
-
   const expenseCategories = categories.filter((c) => c.type === "expense");
   const incomeCategories = categories.filter((c) => c.type === "income");
+
+  const filteredCategories =
+    typeFilter === "income"
+      ? incomeCategories
+      : typeFilter === "expense"
+        ? expenseCategories
+        : null;
 
   return (
     <>
       <PageHeader
         title="카테고리"
-        description={`전체 ${categories.length}개의 카테고리`}
-        action={
-          <Button asChild>
-            <Link href="/categories/new">+ 새 카테고리</Link>
-          </Button>
-        }
+        description="거래에 사용할 카테고리를 관리해요"
+        action={<CategoriesActions />}
+        userName={userName}
+        userEmail={userEmail}
       />
 
-      <section className="mb-8">
-        <h2 className="mb-4 text-xl font-semibold">지출 카테고리</h2>
-        <CategorySection categories={expenseCategories} />
-      </section>
+      <div className="space-y-5 px-4 py-6 md:space-y-6 md:px-8 md:py-8">
+        {/* 세그먼티드 필터 */}
+        <CategoryTypeFilter
+          totalCount={categories.length}
+          expenseCount={expenseCategories.length}
+          incomeCount={incomeCategories.length}
+          currentType={typeFilter}
+        />
 
-      <section className="mb-8">
-        <h2 className="mb-4 text-xl font-semibold">수입 카테고리</h2>
-        <CategorySection categories={incomeCategories} />
-      </section>
-    </>
-  );
-}
-
-function CategorySection({ categories }: { categories: Category[] }) {
-  if (categories.length === 0) {
-    return <EmptyState message="아직 카테고리가 없습니다." />;
-  }
-
-  return (
-    <div className="rounded-lg border">
-      <div className="px-4">
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            className="flex items-center justify-between border-b py-3 last:border-b-0"
-          >
-            <div className="flex items-center gap-3">
-              <div className="h-4 w-4 rounded-full" style={{ backgroundColor: category.color }} />
-              <span className="font-medium">{category.name}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" asChild>
-                <Link href={`/categories/${category.id}/edit`}>수정</Link>
-              </Button>
-              <DeleteCategoryButton id={category.id} name={category.name} />
-            </div>
-          </div>
-        ))}
+        {/* 카테고리 목록 */}
+        {filteredCategories === null ? (
+          // 전체 보기: 지출 + 수입 그룹 둘 다
+          <>
+            <CategoryGroup
+              title="지출"
+              count={expenseCategories.length}
+              categories={expenseCategories}
+            />
+            <CategoryGroup
+              title="수입"
+              count={incomeCategories.length}
+              categories={incomeCategories}
+            />
+          </>
+        ) : (
+          // 필터 적용: 한 그룹만
+          <CategoryGroup
+            title={typeFilter === "income" ? "수입" : "지출"}
+            count={filteredCategories.length}
+            categories={filteredCategories}
+          />
+        )}
       </div>
-    </div>
+    </>
   );
 }

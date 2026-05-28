@@ -69,7 +69,7 @@ function CategoryChip({
         isIncome ? "bg-sage-soft text-sage-deep" : "bg-bg-sunken text-fg-muted",
       )}
     >
-      <span className="h-1.5 w-1.5 rounded-[2px]" style={{ backgroundColor: `${color}99` }} />
+      <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: `${color}99` }} />
       {name}
     </span>
   );

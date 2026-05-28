@@ -41,7 +41,10 @@ export function CategoryFilter({
           href={makeTransactionsUrl({ type, categoryId: category.id, startDate, endDate, search })}
           active={categoryId === category.id}
         >
-          <span className="h-2 w-2 rounded-[3px]" style={{ backgroundColor: category.color }} />
+          <span
+            className="h-2 w-2 rounded-full"
+            style={{ backgroundColor: `${category.color}99` }}
+          />
           {category.name}
         </CategoryChip>
       ))}

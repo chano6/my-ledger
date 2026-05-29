@@ -28,7 +28,7 @@ export function DeleteCategoryButton({ id, name }: DeleteCategoryButtonProps) {
       type="button"
       onClick={handleDelete}
       disabled={isPending}
-      className="flex h-8 w-8 items-center justify-center rounded-md text-fg-soft transition-colors hover:bg-coral-soft hover:text-coral disabled:opacity-50"
+      className="flex cursor-pointer h-8 w-8 items-center justify-center rounded-md text-fg-soft transition-colors hover:bg-coral-soft hover:text-coral disabled:opacity-50"
       aria-label="삭제"
     >
       <Trash2 className="h-3.5 w-3.5" />

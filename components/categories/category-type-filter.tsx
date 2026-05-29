@@ -16,7 +16,7 @@ export function CategoryTypeFilter({
   currentType,
 }: CategoryTypeFilterProps) {
   return (
-    <div className="inline-flex items-center rounded-lg border border-border bg-bg-sunken p-0.75">
+    <div className="inline-flex items-center rounded-[9px] border border-border bg-bg-sunken p-0.75">
       <FilterLink href="/categories" active={!currentType}>
         전체 ({totalCount})
       </FilterLink>
@@ -43,7 +43,7 @@ function FilterLink({
     <Link
       href={href}
       className={cn(
-        "flex h-9 items-center rounded-md px-3.5 text-[12.5px] font-semibold transition-colors",
+        "flex h-9 items-center rounded-[6px] px-3.5 text-[12.5px] font-semibold transition-colors",
         active ? "bg-card text-fg shadow-sm" : "text-fg-muted hover:text-fg",
       )}
     >

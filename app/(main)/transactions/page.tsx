@@ -7,13 +7,11 @@ import { TransactionsActions } from "@/components/transactions/transactions-acti
 import { TransactionsStats } from "@/components/transactions/transactions-stats";
 import { formatDateRangeLabel } from "@/lib/format";
 import { getCategories } from "@/lib/queries/categories";
-import { getCurrentProfile } from "@/lib/queries/profile";
 import {
   getTransactionCount,
   getTransactions,
   getTransactionsStats,
 } from "@/lib/queries/transactions";
-import { createClient } from "@/lib/supabase/server";
 import type { TransactionType } from "@/lib/types";
 
 const PAGE_SIZE = 20;
@@ -30,14 +28,6 @@ type TransactionPageProps = {
 };
 
 async function TransactionsPage({ searchParams }: TransactionPageProps) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const profile = await getCurrentProfile();
-  const userEmail = user?.email ?? "";
-  const userName = profile?.name ?? userEmail.split("@")[0];
-
   const params = await searchParams;
 
   const type: TransactionType | undefined =
@@ -72,8 +62,6 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
         title="거래 내역"
         description={description}
         action={<TransactionsActions currentSearch={search} />}
-        userName={userName}
-        userEmail={userEmail}
       />
 
       <div className="space-y-5 px-4 py-6 md:space-y-6 md:px-8 md:py-8">

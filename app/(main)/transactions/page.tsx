@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import { MobileAppBar } from "@/components/layout/mobile/app-bar";
 import { LoadMoreButton } from "@/components/transactions/load-more-button";
+import { TransactionsListMobile } from "@/components/transactions/mobile/transactions-list-mobile";
+import { TransactionsStatsCompact } from "@/components/transactions/mobile/transactions-stats-compact";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { TransactionsActions } from "@/components/transactions/transactions-actions";
@@ -69,7 +71,27 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
         action={<TransactionsActions currentSearch={search} />}
       />
 
-      <div className="space-y-5 px-4 py-6 lg:space-y-6 lg:px-8 lg:py-8">
+      {/* 모바일 */}
+      <div className="space-y-3.5 px-4 py-4 lg:hidden">
+        {/* TODO: 모바일 필터 (세그먼티드 + 필터 아이콘) */}
+
+        {/* 통계 */}
+        <TransactionsStatsCompact income={stats.income} expense={stats.expense} />
+
+        {/* 거래 목록 (카드) */}
+        <TransactionsListMobile transactions={transactions} />
+
+        {hasMore && (
+          <div className="mt-4 flex justify-center">
+            <Suspense>
+              <LoadMoreButton currentLimit={safeLimit} pageSize={PAGE_SIZE} />
+            </Suspense>
+          </div>
+        )}
+      </div>
+
+      {/* 데스크탑 */}
+      <div className="hidden space-y-5 px-4 py-6 lg:space-y-6 lg:px-8 lg:py-8 lg:block">
         <div className="space-y-3">
           <TransactionFilters
             currentType={type}

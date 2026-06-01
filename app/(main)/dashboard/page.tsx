@@ -15,6 +15,7 @@ import {
 } from "@/components/dashboard/skeletons";
 import { SummaryCards } from "@/components/dashboard/summary-cards";
 import { TopCategoriesSection } from "@/components/dashboard/top-categories-section";
+import { MobileAppBar } from "@/components/layout/mobile/app-bar";
 import { getCurrentProfile } from "@/lib/queries/profile";
 import { getMonthlyComparison, getMonthlySummaries } from "@/lib/queries/stats";
 import { createClient } from "@/lib/supabase/server";
@@ -50,6 +51,10 @@ export default async function DashboardPage() {
 
   return (
     <>
+      {/* 모바일 앱바 */}
+      <MobileAppBar title="대시보드" subTitle={`${year}년 ${month}월 · ${userName}`} />
+
+      {/* 데스크탑 페이지 헤더 */}
       <PageHeader
         title="대시보드"
         description={`${year}년 ${month}월 · ${userName}님의 가계부 한눈에 보기`}

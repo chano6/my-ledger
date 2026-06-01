@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { PageHeader } from "@/components/common/page-header";
+import { MobileAppBar } from "@/components/layout/mobile/app-bar";
 import { LoadMoreButton } from "@/components/transactions/load-more-button";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
@@ -58,6 +59,10 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
 
   return (
     <>
+      {/* 모바일 앱바 */}
+      <MobileAppBar title="거래 내역" subTitle={description} />
+
+      {/* 데스크탑 페이지 헤더 */}
       <PageHeader
         title="거래 내역"
         description={description}

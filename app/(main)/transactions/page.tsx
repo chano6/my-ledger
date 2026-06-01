@@ -69,7 +69,7 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
         action={<TransactionsActions currentSearch={search} />}
       />
 
-      <div className="space-y-5 px-4 py-6 md:space-y-6 md:px-8 md:py-8">
+      <div className="space-y-5 px-4 py-6 lg:space-y-6 lg:px-8 lg:py-8">
         <div className="space-y-3">
           <TransactionFilters
             currentType={type}

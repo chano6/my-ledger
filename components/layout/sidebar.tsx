@@ -7,7 +7,7 @@ type SidebarProps = {
 
 export function Sidebar({ userName, userEmail }: SidebarProps) {
   return (
-    <aside className="hidden w-62 shrink-0 flex-col border-r border-border bg-bg-sunken md:flex">
+    <aside className="hidden w-62 shrink-0 flex-col border-r border-border bg-bg-sunken lg:flex">
       <SidebarContent userName={userName} userEmail={userEmail} />
     </aside>
   );

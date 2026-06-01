@@ -22,12 +22,12 @@ export function TransactionList({ transactions }: TransactionListProps) {
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
       {/* 카드 헤더 */}
-      <div className="border-b border-border px-5 py-4 md:px-6">
+      <div className="border-b border-border px-5 py-4 lg:px-6">
         <CardHeader title="거래 목록" description={`날짜순 · ${transactions.length}건 표시 중`} />
       </div>
 
       {/* 테이블 헤더 (데스크탑) */}
-      <div className="hidden border-b border-border bg-peach-soft/30 md:grid md:grid-cols-[1fr_160px_0.75fr_140px_40px] md:items-center md:gap-3 md:px-6 md:py-3">
+      <div className="hidden border-b border-border bg-peach-soft/30 lg:grid lg:grid-cols-[1fr_160px_0.75fr_140px_40px] lg:items-center lg:gap-3 lg:px-6 lg:py-3">
         <div className="text-[11.5px] font-semibold uppercase tracking-wider text-fg-muted">
           거래
         </div>
@@ -48,7 +48,7 @@ export function TransactionList({ transactions }: TransactionListProps) {
         {groups.map((group) => (
           <div key={group.date}>
             {/* 날짜 그룹 헤더 */}
-            <div className="border-b border-border bg-peach-soft/30 px-5 py-2 text-[12px] font-semibold text-fg-muted md:px-6">
+            <div className="border-b border-border bg-peach-soft/30 px-5 py-2 text-[12px] font-semibold text-fg-muted lg:px-6">
               {group.label}
             </div>
 

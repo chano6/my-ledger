@@ -13,7 +13,7 @@ type MonthlyBarChartProps = {
 export function MonthlyBarChart({ data }: MonthlyBarChartProps) {
   if (data.length === 0) {
     return (
-      <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
+      <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm lg:p-6">
         <CardHeader title="월별 수입 vs 지출" description="최근 6개월 흐름" />
         <div className="py-16 text-center text-sm text-fg-soft">거래 내역이 없습니다.</div>
       </div>
@@ -21,7 +21,7 @@ export function MonthlyBarChart({ data }: MonthlyBarChartProps) {
   }
 
   return (
-    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
+    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm lg:p-6">
       <CardHeader
         title="월별 수입 vs 지출"
         description="최근 6개월 흐름"

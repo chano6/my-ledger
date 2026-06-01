@@ -10,7 +10,7 @@ export function TransactionsStats({ income, expense, filterRangeLabel }: Transac
   const balance = income.total - expense.total;
 
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-4">
       <TransactionsStatsCard
         variant="income"
         label="수입 합계"

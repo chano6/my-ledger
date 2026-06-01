@@ -13,7 +13,7 @@ type CategoryPieChartProps = {
 export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
   if (data.length === 0) {
     return (
-      <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm md:h-full md:p-6">
+      <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm lg:h-full lg:p-6">
         <CardHeader title="카테고리별 지출" description={dateRange} />
         <div className="py-16 text-center text-sm text-fg-soft">이번 달 지출이 없습니다.</div>
       </div>
@@ -23,11 +23,11 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
   const total = data.reduce((sum, item) => sum + item.total, 0);
 
   return (
-    <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm md:h-full md:p-6">
+    <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm lg:h-full lg:p-6">
       <CardHeader title="카테고리별 지출" description={dateRange} />
 
-      <div className="flex flex-1 flex-row items-center justify-center gap-4 md:gap-5">
-        <div className="relative aspect-square w-full max-w-35 md:max-w-45">
+      <div className="flex flex-1 flex-row items-center justify-center gap-4 lg:gap-5">
+        <div className="relative aspect-square w-full max-w-35 lg:max-w-45">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -62,8 +62,8 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
           </ResponsiveContainer>
 
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <p className="text-[10px] text-fg-soft md:text-[11px]">이번 달 지출</p>
-            <p className="num text-[14px] font-bold tracking-tight md:text-[16px]">
+            <p className="text-[10px] text-fg-soft lg:text-[11px]">이번 달 지출</p>
+            <p className="num text-[14px] font-bold tracking-tight lg:text-[16px]">
               {formatCurrency(total)}
             </p>
           </div>

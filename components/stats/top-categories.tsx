@@ -14,7 +14,7 @@ export function TopCategories({ stats, limit = 5, dateRange }: TopCategoriesProp
 
   if (top.length === 0) {
     return (
-      <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm md:h-full md:p-6">
+      <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm lg:h-full lg:p-6">
         <CardHeader
           title="가장 많이 쓴 카테고리"
           description={`${dateRange} · 지출 기준 상위 ${limit}`}
@@ -29,7 +29,7 @@ export function TopCategories({ stats, limit = 5, dateRange }: TopCategoriesProp
   const total = stats.reduce((sum, item) => sum + item.total, 0);
 
   return (
-    <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm md:h-full md:p-6">
+    <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm lg:h-full lg:p-6">
       <CardHeader
         title="가장 많이 쓴 카테고리"
         description={`${dateRange} · 지출 기준 상위 ${limit}`}

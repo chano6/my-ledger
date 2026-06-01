@@ -15,7 +15,7 @@ export function MobileBottomTabs() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-30 grid grid-cols-3 border-t border-border bg-card/85 px-0 py-2 backdrop-blur-md md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 grid grid-cols-3 border-t border-border bg-card/85 px-0 py-2 backdrop-blur-md lg:hidden">
       {TABS.map((tab) => {
         const isActive = pathname.startsWith(tab.href);
         const Icon = tab.icon;

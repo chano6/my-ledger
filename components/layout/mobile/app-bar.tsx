@@ -7,7 +7,7 @@ type MobileAppBarProps = {
 
 export function MobileAppBar({ title, subTitle }: MobileAppBarProps) {
   return (
-    <div className="flex items-center gap-3 px-5 pb-3.5 pt-2 md:hidden">
+    <div className="flex items-center gap-3 px-5 pb-3.5 pt-2 lg:hidden">
       <div className="min-w-0 flex-1">
         <h1 className="text-[22px] font-bold tracking-[-0.02em] text-fg">{title}</h1>
         {subTitle && <p className="mt-0.5 text-[12px] text-fg-soft truncate">{subTitle}</p>}

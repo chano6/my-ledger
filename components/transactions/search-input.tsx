@@ -47,7 +47,7 @@ export function SearchInput({ currentSearch }: SearchInputProps) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="거래 검색..."
-        className="h-10 w-full rounded-sm border border-border bg-card pl-9 pr-3 text-sm placeholder:text-fg-soft focus:border-peach-deep focus:outline-none focus:ring-2 focus:ring-peach-deep/15 md:w-65"
+        className="h-10 w-full rounded-sm border border-border bg-card pl-9 pr-3 text-sm placeholder:text-fg-soft focus:border-peach-deep focus:outline-none focus:ring-2 focus:ring-peach-deep/15 lg:w-65"
       />
     </div>
   );

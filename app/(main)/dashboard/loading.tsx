@@ -12,11 +12,11 @@ export default function DashboardLoading() {
     <>
       <PageHeader title="대시보드" />
 
-      <div className="space-y-6 px-4 py-6 md:px-8 md:py-8">
+      <div className="space-y-6 px-4 py-6 lg:px-8 lg:py-8">
         <SummaryCardsSkeleton />
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
+          <div className="lg:col-span-2">
             <MonthlyChartSkeleton />
           </div>
           <div>
@@ -24,8 +24,8 @@ export default function DashboardLoading() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <div className="lg:col-span-2">
             <RecentTransactionsSkeleton />
           </div>
           <div>

@@ -7,8 +7,8 @@ type AuthSidePanelProps = {
 export function AuthSidePanel({ side = "left" }: AuthSidePanelProps) {
   return (
     <div
-      className={`relative hidden flex-col justify-between overflow-hidden p-10 md:flex ${
-        side === "left" ? "md:order-first" : "md:order-last"
+      className={`relative hidden flex-col justify-between overflow-hidden p-10 lg:flex ${
+        side === "left" ? "lg:order-first" : "lg:order-last"
       }`}
       style={{
         background: `linear-gradient(135deg, 

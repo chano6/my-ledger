@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 // 통계 카드 - 시안 정확히
 export function SummaryCardsSkeleton() {
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-4">
       {[1, 2, 3].map((i) => (
         <div
           key={i}
@@ -30,7 +30,7 @@ export function SummaryCardsSkeleton() {
 // 월별 차트
 export function MonthlyChartSkeleton() {
   return (
-    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
+    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm lg:p-6">
       <div className="mb-5 flex items-start justify-between">
         <div className="space-y-1.5">
           <Skeleton className="h-5 w-32" />
@@ -46,12 +46,12 @@ export function MonthlyChartSkeleton() {
 // 카테고리 도넛
 export function CategorySectionSkeleton() {
   return (
-    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
+    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm lg:p-6">
       <div className="mb-5 space-y-1.5">
         <Skeleton className="h-5 w-32" />
         <Skeleton className="h-3 w-28" />
       </div>
-      <div className="flex flex-1 flex-col items-center justify-center gap-5 md:flex-row md:gap-5">
+      <div className="flex flex-1 flex-col items-center justify-center gap-5 lg:flex-row lg:gap-5">
         <Skeleton className="aspect-square w-full max-w-45 rounded-full" />
         <div className="flex w-full flex-col gap-2.5">
           {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -72,7 +72,7 @@ export function CategorySectionSkeleton() {
 // 최근 거래
 export function RecentTransactionsSkeleton() {
   return (
-    <div className="rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
+    <div className="rounded-lg border border-border bg-card p-5 shadow-sm lg:p-6">
       <div className="mb-5 flex items-start justify-between">
         <div className="space-y-1.5">
           <Skeleton className="h-5 w-24" />
@@ -99,7 +99,7 @@ export function RecentTransactionsSkeleton() {
 // TOP N
 export function TopCategoriesSkeleton() {
   return (
-    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
+    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm lg:p-6">
       <div className="mb-5 space-y-1.5">
         <Skeleton className="h-5 w-44" />
         <Skeleton className="h-3 w-48" />

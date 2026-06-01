@@ -17,12 +17,12 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
   const userName = profile?.name ?? userEmail.split("@")[0];
 
   return (
-    <div className="flex min-h-screen bg-background md:h-screen">
+    <div className="flex min-h-screen bg-background lg:h-screen">
       {/* 데스크탑 사이드바 */}
       <Sidebar userName={userName} userEmail={userEmail} />
 
       {/* 메인 콘텐츠 */}
-      <main className="flex min-w-0 flex-1 flex-col pb-20 md:overflow-y-auto md:pb-0">
+      <main className="flex min-w-0 flex-1 flex-col pb-20 lg:overflow-y-auto lg:pb-0">
         {children}
       </main>
 

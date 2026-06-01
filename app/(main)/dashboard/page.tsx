@@ -63,7 +63,7 @@ export default async function DashboardPage() {
 
       {/* 모바일 */}
       {/* ⭐ 모바일 */}
-      <div className="space-y-3.5 px-4 py-4 md:hidden">
+      <div className="space-y-3.5 px-4 py-4 lg:hidden">
         <Suspense fallback={<BalanceHeroSkeleton />}>
           <BalanceHeroData comparisonPromise={comparisonPromise} />
         </Suspense>
@@ -82,14 +82,14 @@ export default async function DashboardPage() {
       </div>
 
       {/* 데스크탑 */}
-      <div className="hidden space-y-6 px-4 py-6 md:block md:px-8 md:py-8">
+      <div className="hidden space-y-6 px-4 py-6 lg:block lg:px-8 lg:py-8">
         {/* 요약 카드 */}
         <Suspense fallback={<SummaryCardsSkeleton />}>
           <SummaryCardsData comparisonPromise={comparisonPromise} />
         </Suspense>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
+          <div className="lg:col-span-2">
             {/* 월별 막대 차트 */}
             <Suspense fallback={<MonthlyChartSkeleton />}>
               <MonthlyChartSection />
@@ -104,8 +104,8 @@ export default async function DashboardPage() {
         </div>
 
         {/* 최근 거래 */}
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <div className="lg:col-span-2">
             <Suspense fallback={<RecentTransactionsSkeleton />}>
               <RecentTransactions />
             </Suspense>

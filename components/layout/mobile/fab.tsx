@@ -31,7 +31,7 @@ export function MobileFab() {
         "rounded-[18px] bg-peach-deep text-white",
         "shadow-lg shadow-peach-deep/40",
         "transition-transform hover:scale-105 active:scale-95",
-        "md:hidden",
+        "lg:hidden",
       )}
     >
       <Plus className="h-5 w-5" strokeWidth={2.5} />

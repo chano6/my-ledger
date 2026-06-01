@@ -29,7 +29,7 @@ export function SummaryCards({ current, previous, trend }: SummaryCardsProps) {
   const balanceTrend = trend.map((m) => m.income - m.expense);
 
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-4">
       <SummaryCard
         label="이번 달 수입"
         amount={current.income}

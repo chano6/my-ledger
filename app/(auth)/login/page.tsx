@@ -5,7 +5,7 @@ function LoginPage() {
   return (
     <>
       <AuthSidePanel side="left" />
-      <div className="flex items-center justify-center p-6 md:p-12">
+      <div className="flex items-center justify-center p-6 lg:p-12">
         <LoginForm />
       </div>
     </>

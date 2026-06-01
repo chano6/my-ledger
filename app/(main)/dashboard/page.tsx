@@ -62,11 +62,23 @@ export default async function DashboardPage() {
       />
 
       {/* 모바일 */}
+      {/* ⭐ 모바일 */}
       <div className="space-y-3.5 px-4 py-4 md:hidden">
         <Suspense fallback={<BalanceHeroSkeleton />}>
           <BalanceHeroData comparisonPromise={comparisonPromise} />
         </Suspense>
-        {/* TODO: 차트, TOP, 최근 거래 모바일 컴포넌트 추가 */}
+
+        <Suspense fallback={<CategorySectionSkeleton />}>
+          <CategorySection />
+        </Suspense>
+
+        <Suspense fallback={<TopCategoriesSkeleton />}>
+          <TopCategoriesSection />
+        </Suspense>
+
+        <Suspense fallback={<RecentTransactionsSkeleton />}>
+          <RecentTransactions />
+        </Suspense>
       </div>
 
       {/* 데스크탑 */}

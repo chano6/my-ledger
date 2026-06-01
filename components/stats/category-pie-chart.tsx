@@ -13,7 +13,7 @@ type CategoryPieChartProps = {
 export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
   if (data.length === 0) {
     return (
-      <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
+      <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm md:h-full md:p-6">
         <CardHeader title="카테고리별 지출" description={dateRange} />
         <div className="py-16 text-center text-sm text-fg-soft">이번 달 지출이 없습니다.</div>
       </div>
@@ -23,11 +23,11 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
   const total = data.reduce((sum, item) => sum + item.total, 0);
 
   return (
-    <div className="flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-sm md:p-6">
+    <div className="flex flex-col rounded-lg border border-border bg-card p-4 shadow-sm md:h-full md:p-6">
       <CardHeader title="카테고리별 지출" description={dateRange} />
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 md:flex-row md:gap-5">
-        <div className="relative aspect-square w-full max-w-45">
+      <div className="flex flex-1 flex-row items-center justify-center gap-4 md:gap-5">
+        <div className="relative aspect-square w-full max-w-35 md:max-w-45">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -43,7 +43,7 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
                 isAnimationActive={false}
               >
                 {data.map((entry) => (
-                  <Cell key={entry.category_id} fill={entry.category_color} />
+                  <Cell key={entry.category_id} fill={`${entry.category_color}99`} />
                 ))}
               </Pie>
               <Tooltip
@@ -54,6 +54,7 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
                   backgroundColor: "#ffffff",
                   fontSize: "12px",
                   padding: "8px 12px",
+                  fontWeight: "bold",
                 }}
                 formatter={(value) => (typeof value === "number" ? formatCurrency(value) : value)}
               />
@@ -74,7 +75,7 @@ export function CategoryPieChart({ data, dateRange }: CategoryPieChartProps) {
               <div className="flex min-w-0 items-center gap-2">
                 <span
                   className="h-2 w-2 shrink-0 rounded-full"
-                  style={{ backgroundColor: item.category_color }}
+                  style={{ backgroundColor: `${item.category_color}99` }}
                 />
                 <span className="truncate text-[13px] text-fg">{item.category_name}</span>
               </div>

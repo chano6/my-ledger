@@ -38,7 +38,7 @@ export function toDateString(date: Date): string {
 
 // 이번 달의 시작/종료 날짜
 export function getCurrentMonthRange(): { start: string; end: string } {
-  const now = new Date();
+  const now = new Date(2026, 4, 15); // TODO: 임시, 나중에 new Date()로 복원
   const start = new Date(now.getFullYear(), now.getMonth(), 1);
   const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 

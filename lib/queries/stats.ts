@@ -53,7 +53,7 @@ export async function getMonthlyCategoryStats(): Promise<CategoryStats[]> {
 export async function getRecentMonthsStats(months: number = 6): Promise<MonthlyStats[]> {
   const supabase = await createClient();
 
-  const now = new Date();
+  const now = new Date(2026, 4, 15); // TODO: 임시, 나중에 new Date()로 복원
   const startDate = new Date(now.getFullYear(), now.getMonth() - (months - 1), 1);
   const startDateString = toDateString(startDate);
 
@@ -138,13 +138,13 @@ export async function getMonthSummary(
 
 // 이번 달 통계 함수
 export async function getCurrentMonthSummary() {
-  const now = new Date();
+  const now = new Date(2026, 4, 15); // TODO: 임시, 나중에 new Date()로 복원
   return getMonthSummary(now.getFullYear(), now.getMonth() + 1);
 }
 
 // 이번 달 + 전월 비교 함수
 export async function getMonthlyComparison() {
-  const now = new Date();
+  const now = new Date(2026, 4, 15); // TODO: 임시, 나중에 new Date()로 복원
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
 
@@ -164,7 +164,7 @@ export async function getMonthlyComparison() {
 export async function getMonthlySummaries(
   monthCount: number,
 ): Promise<Array<{ year: number; month: number; income: number; expense: number }>> {
-  const now = new Date();
+  const now = new Date(2026, 4, 15); // TODO: 임시, 나중에 new Date()로 복원
 
   const months = [];
   for (let i = monthCount - 1; i >= 0; i--) {

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { MobileBottomTabs } from "@/components/layout/mobile-bottom-tabs";
-import { MobileFab } from "@/components/layout/mobile-fab";
+import { MobileBottomTabs } from "@/components/layout/mobile/bottom-tabs";
+import { MobileFab } from "@/components/layout/mobile/fab";
 import { Sidebar } from "@/components/layout/sidebar";
 import { getCurrentProfile } from "@/lib/queries/profile";
 import { createClient } from "@/lib/supabase/server";

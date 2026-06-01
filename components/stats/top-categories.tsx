@@ -35,7 +35,7 @@ export function TopCategories({ stats, limit = 5, dateRange }: TopCategoriesProp
         description={`${dateRange} · 지출 기준 상위 ${limit}`}
       />
 
-      <div className="flex flex-1 flex-col gap-4">
+      <div className="flex flex-1 flex-col gap-4 py-3">
         {top.map((item, index) => {
           const percentage = total > 0 ? (item.total / total) * 100 : 0;
 

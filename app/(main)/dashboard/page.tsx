@@ -88,14 +88,14 @@ export default async function DashboardPage() {
           <SummaryCardsData comparisonPromise={comparisonPromise} />
         </Suspense>
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-5">
+          <div className="lg:col-span-3">
             {/* 월별 막대 차트 */}
             <Suspense fallback={<MonthlyChartSkeleton />}>
               <MonthlyChartSection />
             </Suspense>
           </div>
-          <div>
+          <div className="lg:col-span-2">
             {/* 카테고리 섹션 */}
             <Suspense fallback={<CategorySectionSkeleton />}>
               <CategorySection />
@@ -104,13 +104,13 @@ export default async function DashboardPage() {
         </div>
 
         {/* 최근 거래 */}
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
+          <div className="lg:col-span-3">
             <Suspense fallback={<RecentTransactionsSkeleton />}>
               <RecentTransactions />
             </Suspense>
           </div>
-          <div>
+          <div className="lg:col-span-2">
             <Suspense fallback={<TopCategoriesSkeleton />}>
               <TopCategoriesSection />
             </Suspense>

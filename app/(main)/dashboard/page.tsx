@@ -2,9 +2,11 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import { CategorySection } from "@/components/dashboard/category-section";
 import { DashboardActions } from "@/components/dashboard/dashboard-actions";
+import { BalanceHero } from "@/components/dashboard/mobile/balance-hero";
 import { MonthlyChartSection } from "@/components/dashboard/monthly-chart-section";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
 import {
+  BalanceHeroSkeleton,
   CategorySectionSkeleton,
   MonthlyChartSkeleton,
   RecentTransactionsSkeleton,
@@ -17,8 +19,16 @@ import { getCurrentProfile } from "@/lib/queries/profile";
 import { getMonthlyComparison, getMonthlySummaries } from "@/lib/queries/stats";
 import { createClient } from "@/lib/supabase/server";
 
-async function SummaryCardsData() {
-  const [comparison, trend] = await Promise.all([getMonthlyComparison(), getMonthlySummaries(6)]);
+type ComparisonPromise = ReturnType<typeof getMonthlyComparison>;
+
+async function BalanceHeroData({ comparisonPromise }: { comparisonPromise: ComparisonPromise }) {
+  const comparison = await comparisonPromise;
+
+  return <BalanceHero income={comparison.current.income} expense={comparison.current.expense} />;
+}
+
+async function SummaryCardsData({ comparisonPromise }: { comparisonPromise: ComparisonPromise }) {
+  const [comparison, trend] = await Promise.all([comparisonPromise, getMonthlySummaries(6)]);
 
   return <SummaryCards current={comparison.current} previous={comparison.previous} trend={trend} />;
 }
@@ -30,6 +40,7 @@ export default async function DashboardPage() {
   } = await supabase.auth.getUser();
 
   const profile = await getCurrentProfile();
+  const comparisonPromise = getMonthlyComparison();
   const userEmail = user?.email ?? "";
   const userName = profile?.name ?? userEmail.split("@")[0] ?? "사용자";
 
@@ -47,10 +58,19 @@ export default async function DashboardPage() {
         userEmail={userEmail}
       />
 
-      <div className="space-y-6 px-4 py-6 md:px-8 md:py-8">
+      {/* 모바일 */}
+      <div className="space-y-3.5 px-4 py-4 md:hidden">
+        <Suspense fallback={<BalanceHeroSkeleton />}>
+          <BalanceHeroData comparisonPromise={comparisonPromise} />
+        </Suspense>
+        {/* TODO: 차트, TOP, 최근 거래 모바일 컴포넌트 추가 */}
+      </div>
+
+      {/* 데스크탑 */}
+      <div className="hidden space-y-6 px-4 py-6 md:block md:px-8 md:py-8">
         {/* 요약 카드 */}
         <Suspense fallback={<SummaryCardsSkeleton />}>
-          <SummaryCardsData />
+          <SummaryCardsData comparisonPromise={comparisonPromise} />
         </Suspense>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">

@@ -3,8 +3,6 @@ import { CategoryGroup } from "@/components/categories/category-group";
 import { CategoryTypeFilter } from "@/components/categories/category-type-filter";
 import { PageHeader } from "@/components/common/page-header";
 import { getCategories } from "@/lib/queries/categories";
-import { getCurrentProfile } from "@/lib/queries/profile";
-import { createClient } from "@/lib/supabase/server";
 import type { TransactionType } from "@/lib/types";
 
 type CategoriesPageProps = {
@@ -17,14 +15,6 @@ export default async function CategoriesPage({ searchParams }: CategoriesPagePro
   const params = await searchParams;
   const typeFilter: TransactionType | undefined =
     params.type === "income" || params.type === "expense" ? params.type : undefined;
-
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const profile = await getCurrentProfile();
-  const userEmail = user?.email ?? "";
-  const userName = profile?.name ?? userEmail.split("@")[0];
 
   const categories = await getCategories();
   const expenseCategories = categories.filter((c) => c.type === "expense");
@@ -43,8 +33,6 @@ export default async function CategoriesPage({ searchParams }: CategoriesPagePro
         title="카테고리"
         description="거래에 사용할 카테고리를 관리해요"
         action={<CategoriesActions />}
-        userName={userName}
-        userEmail={userEmail}
       />
 
       <div className="space-y-5 px-4 py-6 md:space-y-6 md:px-8 md:py-8">

@@ -1,6 +1,8 @@
 import { CategoriesActions } from "@/components/categories/category-actions";
 import { CategoryGroup } from "@/components/categories/category-group";
 import { CategoryTypeFilter } from "@/components/categories/category-type-filter";
+import { CategoryGroupMobile } from "@/components/categories/mobile/category-group-mobile";
+import { TypeFilterMobile } from "@/components/categories/mobile/type-filter-mobile";
 import { PageHeader } from "@/components/common/page-header";
 import { MobileAppBar } from "@/components/layout/mobile/app-bar";
 import { getCategories } from "@/lib/queries/categories";
@@ -40,7 +42,42 @@ export default async function CategoriesPage({ searchParams }: CategoriesPagePro
         action={<CategoriesActions />}
       />
 
-      <div className="space-y-5 px-4 py-6 lg:space-y-6 lg:px-8 lg:py-8">
+      {/* 모바일 */}
+      <div className="space-y-4 px-4 py-4 lg:hidden">
+        {/* 세그먼티드 필터 */}
+        <TypeFilterMobile
+          totalCount={categories.length}
+          expenseCount={expenseCategories.length}
+          incomeCount={incomeCategories.length}
+          currentType={typeFilter}
+        />
+
+        {/* 카테고리 목록 */}
+        {filteredCategories === null ? (
+          // 전체: 지출 + 수입 그룹
+          <>
+            <CategoryGroupMobile
+              title="지출"
+              count={expenseCategories.length}
+              categories={expenseCategories}
+            />
+            <CategoryGroupMobile
+              title="수입"
+              count={incomeCategories.length}
+              categories={incomeCategories}
+            />
+          </>
+        ) : (
+          // 필터 적용: 한 그룹만
+          <CategoryGroupMobile
+            title={typeFilter === "income" ? "수입" : "지출"}
+            count={filteredCategories.length}
+            categories={filteredCategories}
+          />
+        )}
+      </div>
+
+      <div className="hidden space-y-5 px-4 py-6 lg:block lg:space-y-6 lg:px-8 lg:py-8">
         {/* 세그먼티드 필터 */}
         <CategoryTypeFilter
           totalCount={categories.length}

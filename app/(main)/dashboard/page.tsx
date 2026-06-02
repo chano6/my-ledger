@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import { CategorySection } from "@/components/dashboard/category-section";
@@ -19,6 +20,11 @@ import { MobileAppBar } from "@/components/layout/mobile/app-bar";
 import { getCurrentProfile } from "@/lib/queries/profile";
 import { getMonthlyComparison, getMonthlySummaries } from "@/lib/queries/stats";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "대시보드",
+  description: "이번 달 수입과 지출, 카테고리별 통계를 한눈에 확인하세요.",
+};
 
 type ComparisonPromise = ReturnType<typeof getMonthlyComparison>;
 

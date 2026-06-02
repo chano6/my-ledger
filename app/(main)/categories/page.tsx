@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { CategoriesActions } from "@/components/categories/category-actions";
 import { CategoryGroup } from "@/components/categories/category-group";
 import { CategoryTypeFilter } from "@/components/categories/category-type-filter";
@@ -7,6 +8,11 @@ import { PageHeader } from "@/components/common/page-header";
 import { MobileAppBar } from "@/components/layout/mobile/app-bar";
 import { getCategories } from "@/lib/queries/categories";
 import type { TransactionType } from "@/lib/types";
+
+export const metadata: Metadata = {
+  title: "카테고리",
+  description: "거래에 사용할 카테고리를 만들고 관리하세요.",
+};
 
 type CategoriesPageProps = {
   searchParams: Promise<{

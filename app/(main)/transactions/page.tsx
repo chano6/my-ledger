@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import { MobileAppBar } from "@/components/layout/mobile/app-bar";
@@ -18,6 +19,11 @@ import {
   getTransactionsStats,
 } from "@/lib/queries/transactions";
 import type { TransactionType } from "@/lib/types";
+
+export const metadata: Metadata = {
+  title: "거래 내역",
+  description: "수입과 지출 거래를 검색하고 관리하세요.",
+};
 
 const PAGE_SIZE = 20;
 

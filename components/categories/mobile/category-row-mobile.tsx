@@ -1,8 +1,6 @@
-"use client";
-
-import { MoreHorizontal } from "lucide-react";
 import { CategoryIcon } from "@/components/common/category-icon";
 import type { Category } from "@/lib/types";
+import { CategoryRowActions } from "./category-row-actions";
 
 type CategoryRowMobileProps = {
   category: Category;
@@ -22,18 +20,7 @@ export function CategoryRowMobile({ category }: CategoryRowMobileProps) {
         <div className="mt-0.5 text-[11px] text-fg-soft">{isIncome ? "수입" : "지출"}</div>
       </div>
 
-      {/* ⋯ 메뉴 */}
-      <button
-        type="button"
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-fg-soft transition-colors hover:bg-bg-sunken hover:text-fg"
-        aria-label="메뉴"
-        onClick={() => {
-          // TODO: BottomSheet 또는 메뉴 열기
-          alert(`카테고리: ${category.name}`);
-        }}
-      >
-        <MoreHorizontal className="h-4 w-4" />
-      </button>
+      <CategoryRowActions categoryId={category.id} categoryName={category.name} />
     </div>
   );
 }

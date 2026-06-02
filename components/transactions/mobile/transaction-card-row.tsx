@@ -2,6 +2,7 @@ import { CategoryIcon } from "@/components/common/category-icon";
 import { formatCurrency, formatRelativeDate } from "@/lib/format";
 import type { TransactionWithCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { TransactionRowActions } from "../transaction-list/row-actions";
 
 type TransactionCardRowProps = {
   transaction: TransactionWithCategory;
@@ -33,6 +34,8 @@ export function TransactionCardRow({ transaction }: TransactionCardRowProps) {
         {isIncome ? "+" : "-"}
         {formatCurrency(transaction.amount)}
       </div>
+
+      <TransactionRowActions transactionId={transaction.id} />
     </div>
   );
 }

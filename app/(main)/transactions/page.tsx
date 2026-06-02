@@ -2,8 +2,10 @@ import { Suspense } from "react";
 import { PageHeader } from "@/components/common/page-header";
 import { MobileAppBar } from "@/components/layout/mobile/app-bar";
 import { LoadMoreButton } from "@/components/transactions/load-more-button";
+import { FilterIconButton } from "@/components/transactions/mobile/filter-icon-button";
 import { TransactionsListMobile } from "@/components/transactions/mobile/transactions-list-mobile";
 import { TransactionsStatsCompact } from "@/components/transactions/mobile/transactions-stats-compact";
+import { TypeFilterMobile } from "@/components/transactions/mobile/type-filter-mobile";
 import { TransactionFilters } from "@/components/transactions/transaction-filters";
 import { TransactionList } from "@/components/transactions/transaction-list";
 import { TransactionsActions } from "@/components/transactions/transactions-actions";
@@ -73,7 +75,19 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
 
       {/* 모바일 */}
       <div className="space-y-3.5 px-4 py-4 lg:hidden">
-        {/* TODO: 모바일 필터 (세그먼티드 + 필터 아이콘) */}
+        {/* 필터 영역: 세그먼티드 + 필터 아이콘 */}
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <TypeFilterMobile
+              currentType={type}
+              currentCategoryId={categoryId}
+              currentStartDate={startDate}
+              currentEndDate={endDate}
+              currentSearch={search}
+            />
+          </div>
+          <FilterIconButton />
+        </div>
 
         {/* 통계 */}
         <TransactionsStatsCompact income={stats.income} expense={stats.expense} />

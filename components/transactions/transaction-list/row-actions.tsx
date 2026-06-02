@@ -2,6 +2,8 @@
 
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
+import { ConfirmDialog } from "@/components/common/confirm-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,13 +19,14 @@ type TransactionRowActionsProps = {
 
 export function TransactionRowActions({ transactionId }: TransactionRowActionsProps) {
   const handleDelete = async () => {
-    if (!confirm("정말 삭제하시겠습니까?")) return;
-
     try {
       await deleteTransaction(transactionId);
+      toast.success("거래를 삭제했어요");
     } catch (error) {
-      console.error("삭제 실패:", error);
-      alert("삭제에 실패했습니다.");
+      toast.error("거래 삭제에 실패했어요", {
+        description: "잠시 후 다시 시도해주세요.",
+      });
+      console.error("거래 삭제 실패:", error);
     }
   };
 
@@ -47,13 +50,23 @@ export function TransactionRowActions({ transactionId }: TransactionRowActionsPr
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          onClick={handleDelete}
-          className="cursor-pointer text-coral focus:bg-coral-soft focus:text-coral"
-        >
-          <Trash2 className="mr-2 h-3.5 w-3.5" />
-          <span>삭제</span>
-        </DropdownMenuItem>
+
+        <ConfirmDialog
+          trigger={
+            <DropdownMenuItem
+              onSelect={(e) => e.preventDefault()}
+              className="cursor-pointer text-coral focus:bg-coral-soft focus:text-coral"
+            >
+              <Trash2 className="mr-2 h-3.5 w-3.5" />
+              <span>삭제</span>
+            </DropdownMenuItem>
+          }
+          title="거래 삭제"
+          description="이 거래를 삭제하시겠어요? 삭제된 거래는 복구할 수 없어요."
+          confirmText="삭제"
+          destructive
+          onConfirm={handleDelete}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -13,11 +13,13 @@ import { TransactionsActions } from "@/components/transactions/transactions-acti
 import { TransactionsStats } from "@/components/transactions/transactions-stats";
 import { formatDateRangeLabel } from "@/lib/format";
 import { getCategories } from "@/lib/queries/categories";
+import { getCurrentProfile } from "@/lib/queries/profile";
 import {
   getTransactionCount,
   getTransactions,
   getTransactionsStats,
 } from "@/lib/queries/transactions";
+import { createClient } from "@/lib/supabase/server";
 import type { TransactionType } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -40,6 +42,15 @@ type TransactionPageProps = {
 
 async function TransactionsPage({ searchParams }: TransactionPageProps) {
   const params = await searchParams;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const profile = await getCurrentProfile();
+  const userEmail = user?.email ?? "";
+  const userName = profile?.name ?? userEmail.split("@")[0] ?? "사용자";
 
   const type: TransactionType | undefined =
     params.type === "income" || params.type === "expense" ? params.type : undefined;
@@ -70,7 +81,12 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
   return (
     <>
       {/* 모바일 앱바 */}
-      <MobileAppBar title="거래 내역" subTitle={description} />
+      <MobileAppBar
+        title="거래 내역"
+        subTitle={description}
+        userName={userName}
+        userEmail={userEmail}
+      />
 
       {/* 데스크탑 페이지 헤더 */}
       <PageHeader

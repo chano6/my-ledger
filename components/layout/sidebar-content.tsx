@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { NavItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { UserMenu } from "./user-menu";
 
 const NAV_ITEMS: NavItem[] = [
   { href: "/dashboard", label: "대시보드", icon: LayoutGrid },
@@ -78,14 +79,8 @@ export function SidebarContent({ userName, userEmail, onNavigate }: SidebarConte
 
       {/* 푸터: 유저 정보 */}
       <div className="px-4 pb-6">
-        <div className="flex items-center gap-2.5 border-t border-border p-3">
-          <div className="grid h-8.5 w-8.5 place-items-center rounded-full bg-linear-to-br from-butter to-peach text-[13px] font-bold text-[oklch(0.32_0.06_50)]">
-            {userEmail[0]?.toUpperCase() ?? "U"}
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-[13px] font-semibold">{userName}</div>
-            <div className="truncate text-[11px] text-fg-soft">{userEmail}</div>
-          </div>
+        <div className="border-t border-border p-3">
+          <UserMenu userName={userName} userEmail={userEmail} />
         </div>
       </div>
     </div>

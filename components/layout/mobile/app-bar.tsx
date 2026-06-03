@@ -1,11 +1,14 @@
 import { Search } from "lucide-react";
+import { MobileUserMenu } from "./user-menu";
 
 type MobileAppBarProps = {
   title: string;
   subTitle?: string;
+  userName?: string;
+  userEmail?: string;
 };
 
-export function MobileAppBar({ title, subTitle }: MobileAppBarProps) {
+export function MobileAppBar({ title, subTitle, userName, userEmail }: MobileAppBarProps) {
   return (
     <div className="flex items-center gap-3 px-5 pb-3.5 pt-2 lg:hidden">
       <div className="min-w-0 flex-1">
@@ -21,6 +24,9 @@ export function MobileAppBar({ title, subTitle }: MobileAppBarProps) {
       >
         <Search className="h-4.5 w-4.5" />
       </button>
+
+      {/* 사용자 아바타 메뉴 */}
+      {userName && userEmail && <MobileUserMenu userName={userName} userEmail={userEmail} />}
     </div>
   );
 }

@@ -7,6 +7,8 @@ import { TypeFilterMobile } from "@/components/categories/mobile/type-filter-mob
 import { PageHeader } from "@/components/common/page-header";
 import { MobileAppBar } from "@/components/layout/mobile/app-bar";
 import { getCategories } from "@/lib/queries/categories";
+import { getCurrentProfile } from "@/lib/queries/profile";
+import { createClient } from "@/lib/supabase/server";
 import type { TransactionType } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -22,6 +24,16 @@ type CategoriesPageProps = {
 
 export default async function CategoriesPage({ searchParams }: CategoriesPageProps) {
   const params = await searchParams;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const profile = await getCurrentProfile();
+  const userEmail = user?.email ?? "";
+  const userName = profile?.name ?? userEmail.split("@")[0] ?? "사용자";
+
   const typeFilter: TransactionType | undefined =
     params.type === "income" || params.type === "expense" ? params.type : undefined;
 
@@ -39,7 +51,12 @@ export default async function CategoriesPage({ searchParams }: CategoriesPagePro
   return (
     <>
       {/* 모바일 앱바 */}
-      <MobileAppBar title="카테고리" subTitle="거래에 사용할 카테고리를 관리해요" />
+      <MobileAppBar
+        title="카테고리"
+        subTitle="거래에 사용할 카테고리를 관리해요"
+        userName={userName}
+        userEmail={userEmail}
+      />
 
       {/* 데스크탑 페이지 헤더 */}
       <PageHeader

@@ -58,7 +58,12 @@ export default async function DashboardPage() {
   return (
     <>
       {/* 모바일 앱바 */}
-      <MobileAppBar title="대시보드" subTitle={`${year}년 ${month}월 · ${userName}`} />
+      <MobileAppBar
+        title="대시보드"
+        subTitle={`${year}년 ${month}월 · ${userName}`}
+        userName={userName}
+        userEmail={userEmail}
+      />
 
       {/* 데스크탑 페이지 헤더 */}
       <PageHeader

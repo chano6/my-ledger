@@ -1,42 +1,31 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { transactionSchema, updateTransactionSchema } from "../schemas/transaction";
 import { createClient } from "../supabase/server";
-import type { ActionState } from "../types";
+import type { TransactionInput } from "../types";
 
-export async function createTransaction(
-  _prevState: ActionState,
-  formData: FormData,
-): Promise<ActionState> {
-  // 1. zod 스키마로 검증 + 반환
-  const result = transactionSchema.safeParse({
-    type: formData.get("type"),
-    amount: formData.get("amount"),
-    category_id: formData.get("category_id"),
-    date: formData.get("date"),
-    description: formData.get("description") || undefined,
-  });
+export async function createTransaction(data: TransactionInput): Promise<void> {
+  // 1. zod 스키마로 검증
+  const result = transactionSchema.safeParse(data);
 
-  // 2. 유효성 검사
   if (!result.success) {
-    return { error: result.error.issues[0].message };
+    throw new Error(result.error.issues[0].message);
   }
 
   const { type, amount, category_id, date, description } = result.data;
 
-  // 3. 현재 로그인된 사용자 확인
+  // 2. 현재 로그인된 사용자 확인
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { error: "로그인이 필요합니다." };
+    throw new Error("로그인이 필요합니다.");
   }
 
-  // 4. DB에 INSERT
+  // 3. DB에 INSERT
   const { error } = await supabase.from("transactions").insert({
     user_id: user.id,
     type,
@@ -48,13 +37,12 @@ export async function createTransaction(
 
   if (error) {
     console.error("거래 추가 실패:", error);
-    return { error: "거래 추가에 실패했습니다." };
+    throw new Error("거래 추가에 실패했습니다.");
   }
 
-  // 5. 캐싱 갱신 + 페이지 이동
+  // 4. 캐싱 갱신
   revalidatePath("/transactions");
   revalidatePath("/dashboard");
-  redirect("/transactions");
 }
 
 export async function deleteTransaction(id: string) {
@@ -86,38 +74,27 @@ export async function deleteTransaction(id: string) {
   revalidatePath("/dashboard");
 }
 
-export async function updateTransaction(
-  _prevState: ActionState,
-  formData: FormData,
-): Promise<ActionState> {
-  // 1. Zod 스키마로 검증 + 변환 (id 포함)
-  const result = updateTransactionSchema.safeParse({
-    id: formData.get("id"),
-    type: formData.get("type"),
-    amount: formData.get("amount"),
-    category_id: formData.get("category_id"),
-    date: formData.get("date"),
-    description: formData.get("description") || undefined,
-  });
+export async function updateTransaction(id: string, data: TransactionInput): Promise<void> {
+  // 1. zod 검증 (id 포함)
+  const result = updateTransactionSchema.safeParse({ id, ...data });
 
-  // 2. 유효성 검사
   if (!result.success) {
-    return { error: result.error.issues[0].message };
+    throw new Error(result.error.issues[0].message);
   }
 
-  const { id, type, amount, category_id, date, description } = result.data;
+  const { type, amount, category_id, date, description } = result.data;
 
-  // 3. 사용자 확인
+  // 2. 사용자 확인
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { error: "로그인이 필요합니다." };
+    throw new Error("로그인이 필요합니다.");
   }
 
-  // 4. DB UPDATE
+  // 3. DB UPDATE
   const { error } = await supabase
     .from("transactions")
     .update({
@@ -132,11 +109,9 @@ export async function updateTransaction(
 
   if (error) {
     console.error("거래 수정 실패:", error);
-    return { error: "거래 수정에 실패했습니다." };
+    throw new Error("거래 수정에 실패했습니다.");
   }
 
-  // 5. 캐싱 갱신 + 페이지 이동
   revalidatePath("/transactions");
   revalidatePath("/dashboard");
-  redirect("/transactions");
 }

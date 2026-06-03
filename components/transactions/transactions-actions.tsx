@@ -1,15 +1,20 @@
 "use client";
 
 import { Download, Plus } from "lucide-react";
-import Link from "next/link";
+import { useState } from "react";
+import type { Category } from "@/lib/types";
 import { Button } from "../ui/button";
 import { SearchInput } from "./search-input";
+import { TransactionFormModal } from "./transaction-form-modal";
 
 type TransactionsActionsProps = {
   currentSearch?: string;
+  categories: Category[];
 };
 
-export function TransactionsActions({ currentSearch }: TransactionsActionsProps) {
+export function TransactionsActions({ currentSearch, categories }: TransactionsActionsProps) {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <>
       {/* 검색 - 데스크탑만 */}
@@ -28,12 +33,13 @@ export function TransactionsActions({ currentSearch }: TransactionsActionsProps)
       </button>
 
       {/* 거래 추가 - 데스크탑만 (모바일은 FAB) */}
-      <Button asChild className="hidden h-10 lg:flex">
-        <Link href="/transactions/new">
-          <Plus className="h-4 w-4" />
-          거래 추가
-        </Link>
+      <Button onClick={() => setModalOpen(true)} className="hidden h-10 lg:flex cursor-pointer">
+        <Plus className="h-4 w-4" />
+        거래 추가
       </Button>
+
+      {/* 모달 */}
+      <TransactionFormModal open={modalOpen} onOpenChange={setModalOpen} categories={categories} />
     </>
   );
 }

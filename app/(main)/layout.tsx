@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { MobileBottomTabs } from "@/components/layout/mobile/bottom-tabs";
 import { MobileFab } from "@/components/layout/mobile/fab";
 import { Sidebar } from "@/components/layout/sidebar";
+import { getCategories } from "@/lib/queries/categories";
 import { getCurrentProfile } from "@/lib/queries/profile";
 import { createClient } from "@/lib/supabase/server";
 
@@ -10,6 +11,8 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const categories = await getCategories();
 
   const profile = await getCurrentProfile();
 
@@ -28,7 +31,7 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
 
       {/* 모바일 전용 */}
       <MobileBottomTabs />
-      <MobileFab />
+      <MobileFab categories={categories} />
     </div>
   );
 }

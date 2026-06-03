@@ -1,10 +1,18 @@
 "use client";
 
 import { Calendar, Plus, Search } from "lucide-react";
-import Link from "next/link";
+import { useState } from "react";
+import type { Category } from "@/lib/types";
+import { TransactionFormModal } from "../transactions/transaction-form-modal";
 import { Button } from "../ui/button";
 
-export function DashboardActions() {
+type DashboardActionsProps = {
+  categories: Category[];
+};
+
+export function DashboardActions({ categories }: DashboardActionsProps) {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <>
       {/* 검색 */}
@@ -27,12 +35,13 @@ export function DashboardActions() {
       </button>
 
       {/* 거래 추가 */}
-      <Button asChild className="h-10">
-        <Link href="/transactions/new">
-          <Plus className="h-4 w-4" />
-          거래 추가
-        </Link>
+      <Button onClick={() => setModalOpen(true)} className="h-10 cursor-pointer">
+        <Plus className="h-4 w-4" />
+        거래 추가
       </Button>
+
+      {/* 모달 */}
+      <TransactionFormModal open={modalOpen} onOpenChange={setModalOpen} categories={categories} />
     </>
   );
 }

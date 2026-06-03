@@ -92,7 +92,7 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
       <PageHeader
         title="거래 내역"
         description={description}
-        action={<TransactionsActions currentSearch={search} />}
+        action={<TransactionsActions currentSearch={search} categories={categories} />}
       />
 
       {/* 모바일 */}

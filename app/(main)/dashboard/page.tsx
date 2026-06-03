@@ -17,6 +17,7 @@ import {
 import { SummaryCards } from "@/components/dashboard/summary-cards";
 import { TopCategoriesSection } from "@/components/dashboard/top-categories-section";
 import { MobileAppBar } from "@/components/layout/mobile/app-bar";
+import { getCategories } from "@/lib/queries/categories";
 import { getCurrentProfile } from "@/lib/queries/profile";
 import { getMonthlyComparison, getMonthlySummaries } from "@/lib/queries/stats";
 import { createClient } from "@/lib/supabase/server";
@@ -46,8 +47,10 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const profile = await getCurrentProfile();
   const comparisonPromise = getMonthlyComparison();
+  const categories = await getCategories();
+
+  const profile = await getCurrentProfile();
   const userEmail = user?.email ?? "";
   const userName = profile?.name ?? userEmail.split("@")[0] ?? "사용자";
 
@@ -69,11 +72,10 @@ export default async function DashboardPage() {
       <PageHeader
         title="대시보드"
         description={`${year}년 ${month}월 · ${userName}님의 가계부 한눈에 보기`}
-        action={<DashboardActions />}
+        action={<DashboardActions categories={categories} />}
       />
 
       {/* 모바일 */}
-      {/* ⭐ 모바일 */}
       <div className="space-y-3.5 px-4 py-4 lg:hidden">
         <Suspense fallback={<BalanceHeroSkeleton />}>
           <BalanceHeroData comparisonPromise={comparisonPromise} />

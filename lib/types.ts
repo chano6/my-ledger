@@ -85,3 +85,11 @@ export type FilterParams = {
   endDate?: string;
   search?: string;
 };
+
+export type TransactionInput = {
+  type: "income" | "expense";
+  amount: number;
+  category_id: string;
+  date: string;
+  description?: string | null;
+};

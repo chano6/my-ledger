@@ -32,6 +32,7 @@ export type Category = {
   name: string;
   type: TransactionType;
   color: string;
+  icon: string;
   created_at: string;
 };
 
@@ -48,7 +49,7 @@ export type Transaction = {
 
 // 카테고리 정보가 같이 들어간 거래 (조인 결과)
 export type TransactionWithCategory = Transaction & {
-  category: Pick<Category, "name" | "color" | "type"> | null;
+  category: Pick<Category, "name" | "icon" | "color" | "type"> | null;
 };
 
 export type ActionState = {
@@ -58,6 +59,7 @@ export type ActionState = {
 export type CategoryStats = {
   category_id: string;
   category_name: string;
+  category_icon: string;
   category_color: string;
   total: number;
   count: number;

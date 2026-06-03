@@ -15,7 +15,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
   return (
     <div className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3.5 shadow-sm transition-colors hover:border-border-strong">
       {/* 카테고리 아이콘 */}
-      <CategoryIcon name={category.name} color={category.color} size="lg" />
+      <CategoryIcon icon={category.icon} color={category.color} size="lg" />
 
       {/* 정보 */}
       <div className="min-w-0 flex-1">

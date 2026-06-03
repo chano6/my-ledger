@@ -11,6 +11,7 @@ type TransactionRowProps = {
 export function TransactionRow({ transaction }: TransactionRowProps) {
   const isIncome = transaction.type === "income";
   const categoryName = transaction.category?.name ?? "카테고리 없음";
+  const categoryIcon = transaction.category?.icon ?? "tag";
   const categoryColor = transaction.category?.color ?? "#888888";
   const displayName = transaction.description || categoryName;
 
@@ -18,7 +19,7 @@ export function TransactionRow({ transaction }: TransactionRowProps) {
     <div className="grid grid-cols-[1fr_auto_auto] items-center gap-3 border-b border-border px-5 py-4 transition-colors hover:bg-bg-sunken/30 lg:grid-cols-[1fr_160px_0.75fr_140px_40px] lg:gap-5 lg:px-6 lg:py-4">
       {/* 1. 거래명 (아이콘 + 이름) */}
       <div className="flex min-w-0 items-center gap-3">
-        <CategoryIcon name={categoryName} color={categoryColor} size="md" />
+        <CategoryIcon icon={categoryIcon} color={categoryColor} size="md" />
         <div className="min-w-0 flex-1">
           <div className="truncate text-[15px] font-semibold text-fg">{displayName}</div>
         </div>

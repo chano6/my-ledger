@@ -47,7 +47,7 @@ export function TopCategories({ stats, limit = 5, dateRange }: TopCategoriesProp
               </span>
 
               {/* 카테고리 아이콘 */}
-              <CategoryIcon name={item.category_name} color={item.category_color} size="md" />
+              <CategoryIcon icon={item.category_icon} color={item.category_color} size="md" />
 
               {/* 정보 + 진행바 */}
               <div className="min-w-0 flex-1 space-y-1.5">

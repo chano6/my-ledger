@@ -10,13 +10,14 @@ type DashboardTransactionItemProps = {
 export function DashboardTransactionItem({ transaction }: DashboardTransactionItemProps) {
   const isIncome = transaction.type === "income";
   const categoryName = transaction.category?.name ?? "카테고리 없음";
+  const categoryIcon = transaction.category?.icon ?? "tag";
   const categoryColor = transaction.category?.color ?? "#888888";
   const displayName = transaction.description || categoryName;
 
   return (
     <div className="flex items-center gap-3 py-3">
       {/* 카테고리 아이콘 */}
-      <CategoryIcon name={categoryName} color={categoryColor} size="md" />
+      <CategoryIcon icon={categoryIcon} color={categoryColor} size="md" />
 
       {/* 거래명 + 카테고리·날짜 */}
       <div className="min-w-0 flex-1">

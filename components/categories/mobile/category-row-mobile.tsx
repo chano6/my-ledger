@@ -12,7 +12,7 @@ export function CategoryRowMobile({ category }: CategoryRowMobileProps) {
   return (
     <div className="flex items-center gap-3 py-3">
       {/* 아이콘 */}
-      <CategoryIcon name={category.name} color={category.color} size="md" />
+      <CategoryIcon icon={category.icon} color={category.color} size="md" />
 
       {/* 정보 */}
       <div className="min-w-0 flex-1">

@@ -10,7 +10,7 @@ export async function getMonthlyCategoryStats(): Promise<CategoryStats[]> {
 
   const { data, error } = await supabase
     .from("transactions")
-    .select(`amount, category:categories(id, name, color)`)
+    .select(`amount, category:categories(id, name, icon, color)`)
     .eq("type", "expense")
     .gte("date", start)
     .lte("date", end);
@@ -41,6 +41,7 @@ export async function getMonthlyCategoryStats(): Promise<CategoryStats[]> {
         category_id: category.id,
         category_color: category.color,
         category_name: category.name,
+        category_icon: category.icon,
         total: Number(transaction.amount),
         count: 1,
       });

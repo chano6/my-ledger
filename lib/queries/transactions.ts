@@ -31,7 +31,7 @@ export async function getTransactions(
 
   let query = supabase.from("transactions").select(`
     *,
-    category:categories(name, color, type)
+    category:categories(name, color, icon, type)
   `);
 
   query = applyTransactionFilters(query, filter);

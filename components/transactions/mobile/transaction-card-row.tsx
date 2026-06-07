@@ -1,14 +1,15 @@
 import { CategoryIcon } from "@/components/common/category-icon";
 import { formatCurrency, formatRelativeDate } from "@/lib/format";
-import type { TransactionWithCategory } from "@/lib/types";
+import type { Category, TransactionWithCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { TransactionRowActions } from "../transaction-list/row-actions";
 
 type TransactionCardRowProps = {
   transaction: TransactionWithCategory;
+  categories: Category[];
 };
 
-export function TransactionCardRow({ transaction }: TransactionCardRowProps) {
+export function TransactionCardRow({ transaction, categories }: TransactionCardRowProps) {
   const isIncome = transaction.type === "income";
   const categoryName = transaction.category?.name ?? "카테고리 없음";
   const categoryIcon = transaction.category?.icon ?? "tag";
@@ -36,7 +37,7 @@ export function TransactionCardRow({ transaction }: TransactionCardRowProps) {
         {formatCurrency(transaction.amount)}
       </div>
 
-      <TransactionRowActions transactionId={transaction.id} />
+      <TransactionRowActions transaction={transaction} categories={categories} />
     </div>
   );
 }

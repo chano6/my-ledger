@@ -1,13 +1,14 @@
 import { EmptyState } from "@/components/common/empty-state";
 import { groupTransactionsByDate } from "@/lib/format";
-import type { TransactionWithCategory } from "@/lib/types";
+import type { Category, TransactionWithCategory } from "@/lib/types";
 import { TransactionCardRow } from "./transaction-card-row";
 
 type TransactionsListMobileProps = {
   transactions: TransactionWithCategory[];
+  categories: Category[];
 };
 
-export function TransactionsListMobile({ transactions }: TransactionsListMobileProps) {
+export function TransactionsListMobile({ transactions, categories }: TransactionsListMobileProps) {
   if (transactions.length === 0) {
     return (
       <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
@@ -28,7 +29,11 @@ export function TransactionsListMobile({ transactions }: TransactionsListMobileP
           {/* 거래 카드 */}
           <div className="divide-y divide-border rounded-xl border border-border bg-card px-4 shadow-sm">
             {group.transactions.map((transaction) => (
-              <TransactionCardRow key={transaction.id} transaction={transaction} />
+              <TransactionCardRow
+                key={transaction.id}
+                transaction={transaction}
+                categories={categories}
+              />
             ))}
           </div>
         </div>

@@ -115,7 +115,7 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
         <TransactionsStatsCompact income={stats.income} expense={stats.expense} />
 
         {/* 거래 목록 (카드) */}
-        <TransactionsListMobile transactions={transactions} />
+        <TransactionsListMobile transactions={transactions} categories={categories} />
 
         {hasMore && (
           <div className="mt-4 flex justify-center">
@@ -147,7 +147,7 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
         />
 
         {/* 거래 목록 */}
-        <TransactionList transactions={transactions} />
+        <TransactionList transactions={transactions} categories={categories} />
 
         {hasMore && (
           <div className="mt-6 flex justify-center">

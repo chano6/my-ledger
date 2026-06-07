@@ -1,14 +1,15 @@
 import { CardHeader } from "@/components/common/card-header";
 import { EmptyState } from "@/components/common/empty-state";
 import { groupTransactionsByDate } from "@/lib/format";
-import type { TransactionWithCategory } from "@/lib/types";
+import type { Category, TransactionWithCategory } from "@/lib/types";
 import { TransactionRow } from "./row";
 
 type TransactionListProps = {
   transactions: TransactionWithCategory[];
+  categories: Category[];
 };
 
-export function TransactionList({ transactions }: TransactionListProps) {
+export function TransactionList({ transactions, categories }: TransactionListProps) {
   if (transactions.length === 0) {
     return (
       <div className="rounded-lg border border-border bg-card p-5 shadow-sm">
@@ -54,7 +55,11 @@ export function TransactionList({ transactions }: TransactionListProps) {
 
             {/* 그룹 내 거래들 */}
             {group.transactions.map((transaction) => (
-              <TransactionRow key={transaction.id} transaction={transaction} />
+              <TransactionRow
+                key={transaction.id}
+                transaction={transaction}
+                categories={categories}
+              />
             ))}
           </div>
         ))}

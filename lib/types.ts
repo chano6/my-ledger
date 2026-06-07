@@ -26,6 +26,13 @@ export type TransactionFilter = {
   search?: string;
 };
 
+export type CategoryInput = {
+  type: TransactionType;
+  name: string;
+  color: string;
+  icon: string;
+};
+
 export type Category = {
   id: string;
   user_id: string;

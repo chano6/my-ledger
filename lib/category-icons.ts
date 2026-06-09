@@ -80,3 +80,15 @@ export const CATEGORY_ICON_LABELS: Record<CategoryIconKey, string> = {
 export function getCategoryIcon(iconKey: string): LucideIcon {
   return CATEGORY_ICONS[iconKey as CategoryIconKey] ?? Tag;
 }
+
+// 카테고리 색상
+export const CATEGORY_COLORS = [
+  "#FFB89A", // peach (오렌지)
+  "#E8B4B0", // blush (핑크)
+  "#FFD89A", // butter (옐로우)
+  "#B0D4B8", // sage (그린)
+  "#A8C4E8", // sky (블루)
+  "#C9B8E8", // lilac (퍼플)
+  "#F8B4D2", // pink (다크 핑크)
+  "#E89A7D", // coral (코랄)
+];

@@ -20,7 +20,7 @@ export function CategoryRowMobile({ category }: CategoryRowMobileProps) {
         <div className="mt-0.5 text-[11px] text-fg-soft">{isIncome ? "수입" : "지출"}</div>
       </div>
 
-      <CategoryRowActions categoryId={category.id} categoryName={category.name} />
+      <CategoryRowActions category={category} />
     </div>
   );
 }

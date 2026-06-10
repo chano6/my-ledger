@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/common/page-header";
 import { MobileAppBar } from "@/components/layout/mobile/app-bar";
 import { LoadMoreButton } from "@/components/transactions/load-more-button";
 import { FilterIconButton } from "@/components/transactions/mobile/filter-icon-button";
+import { SearchActiveChip } from "@/components/transactions/mobile/search-active-chip";
 import { TransactionsListMobile } from "@/components/transactions/mobile/transactions-list-mobile";
 import { TransactionsStatsCompact } from "@/components/transactions/mobile/transactions-stats-compact";
 import { TypeFilterMobile } from "@/components/transactions/mobile/type-filter-mobile";
@@ -110,6 +111,8 @@ async function TransactionsPage({ searchParams }: TransactionPageProps) {
           </div>
           <FilterIconButton />
         </div>
+
+        {search && <SearchActiveChip search={search} />}
 
         {/* 통계 */}
         <TransactionsStatsCompact income={stats.income} expense={stats.expense} />

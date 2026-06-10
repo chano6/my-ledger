@@ -1,4 +1,8 @@
-import { Search } from "lucide-react";
+"use client";
+
+import { Search, X } from "lucide-react";
+import { useState } from "react";
+import { SearchEntry } from "@/components/common/search-entry";
 import { MobileUserMenu } from "./user-menu";
 
 type MobileAppBarProps = {
@@ -9,6 +13,27 @@ type MobileAppBarProps = {
 };
 
 export function MobileAppBar({ title, subTitle, userName, userEmail }: MobileAppBarProps) {
+  const [searchMode, setSearchMode] = useState(false);
+
+  if (searchMode) {
+    return (
+      <div className="flex items-center gap-2 px-5 pb-3.5 pt-2 lg:hidden">
+        <SearchEntry
+          inputClassName="h-9.5 rounded-[11px]"
+          onSubmitted={() => setSearchMode(false)}
+        />
+        <button
+          type="button"
+          onClick={() => setSearchMode(false)}
+          className="flex h-9.5 w-9.5 shrink-0 items-center justify-center rounded-[11px] bg-bg-sunken text-fg-muted transition-colors hover:bg-border"
+          aria-label="검색 닫기"
+        >
+          <X className="h-4.5 w-4.5" />
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center gap-3 px-5 pb-3.5 pt-2 lg:hidden">
       <div className="min-w-0 flex-1">
@@ -19,6 +44,7 @@ export function MobileAppBar({ title, subTitle, userName, userEmail }: MobileApp
       {/* 검색 버튼 */}
       <button
         type="button"
+        onClick={() => setSearchMode(true)}
         className="flex h-9.5 w-9.5 shrink-0 items-center justify-center rounded-[11px] bg-bg-sunken text-fg-muted transition-colors hover:bg-border"
         aria-label="검색"
       >

@@ -15,10 +15,19 @@ export function SearchInput({ currentSearch }: SearchInputProps) {
   const [value, setValue] = useState(currentSearch ?? "");
 
   useEffect(() => {
+    setValue(currentSearch ?? "");
+  }, [currentSearch]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
-
       const trimmed = value.trim();
+
+      const currentSearchInUrl = params.get("search") ?? "";
+      if (trimmed === currentSearchInUrl) {
+        return;
+      }
+
       if (trimmed) {
         params.set("search", trimmed);
       } else {

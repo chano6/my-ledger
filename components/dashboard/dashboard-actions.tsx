@@ -1,8 +1,9 @@
 "use client";
 
-import { Calendar, Plus, Search } from "lucide-react";
+import { Calendar, Plus } from "lucide-react";
 import { useState } from "react";
 import type { Category } from "@/lib/types";
+import { SearchEntry } from "../common/search-entry";
 import { TransactionFormModal } from "../transactions/transaction-form-modal";
 import { Button } from "../ui/button";
 
@@ -16,14 +17,7 @@ export function DashboardActions({ categories }: DashboardActionsProps) {
   return (
     <>
       {/* 검색 */}
-      <div className="relative">
-        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-fg-soft" />
-        <input
-          type="search"
-          placeholder="거래 검색..."
-          className="h-10 w-full rounded-md border border-border bg-card pl-9 pr-3 text-sm placeholder:text-fg-soft focus:border-peach-deep focus:outline-none focus:ring-2 focus:ring-peach-deep/15 lg:w-65"
-        />
-      </div>
+      <SearchEntry />
 
       {/* 월 선택 (일단 정적 버튼) */}
       <button
